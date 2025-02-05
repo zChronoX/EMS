@@ -20,7 +20,7 @@ public class Appello_esame {
         this.postiDisponibili = postiDisponibili;
         Tipologia = tipologia;
     }
-
+    public Appello_esame() {};
 
     public String getID_appello() {
         return ID_appello;

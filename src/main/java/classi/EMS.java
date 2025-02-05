@@ -1,5 +1,7 @@
 package classi;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Map;
 
@@ -11,6 +13,9 @@ public class EMS {
     private Map<String,Studente> student_list;
     private Map<String,Docente> doc_list;
     private UtenteFactory utenteFactory;
+    private Appello_esame appelloCorrente;
+    public static final int POSTI_MAX = 500;
+    private Map<String,Appello_esame> exam_list;
 
     public static void EMS() {
         //todo
@@ -74,5 +79,27 @@ public class EMS {
         utenteFactory = new UtenteFactory();
         utenteCorrente= utenteFactory.newUser(tipoProfilo);
     }
+    public String creaAppelloEsame(LocalTime orario, LocalDate data, String luogo, String tipologia){
+
+        String idGenerato = "10" + (System.currentTimeMillis() % 10000); // Usa timestamp come base per ID univoco
+        appelloCorrente.setID_appello(idGenerato);
+        appelloCorrente.setOrario(orario);
+        appelloCorrente.setData(data);
+        appelloCorrente.setLuogo(luogo);
+        appelloCorrente.setPostiDisponibili(POSTI_MAX);
+        appelloCorrente.setTipologia(tipologia);
+        return idGenerato;
+    }
+    public void confermaAppello (){
+        if(appelloCorrente != null){
+            exam_list.put(appelloCorrente.getID_appello(), appelloCorrente);
+        }
+       else {
+            System.out.println("Errore: Nessun appello da creare.");
+        }
+
+    }
+
+
 }
 

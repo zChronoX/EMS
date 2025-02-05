@@ -22,6 +22,7 @@ public class Prenotazione {
         this.studente = studente;
         this.appello = appello;
     }
+    public Prenotazione() {};
 
     public String getID_prenotazione() {
         return ID_prenotazione;

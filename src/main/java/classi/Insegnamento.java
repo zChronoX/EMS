@@ -15,6 +15,8 @@ public class Insegnamento {
         Anno = anno;
     }
 
+    public Insegnamento() {};
+
     public String getID_insegnamento() {
         return ID_insegnamento;
     }
