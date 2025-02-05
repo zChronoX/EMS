@@ -1,26 +1,37 @@
 package classi;
 
-import java.util.Date;
-import interfacce.GeneratoreCredenziali;
+
+import java.util.*;
+import java.io.*;
+
+
 public class Main {
     public static void main(String[] args) {
-        GeneratoreCredenziali generatore = new GeneratoreCredenziali(){};
+        try {
+            Utility utility = new Utility();
+            HashMap<String, Docente> docenti = utility.loadProfessors();
 
-        Studente s = new Studente("Giovanni", "Contarino", "Maschile",
-                new Date(), "CNTGNN01D07C351H",
-                "Via Blanco 14, Acireale",
-                "giovanni.contarino.gc@gmail.com", "3801577024",
-                Utente.TipoProfilo.Studente, generatore.generaMatricola(), generatore.generaPassword()
-                , "In corso", 2025);
+            /*System.out.println("Docenti presenti nella mappa:");
+            for (Docente docente : docenti.values()) {
+                System.out.println(docente.getNome());
+            }*/
 
-        Docente d = new Docente("Nappo", "Giuseppe", "Indefinito",
-                new Date(), "NPPGGPS214312PP", "Via Scaloto 12, Scala",
-                "nappopippo@gmail.com", "1234567890", Utente.TipoProfilo.Docente, generatore.generaCodiceDocente(),
-                generatore.generaPassword());
+            Map<String, Insegnamento> teaching_list = utility.loadCourses("C:/Users/Gio/IdeaProjects/ExamManagmentSystem/src/main/files/insegnamenti.txt", docenti);
 
+            // Stampa gli insegnamenti
+            for (Insegnamento insegnamento : teaching_list.values()) {
+                System.out.println(insegnamento);
+            }
 
-        System.out.println(d);
-        System.out.println(s);
+            // Puoi accedere a un insegnamento specifico tramite il suo codice
+            Insegnamento algebraLineare = teaching_list.get("MAT001");
+            if (algebraLineare != null) {
+                // Modifica qui per stampare solo il nome del docente
+                System.out.println("Docente di Algebra Lineare: " + algebraLineare.getDocente().getNome() + " " + algebraLineare.getDocente().getCognome());
+            }
 
+        } catch (IOException e) {
+            System.err.println("Errore durante la lettura del file: " + e.getMessage());
+        }
     }
 }

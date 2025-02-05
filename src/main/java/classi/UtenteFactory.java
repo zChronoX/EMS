@@ -5,7 +5,7 @@ import interfacce.GeneratoreCredenziali;
 
 public class UtenteFactory {
     //fixme forse da togliere
-    public static Utente creaUtente(Utente.TipoProfilo tipo, String Nome, String Cognome, String Genere, Date Data_nascita, String Codice_fiscale, String Residenza,String Email, String Telefono, String Categoria, int AnnoCorso, GeneratoreCredenziali generatoreCredenziali) {
+    /*public static Utente creaUtente(Utente.TipoProfilo tipo, String Nome, String Cognome, String Genere, Date Data_nascita, String Codice_fiscale, String Residenza,String Email, String Telefono, String Categoria, int AnnoCorso, GeneratoreCredenziali generatoreCredenziali) {
         GeneratoreCredenziali generatore = new GeneratoreCredenziali() {
             @Override
             public String generaMatricola() {
@@ -31,7 +31,7 @@ public class UtenteFactory {
             default:
                 throw new IllegalArgumentException("Tipo di utente non valido: " + tipo);
         }
-    }
+    }*/
     public Utente newUser(Utente.TipoProfilo tipo) {
         if(tipo == Utente.TipoProfilo.Studente) {
 

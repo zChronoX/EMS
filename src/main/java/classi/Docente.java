@@ -59,6 +59,7 @@ public class Docente extends Utente implements GeneratoreCredenziali {
                 ", Codice_fiscale='" + Codice_fiscale + '\'' +
                 ", Residenza='" + Residenza + '\'' +
                 ", Telefono='" + Telefono + '\'' +
+                ", tipoProfilo=" + tipoProfilo +
                 '}';
     }
 }
