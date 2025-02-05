@@ -10,16 +10,19 @@ public class Appello_esame {
     private String Luogo;
     private int postiDisponibili;
     private String Tipologia;
+    private Insegnamento insegnamento;
 
-    public Appello_esame(String ID_appello, LocalTime orario, LocalDate data, String luogo,
-                         int postiDisponibili, String tipologia) {
+    public Appello_esame(String ID_appello, LocalTime orario, LocalDate data, String luogo, int postiDisponibili,
+                         String tipologia, Insegnamento insegnamento) {
         this.ID_appello = ID_appello;
         Orario = orario;
         Data = data;
         Luogo = luogo;
         this.postiDisponibili = postiDisponibili;
         Tipologia = tipologia;
+        this.insegnamento = insegnamento;
     }
+
     public Appello_esame() {};
 
     public String getID_appello() {
@@ -70,10 +73,19 @@ public class Appello_esame {
         Tipologia = tipologia;
     }
 
+    public Insegnamento getInsegnamento() {
+        return insegnamento;
+    }
 
 
     @Override
     public String toString() {
+
+        String insegnamentoNome = (insegnamento != null) ? insegnamento.getNome() : "Sconosciuto";
+        String docenteNomeCompleto = (insegnamento != null && insegnamento.getDocente() != null) ?
+                insegnamento.getDocente().getNome() + " " + insegnamento.getDocente().getCognome() :
+                "Sconosciuto";
+
         return "Appello_esame{" +
                 "ID_appello='" + ID_appello + '\'' +
                 ", Orario=" + Orario +
@@ -81,6 +93,8 @@ public class Appello_esame {
                 ", Luogo='" + Luogo + '\'' +
                 ", postiDisponibili=" + postiDisponibili +
                 ", Tipologia='" + Tipologia + '\'' +
+                ", insegnamento=" + insegnamentoNome +
+                ", docente='" + docenteNomeCompleto + '\'' +
                 '}';
     }
 }

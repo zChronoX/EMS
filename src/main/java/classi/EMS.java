@@ -39,18 +39,8 @@ public class EMS {
             studenteCorrente.setAnnoCorso(anno_corso);
         }
     }
-    public void loadStudents(){
-        //todo
-    }
-    public void loadProfessors(){
-        //todo
-    }
-    public void loadCourses(){
-        //todo
-    }
-    public void loadResults(){
-        //todo
-    }
+
+
     public void confermaUtente() {
         if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) {
             studenteCorrente = (Studente) utenteCorrente;
