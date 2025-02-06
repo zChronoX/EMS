@@ -1,5 +1,8 @@
 package classi;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Insegnamento {
     private String ID_insegnamento;
     private String Nome;
@@ -7,17 +10,32 @@ public class Insegnamento {
     private String Descrizione;
     private int Anno;
     private Docente docente;
+    private List<Studente> studenti = new ArrayList<>();
 
-    public Insegnamento(String ID_insegnamento, String nome, int CFU, String descrizione, int anno, Docente docente) {
+    public Insegnamento(String ID_insegnamento, String Nome, int CFU, String Descrizione, int Anno, Docente docente) {
         this.ID_insegnamento = ID_insegnamento;
-        Nome = nome;
+        this.Nome = Nome;
         this.CFU = CFU;
-        Descrizione = descrizione;
-        Anno = anno;
+        this.Descrizione = Descrizione;
+        this.Anno = Anno;
         this.docente = docente;
     }
 
     public Insegnamento() {};
+
+
+    public void iscriviStudente(Studente studente) {
+        studenti.add(studente);
+    }
+
+    public boolean isStudenteIscritto(Studente studente) {
+        return studenti.contains(studente);
+    }
+
+    public List<Studente> getStudenti() {
+        return studenti;
+    }
+
 
     public String getID_insegnamento() {
         return ID_insegnamento;
@@ -65,6 +83,10 @@ public class Insegnamento {
 
     public void setDocente(Docente docente) {
         this.docente = docente;
+    }
+
+    public void setStudenti(List<Studente> studenti) {
+        this.studenti = studenti;
     }
 
     @Override

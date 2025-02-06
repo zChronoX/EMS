@@ -10,6 +10,12 @@ import java.io.*;
 public class Utility {
 
     GeneratoreCredenziali generatore = new GeneratoreCredenziali(){};
+    private HashMap<String, Studente> studenti;
+    public Utility() {
+        this.studenti = new HashMap<>(); // Inizializzazione nel costruttore
+    }
+
+
 
     public HashMap<String, Studente> loadStudents() {
         HashMap<String, Studente> student_list = new HashMap<>();
@@ -97,57 +103,61 @@ public class Utility {
         System.out.println("Caricamento professori completato");
         return prof_list;
     }
-    public static Map<String, Insegnamento> loadCourses(String nomeFile, Map<String, Docente> docenti) throws IOException {
+
+
+    public Map<String, Insegnamento> loadCourses(String nomeFile, Map<String, Docente> docenti, Map<String, Studente> studenti) throws IOException {
         Map<String, Insegnamento> teaching_list = new HashMap<>();
-        BufferedReader reader = new BufferedReader(new FileReader(nomeFile));
-        String riga;
+        try (BufferedReader reader = new BufferedReader(new FileReader(nomeFile))) {
+            reader.readLine(); // Salta la prima riga (intestazione)
 
-        // Salta la prima riga se contiene l'intestazione
-        reader.readLine(); // Opzionale: leggi e ignora l'intestazione
+            String riga;
+            while ((riga = reader.readLine()) != null) {
+                String[] dati = riga.split(",");
+                if (dati.length >= 6) { // Verifica che ci siano almeno 6 elementi (e opzionalmente studenti)
+                    try {
+                        String id = dati[0].trim();
+                        String nome = dati[1].trim();
+                        int cfu = Integer.parseInt(dati[2].trim());
+                        String descrizione = dati[3].trim();
+                        int anno = Integer.parseInt(dati[4].trim());
+                        String nomeDocente = dati[5].trim();
 
-        while ((riga = reader.readLine()) != null) {
-            String[] dati = riga.split(","); // Assumi che i dati siano separati da virgole
-            if (dati.length == 6) { // Verifica che ci siano abbastanza elementi
-                String id = dati[0].trim();
-                String nome = dati[1].trim();
-                int cfu = Integer.parseInt(dati[2].trim());
-                String descrizione = dati[3].trim();
-                int anno = Integer.parseInt(dati[4].trim());
-                String nomeDocente = dati[5].trim(); // Ottieni il nome dal file
+                        Docente docente = trovaDocente(docenti, nomeDocente);
 
-                Docente docente = null;
-
-                // Prova prima a cercare per nome completo (nome e cognome)
-                for (Docente d : docenti.values()) {
-                    if ((d.getNome() + " " + d.getCognome()).equals(nomeDocente)) {
-                        docente = d;
-                        break;
-                    }
-                }
-
-                // Se non trovato per nome completo, prova a cercare solo per nome
-                if (docente == null) {
-                    for (Docente d : docenti.values()) {
-                        if (d.getNome().equals(nomeDocente)) {
-                            docente = d;
-                            break;
+                        if (docente == null) {
+                            continue;
                         }
+
+                        Insegnamento insegnamento = new Insegnamento(id, nome, cfu, descrizione, anno, docente);
+
+                        // Iscrizione automatica di tutti gli studenti
+                        for (Studente studente : studenti.values()) {
+                            insegnamento.iscriviStudente(studente);
+                        }
+
+                        teaching_list.put(id, insegnamento);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Errore di formato numerico: " + e.getMessage());
                     }
+                } else {
+                    System.err.println("Errore: Numero di elementi non corretto.");
                 }
-
-                if (docente == null) {
-                    System.err.println("Errore: Docente non trovato per nome: " + nomeDocente);
-                    continue; // Salta questo insegnamento se il docente non viene trovato
-                }
-
-                Insegnamento insegnamento = new Insegnamento(id, nome, cfu, descrizione, anno, docente);
-                teaching_list.put(id, insegnamento);
             }
         }
-
-        reader.close();
         return teaching_list;
     }
+
+
+    private Docente trovaDocente(Map<String, Docente> docenti, String nomeDocente) {
+        for (Docente docente : docenti.values()) {
+            if ((docente.getNome() + " " + docente.getCognome()).equals(nomeDocente) ||
+                    docente.getNome().equals(nomeDocente)) {
+                return docente;
+            }
+        }
+        return null;
+    }
+
     public void loadResults(){
         //todo
     }
@@ -155,3 +165,4 @@ public class Utility {
 
 
 }
+
