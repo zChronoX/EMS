@@ -11,6 +11,6 @@ module com.example.exammanagmentsystem {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
 
-    opens com.example.exammanagmentsystem to javafx.fxml;
-    exports com.example.exammanagmentsystem;
+    opens ui to javafx.fxml;
+    exports ui;
 }

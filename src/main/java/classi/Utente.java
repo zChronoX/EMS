@@ -2,7 +2,7 @@ package classi;
 
 import java.util.Date;
 
-public abstract class Utente {
+public class Utente {
     public enum TipoProfilo {
         Studente, Docente
     }
