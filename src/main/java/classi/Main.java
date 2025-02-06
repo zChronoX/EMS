@@ -21,10 +21,136 @@ public class Main {
         ems.setTeachingList(teaching_list);
 
 
+        String idInsegnamento = "MAT001"; // Sostituisci con un ID valido
+        Insegnamento insegnamento = teaching_list.get(idInsegnamento);
+
+        if (insegnamento == null) {
+            System.out.println("Insegnamento non trovato.");
+            return;
+        }
+
+// 2. Definisci i parametri dell'appello
+        LocalTime orario = LocalTime.of(9, 0);
+        LocalDate data = LocalDate.of(2024, 6, 20);
+        String luogo = "Aula A1";
+        String tipologia = "Scritto";
+
+// 3. Crea l'appello
+        String idAppello = ems.creaAppelloEsame(insegnamento, orario, data, luogo, tipologia);
+
+// 4. Conferma l'appello
+        if (idAppello != null) {
+            Appello_esame nuovoAppello = new Appello_esame(); // Crea un nuovo oggetto Appello_esame
+            nuovoAppello.setID_appello(idAppello);
+            nuovoAppello.setInsegnamento(insegnamento);
+            nuovoAppello.setOrario(orario);
+            nuovoAppello.setData(data);
+            nuovoAppello.setLuogo(luogo);
+            nuovoAppello.setPostiDisponibili(100); // Imposta i posti disponibili
+            nuovoAppello.setTipologia(tipologia);
+
+            ems.confermaAppello(nuovoAppello);
+
+            System.out.println("Appello creato e confermato con ID: " + idAppello);
+        } else {
+            System.out.println("Errore nella creazione dell'appello.");
+        }
+
+        for (Studente currentStudent : studenti.values()) {
+            System.out.println("Matricola: " + currentStudent.getMatricola() + ", Password: " + currentStudent.getPassword());
+        }
 
 
+        Scanner scanner = new Scanner(System.in);
+
+        String matricola;
+        String password;
+        Studente studente = null;
+        boolean loginSuccess = false;
+
+        try {
+            do {  // Outer loop for matricola
+                System.out.print("Inserisci matricola: ");
+                matricola = scanner.nextLine();
+                studente = studenti.get(matricola);
+
+                if (studente != null) {
+                    do { // Inner loop for password (retry logic here)
+                        System.out.print("Inserisci password: ");
+                        password = scanner.nextLine();
+                        loginSuccess = ems.loginStudente(matricola, password);
+
+                        if (loginSuccess) {
+                            System.out.println("Login effettuato con successo!");
+                            break; // Exit inner loop (password correct)
+                        } else {
+                            System.out.println("Password errata. Reinserisci la password.");
+                        }
+                    } while (!loginSuccess); // Retry password until correct
+
+                    if (loginSuccess) {
+                        break; // Exit outer loop (matricola and password correct)
+                    }
+                } else {
+                    System.out.println("Matricola non trovata. Reinserisci matricola e password.");
+                }
+            } while (studente == null || !loginSuccess);
+
+            if (studente != null && loginSuccess) {
+                List<Insegnamento> insegnamentiIscritto = ems.getInsegnamentiIscritto(ems.getStudenteCorrente());
+
+                if (insegnamentiIscritto.isEmpty()) {
+                    System.out.println("Non sei iscritto a nessun insegnamento.");
+                } else {
+                    System.out.println("Sei iscritto ai seguenti insegnamenti:");
+                    for (Insegnamento ins : insegnamentiIscritto) {
+                        System.out.println("- " + ins.getNome() + " ID : " + ins.getID_insegnamento());
+                    }
+
+                    String risposta;
+                    do {
+                        System.out.print("Inserisci l'ID dell'insegnamento per visualizzare gli appelli: ");
+                        String idInsegnamentoScelto = scanner.nextLine();
+
+                        List<Appello_esame> appelli = ems.visualizzaAppelli(idInsegnamentoScelto, ems.getStudenteCorrente());
+
+                        if (appelli.isEmpty()) {
+                            System.out.println("Non ci sono appelli disponibili per questo insegnamento.");
+                        } else {
+                            System.out.println("Appelli disponibili per l'insegnamento " + idInsegnamentoScelto + ":");
+                            for (Appello_esame appello : appelli) {
+                                System.out.println(appello.toString());
+                            }
+
+                            System.out.print("Inserisci l'ID dell'appello a cui vuoi prenotarti: ");
+                            String idAppelloScelto = scanner.nextLine();
+
+                            Prenotazione prenotazione = ems.prenotaAppello(idAppelloScelto, ems.getStudenteCorrente());
+
+                            if (prenotazione != null) {
+                                System.out.println("Prenotazione effettuata con successo!");
+                                System.out.println("Dettagli della prenotazione:");
+                                System.out.println(prenotazione.toString());
+                            } else {
+                                System.out.println("Errore durante la prenotazione.");
+                            }
+                        }
+
+                        System.out.print("Vuoi visualizzare gli appelli per un altro insegnamento? (s/n): ");
+                        risposta = scanner.nextLine();
+                    } while (risposta.equalsIgnoreCase("s"));
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Errore durante il login: " + e.getMessage());
+        } finally {
+            scanner.close();
+        }
     }
 }
+
+
 
 
 

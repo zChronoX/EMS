@@ -2,13 +2,25 @@ package classi;
 
 import interfacce.GeneratoreCredenziali;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Studente extends Utente implements GeneratoreCredenziali {
     private String Matricola;
     private String Password;
     private String Categoria;
     private int AnnoCorso;
+    private List<Appello_esame> appelliPrenotati = new ArrayList<>();
+
+
+    public void aggiungiAppelloPrenotato(Appello_esame appello) {
+        this.appelliPrenotati.add(appello);
+    }
+
+    public List<Appello_esame> getAppelliPrenotati() {
+        return appelliPrenotati;
+    }
 
     {
         this.Matricola = generaMatricola();

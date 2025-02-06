@@ -19,9 +19,11 @@ public class EMS {
     private UtenteFactory utenteFactory;
     public static final int POSTI_MAX = 500;
     private HashMap<String,Appello_esame> exam_list;
+    private Map<String, Prenotazione> reservation_list;
 
     public EMS() {
-        this.exam_list = new HashMap<>(); // Initialization in the constructor
+        this.exam_list = new HashMap<>();
+        this.reservation_list = new HashMap<>();// Initialization in the constructor
     }
 
     public static void EMS() {
@@ -115,6 +117,60 @@ public class EMS {
     public Map<String, Appello_esame> getExam_list() {
         return exam_list;
     }
+
+    public List<Appello_esame> visualizzaAppelli(String idInsegnamento, Studente studente) {
+        List<Appello_esame> appelliDisponibili = new ArrayList<>();
+        for (Appello_esame appello : exam_list.values()) {
+            if (appello.getInsegnamento().getID_insegnamento().equals(idInsegnamento) && !studente.getAppelliPrenotati().contains(appello)) {
+                appelliDisponibili.add(appello);
+            }
+        }
+        return appelliDisponibili;
+    }
+    public Map<String, Prenotazione> getReservation_list() {
+        return reservation_list;
+    }
+
+
+    public Prenotazione prenotaAppello(String idAppello, Studente studente) {
+        Appello_esame appello = exam_list.get(idAppello);
+
+        if (appello == null) {
+            System.err.println("Appello non trovato.");
+            return null; // Appello non trovato
+        }
+
+        if (appello.getPostiDisponibili() <= 0) {
+            System.err.println("Non ci sono posti disponibili per questo appello.");
+            return null; // Posti esauriti
+        }
+
+        // Controllo doppia prenotazione (essenziale)
+        if (studente.getAppelliPrenotati().contains(appello)) {
+            System.err.println("Hai già prenotato questo appello.");
+            return null; // Gia prenotato
+        }
+
+        // Prenotazione
+        appello.setPostiDisponibili(appello.getPostiDisponibili() - 1);
+        studente.aggiungiAppelloPrenotato(appello);
+        System.out.println("Posti disponibili dopo la prenotazione: "+appello.getPostiDisponibili());
+
+        // Creazione della prenotazione
+        String idPrenotazione = generaIdPrenotazione(); // Funzione da implementare
+        Prenotazione prenotazione = new Prenotazione(idPrenotazione, LocalDate.now(), LocalTime.now(), 1, studente, appello);
+        reservation_list.put(idPrenotazione, prenotazione);
+
+        return prenotazione;
+    }
+
+    private String generaIdPrenotazione() {
+        // Implementa la logica per generare un ID univoco per la prenotazione
+        // Puoi usare un timestamp, un contatore, un UUID, ecc.
+        return "PREN" + System.currentTimeMillis(); // Esempio: PREN seguito da un timestamp
+    }
+
+
 
 
     public void setStudentList(HashMap<String, Studente> student_list) {
