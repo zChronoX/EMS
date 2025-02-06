@@ -13,14 +13,27 @@ public class EMS {
     private Map<String,Studente> student_list;
     private Map<String,Docente> doc_list;
     private UtenteFactory utenteFactory;
-    private Appello_esame appelloCorrente;
     public static final int POSTI_MAX = 500;
     private Map<String,Appello_esame> exam_list;
 
     public static void EMS() {
         //todo
     };
-
+   /* public void loadStudents () {
+        //todo
+    };
+    public void loadProfessors () {
+        //todo
+    };
+    public void loadCourses() {
+        //todo
+    };
+    public void loadExams () {
+        //todo
+    };
+    public void loadResults () {
+        //todo
+    }; */
     //Pattern Singleton
     public static EMS getIstance(){
         //todo
@@ -69,20 +82,22 @@ public class EMS {
         utenteFactory = new UtenteFactory();
         utenteCorrente= utenteFactory.newUser(tipoProfilo);
     }
-    public String creaAppelloEsame(LocalTime orario, LocalDate data, String luogo, String tipologia){
+    public String creaAppelloEsame(Insegnamento insegnamento, LocalTime orario, LocalDate data, String luogo, String tipologia){
 
+        Appello_esame nuovoAppello = new Appello_esame();
         String idGenerato = "10" + (System.currentTimeMillis() % 10000); // Usa timestamp come base per ID univoco
-        appelloCorrente.setID_appello(idGenerato);
-        appelloCorrente.setOrario(orario);
-        appelloCorrente.setData(data);
-        appelloCorrente.setLuogo(luogo);
-        appelloCorrente.setPostiDisponibili(POSTI_MAX);
-        appelloCorrente.setTipologia(tipologia);
+        nuovoAppello.setID_appello(idGenerato);
+        nuovoAppello.setInsegnamento(insegnamento); // associa l'appello all'insegnamento
+        nuovoAppello.setOrario(orario);
+        nuovoAppello.setData(data);
+        nuovoAppello.setLuogo(luogo);
+        nuovoAppello.setPostiDisponibili(POSTI_MAX);
+        nuovoAppello.setTipologia(tipologia);
         return idGenerato;
     }
-    public void confermaAppello (){
-        if(appelloCorrente != null){
-            exam_list.put(appelloCorrente.getID_appello(), appelloCorrente);
+    public void confermaAppello (Appello_esame nuovoAppello){
+        if(nuovoAppello != null){
+            exam_list.put(nuovoAppello.getID_appello(), nuovoAppello); //aggiunge l'appello alla lista
         }
        else {
             System.out.println("Errore: Nessun appello da creare.");
