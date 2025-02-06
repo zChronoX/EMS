@@ -77,6 +77,8 @@ public class Appello_esame {
         return insegnamento;
     }
 
+    public void setInsegnamento(Insegnamento insegnamento) { this.insegnamento = insegnamento; }
+
 
     @Override
     public String toString() {

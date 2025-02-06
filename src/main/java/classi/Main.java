@@ -16,7 +16,7 @@ public class Main {
                 System.out.println(docente.getNome());
             }*/
 
-            Map<String, Insegnamento> teaching_list = utility.loadCourses("C:\\Users\\rober\\IdeaProjects\\EMS\\src\\main\\files\\insegnamenti.txt", docenti);
+            Map<String, Insegnamento> teaching_list = utility.loadCourses("C:/Users/Gio/IdeaProjects/ExamManagmentSystem/src/main/files/insegnamenti.txt", docenti);
 
             // Stampa gli insegnamenti
             for (Insegnamento insegnamento : teaching_list.values()) {
