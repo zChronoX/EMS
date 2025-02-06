@@ -20,6 +20,10 @@ public class EMS {
     public static final int POSTI_MAX = 500;
     private HashMap<String,Appello_esame> exam_list;
 
+    public EMS() {
+        this.exam_list = new HashMap<>(); // Initialization in the constructor
+    }
+
     public static void EMS() {
         //todo
     };
@@ -107,6 +111,9 @@ public class EMS {
             System.out.println("Errore: Nessun appello da creare.");
         }
 
+    }
+    public Map<String, Appello_esame> getExam_list() {
+        return exam_list;
     }
 
 
