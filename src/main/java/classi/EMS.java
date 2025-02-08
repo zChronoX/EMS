@@ -13,13 +13,16 @@ public class EMS {
     private Utente utenteCorrente;
     private Studente studenteCorrente;
     private Docente docenteCorrente;
+    private Insegnamento insegnamentoCorrente;
+    private Appello_esame appelloCorrente;
+    private Prenotazione prenotazioneCorrente;
     private HashMap<String,Studente> student_list;
     private HashMap<String,Docente> doc_list;
-    private Map<String,Insegnamento> teaching_list;
+    private HashMap<String,Insegnamento> teaching_list;
     private UtenteFactory utenteFactory;
     public static final int POSTI_MAX = 500;
     private HashMap<String,Appello_esame> exam_list;
-    private Map<String, Prenotazione> reservation_list;
+    private HashMap<String, Prenotazione> reservation_list;
 
     public EMS() {
         this.exam_list = new HashMap<>();
@@ -181,7 +184,7 @@ public class EMS {
         this.doc_list = doc_list;
     }
 
-    public void setTeachingList(Map<String, Insegnamento> teaching_list) {
+    public void setTeachingList(HashMap<String, Insegnamento> teaching_list) {
         this.teaching_list = teaching_list;
     }
 
@@ -213,9 +216,6 @@ public class EMS {
     public Studente getStudenteCorrente() {
         return studenteCorrente;
     }
-
-
-
 
 
     public boolean loginStudente(String matricola, String password) throws Exception {
@@ -261,5 +261,67 @@ public class EMS {
         }
     }
 
+
+    public HashMap<String,Appello_esame> selezionaInsegnamento (String ID_insegnamento) {
+
+        if(!teaching_list.containsKey(ID_insegnamento)) { //si verifica se l'ID_insegnamento è presente nella mappa degli insegnamenti
+            System.err.println("Errore: Insegnamento non trovato.");
+            return null;
+        }
+        else {
+            insegnamentoCorrente = teaching_list.get(ID_insegnamento);
+            exam_list = insegnamentoCorrente.getListaAppelli(ID_insegnamento);
+            return exam_list;
+        }
+    }
+
+    public HashMap<String, Prenotazione> selezionaAppello (String ID_appello) {
+
+        if(!exam_list.containsKey(ID_appello)) {
+            System.err.println("Errore: Appello non trovato.");
+            return null;
+        }
+        else {
+            appelloCorrente =exam_list.get(ID_appello);
+            reservation_list= appelloCorrente.getPrenotazioniStudenti(ID_appello);
+            return reservation_list;
+        }
+    }
+
+    public void inserisciEsitoStudente(String Matricola,String voto, String stato ){
+
+        if(!reservation_list.containsKey(Matricola)) {
+            System.err.println("Errore: Matricola non trovato.");
+        }
+        else {
+            Prenotazione prenotazione = reservation_list.get(Matricola);
+            prenotazione.inserisciEsito(voto, stato);
+            }
+        }
+
+    public void confermaInserimentoEsiti(String ID_insegnamento,String ID_appello) {
+        List<Esito_esame> result_list = new ArrayList<>();  // Lista per raccogliere gli esiti
+
+        // Cicliamo su tutte le prenotazioni nella mappa
+        for (Map.Entry<String, Prenotazione> entry : reservation_list.entrySet()) {
+            Prenotazione prenotazione = entry.getValue();  // Otteniamo la prenotazione dalla mappa
+            Esito_esame esito = prenotazione.getEsito();  // Otteniamo l'esito della prenotazione
+
+            if (esito != null) {
+                // Aggiungiamo l'esito alla lista se è valido
+                result_list.add(esito);
+            } else {
+                System.err.println("Errore: Nessun esito presente per la prenotazione con ID " +
+                        prenotazione.getID_prenotazione());
+            }
+        }
+
+        // Qui puoi anche scegliere di fare qualcosa con la result_list, come ad esempio stamparla
+        for (Esito_esame esito : result_list) {
+            System.out.println(esito);
+        }
+    }
 }
+
+
 

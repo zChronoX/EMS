@@ -2,8 +2,10 @@ package classi;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
 
 public class Appello_esame {
+    private HashMap<String,Prenotazione> reservation_list;
     private String ID_appello;
     private LocalTime Orario;
     private LocalDate Data;
@@ -79,6 +81,21 @@ public class Appello_esame {
 
     public void setInsegnamento(Insegnamento insegnamento) { this.insegnamento = insegnamento; }
 
+    public void aggiungiPrenotazione(Prenotazione prenotato) {
+
+        reservation_list.put(prenotato.getID_prenotazione(),prenotato);
+    }
+
+    public HashMap<String, Prenotazione> getPrenotazioniStudenti(String ID_appello){
+
+        if(ID_appello.equals(this.ID_appello)){
+
+            return reservation_list;
+        } else {
+
+            return new HashMap<>();
+        }
+    }
 
     @Override
     public String toString() {
