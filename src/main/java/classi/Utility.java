@@ -105,8 +105,8 @@ public class Utility {
     }
 
 
-    public Map<String, Insegnamento> loadCourses(String nomeFile, Map<String, Docente> docenti, Map<String, Studente> studenti) throws IOException {
-        Map<String, Insegnamento> teaching_list = new HashMap<>();
+    public HashMap<String, Insegnamento> loadCourses(String nomeFile, Map<String, Docente> docenti, Map<String, Studente> studenti) throws IOException {
+        HashMap<String, Insegnamento> teaching_list = new HashMap<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(nomeFile))) {
             reader.readLine(); // Salta la prima riga (intestazione)
 

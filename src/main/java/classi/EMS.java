@@ -18,7 +18,7 @@ public class EMS {
     private Prenotazione prenotazioneCorrente;
     private HashMap<String,Studente> student_list;
     private HashMap<String,Docente> doc_list;
-    private HashMap<String,Insegnamento> teaching_list;
+    private Map<String,Insegnamento> teaching_list;
     private UtenteFactory utenteFactory;
     public static final int POSTI_MAX = 500;
     private HashMap<String,Appello_esame> exam_list;

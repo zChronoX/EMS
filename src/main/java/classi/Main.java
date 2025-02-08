@@ -14,7 +14,7 @@ public class Main {
         HashMap<String, Docente> docenti = utility.loadProfessors();
         HashMap<String, Studente> studenti = utility.loadStudents();
 
-        Map<String, Insegnamento> teaching_list = utility.loadCourses("C:/Users/Gio/IdeaProjects/ExamManagmentSystem/src/main/files/insegnamenti.txt", docenti, studenti);
+        HashMap<String, Insegnamento> teaching_list = utility.loadCourses("C:/Users/Gio/IdeaProjects/ExamManagmentSystem/src/main/files/insegnamenti.txt", docenti, studenti);
         EMS ems = new EMS();
         ems.setStudentList(studenti);
         ems.setDocList(docenti);
