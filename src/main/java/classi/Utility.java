@@ -10,102 +10,138 @@ import java.io.*;
 public class Utility {
 
     GeneratoreCredenziali generatore = new GeneratoreCredenziali(){};
-    private HashMap<String, Studente> studenti;
-    public Utility() {
-        this.studenti = new HashMap<>(); // Inizializzazione nel costruttore
-    }
 
-
+    //private HashMap<String, Studente> studenti;
+  //  public Utility() {
+    //    this.studenti = new HashMap<>(); // Inizializzazione nel costruttore
+    //}
 
     public HashMap<String, Studente> loadStudents() {
         HashMap<String, Studente> student_list = new HashMap<>();
-        Studente s1 = new Studente("Giovanni", "Contarino", "Maschile",
-                new Date(), "CNTGNN01D07C351H",
-                "Via Blanco 14, Acireale",
-                "giovanni.contarino.gc@gmail.com", "3801577024",
-                Utente.TipoProfilo.Studente, generatore.generaMatricola(), generatore.generaPassword()
-                , "In corso", 2025);
 
-        Studente s2 = new Studente("Nappo", "Giuseppe", "Indefinito",
-                new Date(), "NPPGGPS214312PP", "Via Scaloto 12, Scala",
-                "nappopippo@gmail.com", "1234567890", Utente.TipoProfilo.Studente, generatore.generaMatricola(),
-                generatore.generaPassword(), "In corso", 2025);
-        student_list.put(s1.getMatricola(), s1);
-        student_list.put(s2.getMatricola(), s2);
+            Studente s1 = new Studente(
+                    "Giovanni", // Nome (come nel controller)
+                    "Contarino", // Cognome (come nel controller)
+                    "M", // Genere (come nel controller)
+                    new Date(), // Data di nascita (come nel controller)
+                    "CNTGNN01D07C351H", // Codice fiscale (come nel controller)
+                    "Via Blanco 14, Acireale", // Residenza (come nel controller)
+                    "giovanni.contarino.gc@gmail.com", // Email (come nel controller)
+                    "3801577024", // Telefono (come nel controller)
+                    Utente.TipoProfilo.Studente, // Tipo Profilo
+                    generatore.generaMatricola(), // Matricola
+                    generatore.generaPassword(), // Password
+                    "In corso", // Categoria (come nel controller)
+                    2025 // Anno corso (come nel controller)
+            );
 
-        System.out.println("Caricamento studenti completato");
-        return student_list;
+        Studente s2 = new Studente(
+                "Nappo", // Nome
+                "Giuseppe", // Cognome
+                "M", // Genere
+                new Date(), // Data di nascita
+                "NPPGGPS214312PP", // Codice fiscale
+                "Via Scaloto 12, Scala", // Residenza
+                "nappopippo@gmail.com", // Email
+                "1234567890", // Telefono
+                Utente.TipoProfilo.Studente,
+                generatore.generaMatricola(),
+                generatore.generaPassword(),
+                "In corso", // Categoria
+                2025 // Anno corso
+        );
+
+
+            student_list.put(s1.getMatricola(), s1);
+            student_list.put(s2.getMatricola(), s2);
+
+            return student_list;
     }
 
     public HashMap<String, Docente> loadProfessors(){
         HashMap<String, Docente> prof_list = new HashMap<>();
+
         Docente d1 = new Docente(
-                "Mario",
-                "Rossi",
-                "M", // Sesso
-                new Date(), // Data di nascita (esempio)
-                "RSSMRO70E10F900X", // Codice fiscale (esempio)
-                "Via Roma 1, Milano", // Residenza (esempio)
-                "mario.rossi@example.com", // Email (esempio)
-                "3331234567", // Telefono (esempio)
-                Utente.TipoProfilo.Docente, // Tipo profilo
-                generatore.generaCodiceDocente(), // Codice docente (esempio)
-                generatore.generaPassword() // Password (esempio)
+                "Mario", // Nome
+                "Rossi", // Cognome
+                "M", // Genere
+                new Date(), // Data di nascita
+                "RSSMRO70E10F900X", // Codice fiscale
+                "Via Roma 1, Milano", // Residenza
+                "mario.rossi@example.com", // Email
+                "3331234567", // Telefono
+                Utente.TipoProfilo.Docente,
+                generatore.generaCodiceDocente(),
+                generatore.generaPassword()
         );
 
         Docente d2 = new Docente(
-                "Luigi",
-                "Verdi",
-                "M",
-                new Date(),
-                "VRDLUG65K25G800Y",
-                "Via Verdi 2, Roma",
-                "luigi.verdi@example.com",
-                "3479876543",
+                "Luigi", // Nome
+                "Verdi", // Cognome
+                "M", // Genere
+                new Date(), // Data di nascita
+                "VRDLUG65K25G800Y", // Codice fiscale
+                "Via Verdi 2, Roma", // Residenza
+                "luigi.verdi@example.com", // Email
+                "3479876543", // Telefono
                 Utente.TipoProfilo.Docente,
                 generatore.generaCodiceDocente(),
                 generatore.generaPassword()
         );
 
         Docente d3 = new Docente(
-                "Anna",
-                "Bianchi",
-                "F",
-                new Date(),
-                "BNCANN82C08H900Z",
-                "Via Bianchi 3, Torino",
-                "anna.bianchi@example.com",
-                "3281011122",
+                "Anna", // Nome
+                "Bianchi", // Cognome
+                "F", // Genere
+                new Date(), // Data di nascita
+                "BNCANN82C08H900Z", // Codice fiscale
+                "Via Bianchi 3, Torino", // Residenza
+                "anna.bianchi@example.com", // Email
+                "3281011122", // Telefono
                 Utente.TipoProfilo.Docente,
                 generatore.generaCodiceDocente(),
                 generatore.generaPassword()
         );
 
         Docente d4 = new Docente(
-                "Giovanni",
-                "Neri",
-                "M",
-                new Date(),
-                "NRIGVN78I15I000W",
-                "Via Neri 4, Napoli",
-                "giovanni.neri@example.com",
-                "3394445555",
+                "Giovanni", // Nome
+                "Neri", // Cognome
+                "M", // Genere
+                new Date(), // Data di nascita
+                "NRIGVN78I15I000W", // Codice fiscale
+                "Via Neri 4, Napoli", // Residenza
+                "giovanni.neri@example.com", // Email
+                "3394445555", // Telefono
                 Utente.TipoProfilo.Docente,
                 generatore.generaCodiceDocente(),
                 generatore.generaPassword()
         );
 
-
         prof_list.put(d1.getCodiceDocente(), d1);
         prof_list.put(d2.getCodiceDocente(), d2);
         prof_list.put(d3.getCodiceDocente(), d3);
         prof_list.put(d4.getCodiceDocente(), d4);
-        System.out.println("Caricamento professori completato");
+
         return prof_list;
     }
 
+    private Docente trovaDocente(Map<String, Docente> docenti, String nomeDocente) {
+        //System.out.println("Cerco docente: " + nomeDocente);
+        if (docenti != null) { // Aggiungi controllo null
+            for (Docente docente : docenti.values()) {
+                //System.out.println("Docente presente nella mappa: " + docente.getNome() + " " + docente.getCognome());
+                if ((docente.getNome() + " " + docente.getCognome()).equals(nomeDocente)) { // Confronta SOLO nome completo
+                    //System.out.println("Docente trovato!");
+                    return docente;
+                }
+            }
+        } else {
+            System.out.println("Mappa docenti vuota o null!");
+        }
+        return null; // Restituisci null se il docente non viene trovato
+    }
 
-    public Map<String, Insegnamento> loadCourses(String nomeFile, Map<String, Docente> docenti, Map<String, Studente> studenti) throws IOException {
+    public Map<String, Insegnamento> loadCourses(String nomeFile, Map<String, Docente> docenti, Map<String, Studente> studenti) {
         Map<String, Insegnamento> teaching_list = new HashMap<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(nomeFile))) {
             reader.readLine(); // Salta la prima riga (intestazione)
@@ -113,22 +149,27 @@ public class Utility {
             String riga;
             while ((riga = reader.readLine()) != null) {
                 String[] dati = riga.split(",");
-                if (dati.length >= 6) { // Verifica che ci siano almeno 6 elementi (e opzionalmente studenti)
+                if (dati.length >= 6) { // Verifica che ci siano almeno 6 elementi
                     try {
                         String id = dati[0].trim();
                         String nome = dati[1].trim();
                         int cfu = Integer.parseInt(dati[2].trim());
                         String descrizione = dati[3].trim();
                         int anno = Integer.parseInt(dati[4].trim());
-                        String nomeDocente = dati[5].trim();
+                        String[] nomiDocenti = dati[5].trim().split(";"); // Dividi i nomi dei docenti
 
-                        Docente docente = trovaDocente(docenti, nomeDocente);
+                        Insegnamento insegnamento = new Insegnamento(id, nome, cfu, descrizione, anno);
 
-                        if (docente == null) {
-                            continue;
+                        for (String nomeDocente : nomiDocenti) { // Itera sui nomi dei docenti
+                            Docente docente = trovaDocente(docenti, nomeDocente.trim()); // Trova il docente
+
+                            if (docente != null) { // Aggiungi controllo null
+                                //System.out.println("Aggiungo docente " + docente.getNome() + " all'insegnamento " + insegnamento.getNome());
+                                insegnamento.aggiungiDocente(docente);
+                            } else {
+                                System.out.println("Docente " + nomeDocente + " non trovato!");
+                            }
                         }
-
-                        Insegnamento insegnamento = new Insegnamento(id, nome, cfu, descrizione, anno, docente);
 
                         // Iscrizione automatica di tutti gli studenti
                         for (Studente studente : studenti.values()) {
@@ -137,30 +178,23 @@ public class Utility {
 
                         teaching_list.put(id, insegnamento);
                     } catch (NumberFormatException e) {
-                        System.err.println("Errore di formato numerico: " + e.getMessage());
+                        System.err.println("Errore di formato numerico nella riga: " + riga);
                     }
                 } else {
-                    System.err.println("Errore: Numero di elementi non corretto.");
+                    System.err.println("Errore: Numero di elementi non corretto nella riga: " + riga);
                 }
             }
+        } catch (IOException e) {
+            System.err.println("Errore durante la lettura del file: " + e.getMessage());
         }
         return teaching_list;
-    }
-
-
-    private Docente trovaDocente(Map<String, Docente> docenti, String nomeDocente) {
-        for (Docente docente : docenti.values()) {
-            if ((docente.getNome() + " " + docente.getCognome()).equals(nomeDocente) ||
-                    docente.getNome().equals(nomeDocente)) {
-                return docente;
-            }
-        }
-        return null;
     }
 
     public void loadResults(){
         //todo
     }
+
+
 
 
 

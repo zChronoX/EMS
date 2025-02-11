@@ -9,12 +9,38 @@ public class Docente extends Utente implements GeneratoreCredenziali {
     private String codiceDocente;
     private String Password;
 
-    public Docente(String nome, String cognome, String genere, Date data_nascita, String codice_fiscale, String residenza, String email, String telefono, TipoProfilo tipoProfilo, String codiceDocente, String password) {
+   /* public Docente(String nome, String cognome, String genere, Date data_nascita, String codice_fiscale, String residenza, String email, String telefono, TipoProfilo tipoProfilo, String codiceDocente, String password) {
+        super(nome, cognome, genere, data_nascita, codice_fiscale, residenza, email, telefono, tipoProfilo);
+        this.codiceDocente = codiceDocente;
+        Password = password;
+    }*/
+    //public Docente(){};
+
+    //USATO
+   /*public Docente(TipoProfilo tipoProfilo) {
+       this.tipoProfilo = tipoProfilo;
+   }*/
+    public Docente(
+            String nome,
+            String cognome,
+            String genere,
+            Date data_nascita,
+            String codice_fiscale,
+            String residenza,
+            String email,
+            String telefono,
+            TipoProfilo tipoProfilo,
+            String codiceDocente,
+            String password
+    ) {
         super(nome, cognome, genere, data_nascita, codice_fiscale, residenza, email, telefono, tipoProfilo);
         this.codiceDocente = codiceDocente;
         Password = password;
     }
-    public Docente(){};
+
+    public Docente(TipoProfilo tipoProfilo) {
+        super(tipoProfilo); // Chiama il costruttore della superclasse Utente
+    }
 
     public String getCodiceDocente() {
         return codiceDocente;

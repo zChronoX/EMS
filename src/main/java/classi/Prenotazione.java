@@ -12,6 +12,7 @@ public class Prenotazione {
     private int Progressivo;
     private Studente studente;
     private Appello_esame appello;
+    private Esito_esame esito;
 
     public Prenotazione(String ID_prenotazione, LocalDate data, LocalTime ora, int progressivo,
                         Studente studente, Appello_esame appello) {
@@ -71,6 +72,17 @@ public class Prenotazione {
     public void setAppello(Appello_esame appello) {
         this.appello = appello;
     }
+
+    public Esito_esame getEsito() {
+        return esito;
+    }
+
+    public void inserisciEsito(String voto,String stato) {
+
+        this.esito = new Esito_esame(voto, stato);
+    }
+
+    // public Prenotazione getPrenotato() { return prenotato; }
 
     @Override
     public String toString() {

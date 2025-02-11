@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.UIDocente">
+   <children>
+      <Button fx:id="BottoneGestisciEsiti" mnemonicParsing="false" onAction="#ApriGestioneEsiti" text="Gestisci esito esame" />
+      <Button fx:id="BottoneVisualizzaListaPrenotati" mnemonicParsing="false" onAction="#ApriElencoPrenotati" text="Visualizza prenotati" />
+      <Button fx:id="BottoneVisualizzaFeedback" mnemonicParsing="false" onAction="#ApriListaFeedback" text="Visualizza feedback appello" />
+      <Button fx:id="BottoneLogoutDocente" mnemonicParsing="false" onAction="#LogoutDocente" text="Logout" />
+   </children>
+</VBox>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.WelcomeController">
+   <children>
+      <Button fx:id="BottoneCreaUtente" mnemonicParsing="false" onAction="#ApriCreaUtente" text="Crea Utente" />
+      <Button fx:id="BottoneLogin" mnemonicParsing="false" onAction="#ApriLogin" text="Login" />
+      <Button fx:id="BottoneCreaAppello" mnemonicParsing="false" onAction="#ApriCreaAppello" text="Crea Appello" />
+      <Button fx:id="BottoneModificaAppello" mnemonicParsing="false" onAction="#ApriModificaAppello" text="Modifica Appello" />
+      <Button fx:id="BottoneVisualizzaStudenti" mnemonicParsing="false" onAction="#ApriVisualizzaStudenti" text="Visualizza Studenti" />
+      <Button fx:id="BottoneVisualizzaDocenti" mnemonicParsing="false" onAction="#ApriVisualizzaDocenti" text="Visualizza Docenti" />
+      <Button fx:id="BottoneCancellaStudente" mnemonicParsing="false" onAction="#ApriCancellaStudenti" text="Cancella Studente" />
+   </children>
+</VBox>

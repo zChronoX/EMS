@@ -1,5 +1,5 @@
 idInsegnamento,nome,cfu,descrizione,anno,nomeDocente
-MAT001,Algebra Lineare,6,Corso di algebra lineare,2023,Mario Rossi
-MAT002,Analisi Matematica I,12,Corso di analisi matematica,2023,Luigi Verdi
-INF001,Informatica di Base,6,Corso di informatica di base,2023,Anna Bianchi
-INF002,Programmazione I,12,Corso di programmazione,2023,Giovanni Neri
+MAT001,Algebra Lineare,6,Corso di algebra lineare,2023,Mario Rossi;Luigi Verdi
+MAT002,Analisi Matematica I,12,Corso di analisi matematica,2023,Anna Bianchi
+INF001,Informatica di Base,6,Corso di informatica di base,2023,Giovanni Neri;Anna Bianchi
+INF002,Programmazione I,12,Corso di programmazione,2023,Mario Rossi

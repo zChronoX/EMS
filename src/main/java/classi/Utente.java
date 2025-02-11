@@ -1,8 +1,10 @@
 package classi;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Utente {
+
     public enum TipoProfilo {
         Studente, Docente
     }
@@ -15,6 +17,10 @@ public class Utente {
     protected String Email;
     protected String Telefono;
     protected TipoProfilo tipoProfilo;
+
+    public Utente(TipoProfilo tipoProfilo) {
+        this.tipoProfilo = tipoProfilo;
+    }
 
     public Utente(String nome, String cognome, String genere, Date data_nascita, String codice_fiscale, String residenza, String email, String telefono, TipoProfilo tipoProfilo) {
         Nome = nome;
@@ -101,7 +107,7 @@ public class Utente {
         this.tipoProfilo = tipoProfilo;
     }
 
-    public void inizializzaUtente(String nome, String cognome, String genere, Date data_nascita, String codice_fiscale, String residenza, String email, String telefono) {
+    public void inizializzaUtente(String nome, String cognome, Date data_nascita, String genere, String codice_fiscale, String residenza, String email, String telefono) {
         this.setNome(nome);
         this.setCognome(cognome);
         this.setGenere(genere);
@@ -123,7 +129,7 @@ public class Utente {
                 ", Codice_fiscale='" + Codice_fiscale + '\'' +
                 ", Residenza='" + Residenza + '\'' +
                 ", Email='" + Email + '\'' +
-                ", Telefono='" + Telefono + '\'' +
+              //  ", Telefono='" + Telefono + '\'' +
                 ", tipoProfilo=" + tipoProfilo +
                 '}';
     }

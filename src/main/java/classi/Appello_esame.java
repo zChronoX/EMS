@@ -2,8 +2,12 @@ package classi;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Appello_esame {
+    private HashMap<String,Prenotazione> reservation_list;
     private String ID_appello;
     private LocalTime Orario;
     private LocalDate Data;
@@ -11,6 +15,7 @@ public class Appello_esame {
     private int postiDisponibili;
     private String Tipologia;
     private Insegnamento insegnamento;
+    private List<Studente> studenti = new ArrayList<>();
 
     public Appello_esame(String ID_appello, LocalTime orario, LocalDate data, String luogo, int postiDisponibili,
                          String tipologia, Insegnamento insegnamento) {
@@ -21,6 +26,10 @@ public class Appello_esame {
         this.postiDisponibili = postiDisponibili;
         Tipologia = tipologia;
         this.insegnamento = insegnamento;
+    }
+
+    public List<Studente> getStudenti() {
+        return studenti;
     }
 
     public Appello_esame() {};
@@ -79,14 +88,46 @@ public class Appello_esame {
 
     public void setInsegnamento(Insegnamento insegnamento) { this.insegnamento = insegnamento; }
 
+    public void aggiungiPrenotazione(Prenotazione prenotato) {
+
+        reservation_list.put(prenotato.getID_prenotazione(),prenotato);
+    }
+
+    public HashMap<String, Prenotazione> getPrenotazioniStudenti(String ID_appello){
+
+        if(ID_appello.equals(this.ID_appello)){
+
+            return reservation_list;
+        } else {
+
+            return new HashMap<>();
+        }
+    }
+
+    public void addStudente(Studente studente) throws Exception {
+        if (studente == null) {
+            throw new Exception("Studente non valido.");
+        }
+        if (this.studenti.contains(studente)) {
+            throw new Exception("Studente già prenotato a questo appello.");
+        }
+        this.studenti.add(studente);
+    }
 
     @Override
     public String toString() {
-
         String insegnamentoNome = (insegnamento != null) ? insegnamento.getNome() : "Sconosciuto";
-        String docenteNomeCompleto = (insegnamento != null && insegnamento.getDocente() != null) ?
-                insegnamento.getDocente().getNome() + " " + insegnamento.getDocente().getCognome() :
-                "Sconosciuto";
+
+        String docentiString;
+        if (insegnamento != null && insegnamento.getDocenti() != null && !insegnamento.getDocenti().isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (Docente docente : insegnamento.getDocenti()) {
+                sb.append(docente.getNome()).append(" ").append(docente.getCognome()).append(", ");
+            }
+            docentiString = sb.substring(0, sb.length() - 2); // Rimuovi l'ultima virgola e spazio
+        } else {
+            docentiString = "Sconosciuto";
+        }
 
         return "Appello_esame{" +
                 "ID_appello='" + ID_appello + '\'' +
@@ -96,7 +137,7 @@ public class Appello_esame {
                 ", postiDisponibili=" + postiDisponibili +
                 ", Tipologia='" + Tipologia + '\'' +
                 ", insegnamento=" + insegnamentoNome +
-                ", docente='" + docenteNomeCompleto + '\'' +
+                ", docenti=" + docentiString + // Usa direttamente la stringa
                 '}';
     }
 }

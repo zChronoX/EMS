@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.UICreaAppello">
+   <children>
+      <HBox prefHeight="100.0" prefWidth="200.0" />
+      <Label fx:id="codiceInsegnamentoLabel" text="Codice Insegnamento" />
+      <TextField fx:id="idInsegnamentoTextField" text="Inserisci qui il codice da cercare" />
+      <Button fx:id="cercaInsegnamentoButton" mnemonicParsing="false" onAction="#handleCercaInsegnamento" text="Cerca Insegnamento" />
+      <TextField fx:id="idAppelloTextField" editable="false" text="ID Appello" visible="false" />
+      <TextField fx:id="orarioTextField" promptText="Orario (formato HH:MM)" visible="false" />
+      <DatePicker fx:id="dataDatePicker" promptText="Data" visible="false" />
+      <TextField fx:id="luogoTextField" promptText="Luogo" visible="false" />
+      <TextField fx:id="postiTextField" promptText="Posti Disponibili" visible="false" />
+      <TextField fx:id="tipologiaTextField" promptText="Tipologia" visible="false" />
+      <Label text="Docenti:" visible="false" />
+      <ListView fx:id="docentiListView" prefHeight="200.0" prefWidth="200.0" visible="false" />
+      <Button fx:id="nuovaRicercaButton" mnemonicParsing="false" onAction="#handleNuovaRicerca" text="Nuova Ricerca" visible="false" />
+      <Button fx:id="confermaButton" mnemonicParsing="false" onAction="#handleConferma" text="Conferma" visible="false" />
+      <Button fx:id="BottoneIndietroWelcomeViewAppello" mnemonicParsing="false" onAction="#IndietroWelcomeView" text="Indietro" />
+   </children>
+</VBox>
