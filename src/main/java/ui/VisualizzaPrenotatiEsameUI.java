@@ -1,37 +1,112 @@
 package ui;
 
-import classi.EMS;
+import classi.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import javafx.event.ActionEvent;
 import java.io.IOException;
+import java.util.List;
 
 public class VisualizzaPrenotatiEsameUI {
     public VisualizzaPrenotatiEsameUI() {}
     private EMS ems;
+    private Docente docente;
 
     public void setEMS(EMS ems) {
         this.ems = EMS.getInstance();
+        docente = ems.getDocenteCorrente();
+        visualizzaInsegnamentiDocente();
     }
 
+
+
     @FXML
-    private Button BottoneIndietroPrenotatiEsame;
+    private ListView<String> insegnamentiDocenteListView;
+
+    @FXML
+    private TextField codiceInsegnamentoTextField;
+
+    @FXML
+    private Button scegliInsegnamentoButton;
+
+    @FXML
+    private Button BottoneIndietroPaginaDocente;
+
+    private void visualizzaInsegnamentiDocente() {
+        System.out.println("Docente: " + docente);
+        if (docente != null) {
+            List<Insegnamento> insegnamenti = ems.getInsegnamentiByDocente(docente); // Implementa questo metodo in EMS
+
+            if (insegnamenti == null || insegnamenti.isEmpty()) {
+                insegnamentiDocenteListView.getItems().add("Non hai insegnamenti assegnati.");
+                return;
+            }
+
+            for (Insegnamento insegnamento : insegnamenti) {
+                insegnamentiDocenteListView.getItems().add(insegnamento.getID_insegnamento() + " - " + insegnamento.getNome());
+            }
+        }
+    }
+    @FXML
+    private void visualizzaAppelliInsegnamento(ActionEvent event) throws IOException { // Metodo mancante!
+        String codiceInsegnamento = codiceInsegnamentoTextField.getText();
+
+        if (codiceInsegnamento == null || codiceInsegnamento.isEmpty()) {
+            showAlert("Errore", "Inserisci il codice dell'insegnamento.");
+            return;
+        }
+
+        Insegnamento insegnamento = ems.getInsegnamento(codiceInsegnamento);
+
+        if (insegnamento == null) {
+            showAlert("Errore", "Insegnamento non trovato.");
+            return;
+        }
+
+        apriListaAppelliView(insegnamento);
+    }
+
+
+    private void apriListaAppelliView(Insegnamento insegnamento) throws IOException {
+        Stage primaryStage = (Stage) codiceInsegnamentoTextField.getScene().getWindow(); // Ottieni lo Stage corrente
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaAppelliInsegnamentoView.fxml")); // Crea un nuovo FXMLLoader
+        Scene scene = new Scene(fxmlLoader.load());
+        VisualizzaAppelliInsegnamentoUI controller = fxmlLoader.getController(); // Ottieni il controller della nuova view
+        controller.setEMS(ems);
+        controller.setInsegnamento(insegnamento);
+        primaryStage.setScene(scene); // Imposta la nuova scena sullo Stage
+        primaryStage.setTitle("Appelli di " + insegnamento.getNome());
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     @FXML
     public void IndietroPaginaDocente() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DocenteView.fxml")); // Assicurati che il nome del file sia corretto
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
-        WelcomeController controller = fxmlLoader.getController();
+        UIDocente controller = fxmlLoader.getController();
         controller.setEMS(ems);
         stage.setTitle("Pagina Docente");
         stage.setScene(scene);
         stage.show();
 
-        Stage currentStage = (Stage) BottoneIndietroPrenotatiEsame.getScene().getWindow();
+        Stage currentStage = (Stage) BottoneIndietroPaginaDocente.getScene().getWindow();
         currentStage.close();
     }
+
+
 }

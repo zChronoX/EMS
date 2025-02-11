@@ -12,6 +12,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
+import javax.print.Doc;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
@@ -60,6 +61,8 @@ public class UILoginDocente {
         Scene scene = new Scene(fxmlLoader.load());
         UIDocente controller = fxmlLoader.getController();
         controller.setEMS(ems);
+        Docente docenteLoggato = ems.getDocenteCorrente();
+        controller.setDocente(docenteLoggato);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Pagina Docente");
     }

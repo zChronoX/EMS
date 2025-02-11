@@ -3,6 +3,7 @@ package classi;
 import interfacce.GeneratoreCredenziali;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Docente extends Utente implements GeneratoreCredenziali {
 
@@ -87,5 +88,17 @@ public class Docente extends Utente implements GeneratoreCredenziali {
                 ", Telefono='" + Telefono + '\'' +
                 ", tipoProfilo=" + tipoProfilo +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Docente docente = (Docente) o;
+        return Objects.equals(codiceDocente, docente.codiceDocente); // Confronta SOLO codiceDocente
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(codiceDocente, Password);
     }
 }

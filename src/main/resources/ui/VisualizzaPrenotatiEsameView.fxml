@@ -5,6 +5,9 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.VisualizzaPrenotatiEsameUI">
    <children>
-      <Button fx:id="BottoneIndietroPrenotatiEsame" mnemonicParsing="false" onAction="#IndietroPaginaDocente" text="Indietro" />
+      <ListView fx:id="insegnamentiDocenteListView" prefHeight="200.0" prefWidth="200.0" />
+      <TextField fx:id="codiceInsegnamentoTextField" text="Inserisci il codice insegnamento" />
+      <Button fx:id="scegliInsegnamentoButton" mnemonicParsing="false" onAction="#visualizzaAppelliInsegnamento" text="Scegli insegnamento" />
+      <Button fx:id="BottoneIndietroPaginaDocente" mnemonicParsing="false" onAction="#IndietroPaginaDocente" text="Indietro" />
    </children>
 </VBox>

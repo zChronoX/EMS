@@ -5,6 +5,10 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.UIDocente">
    <children>
+      <Label text="Pagina Docente" />
+      <Label fx:id="nomeLabel" text="Nome" />
+      <Label fx:id="cognomeLabel" text="Cognome" />
+      <Label fx:id="codiceDocenteLabel" text="Codice Docente" />
       <Button fx:id="BottoneGestisciEsiti" mnemonicParsing="false" onAction="#ApriGestioneEsiti" text="Gestisci esito esame" />
       <Button fx:id="BottoneVisualizzaListaPrenotati" mnemonicParsing="false" onAction="#ApriElencoPrenotati" text="Visualizza prenotati" />
       <Button fx:id="BottoneVisualizzaFeedback" mnemonicParsing="false" onAction="#ApriListaFeedback" text="Visualizza feedback appello" />

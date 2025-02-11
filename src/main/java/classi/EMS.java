@@ -2,11 +2,7 @@ package classi;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 
 public class EMS {
     private static EMS ems; //CAMPO PER MEMORIZZARE L'UNICA ISTANZA
@@ -140,21 +136,6 @@ public class EMS {
     }
 
 
- /*   public void confermaUtente() {
-        utenteCorrente=ems.getUtenteCorrente();
-        if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) {
-            studenteCorrente = (Studente) utenteCorrente;
-            student_list.put(studenteCorrente.getMatricola(), studenteCorrente);
-
-            System.out.println(student_list.toString());
-
-        } else if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Docente) {
-            docenteCorrente = (Docente) utenteCorrente;
-            doc_list.put(docenteCorrente.getCodiceDocente(), docenteCorrente);
-
-            System.out.println(doc_list.toString());
-        }
-    }*/
 
     public void confermaUtente() {
         utenteCorrente = ems.getUtenteCorrente();
@@ -219,69 +200,7 @@ public class EMS {
         utenteCorrente= utenteFactory.newUser(tipoProfilo);
         //System.out.println("STAMPA TIPO PROFILO DOPO ScegliTipoProfilo: " + utenteCorrente.getTipoProfilo()); //STAMPA NULL!!!!!
     }
-   // public String creaAppelloEsame(Insegnamento insegnamento, LocalTime orario, LocalDate data, String luogo, String tipologia){
 
-        /*Appello_esame nuovoAppello = new Appello_esame();
-        String idGenerato = "10" + (System.currentTimeMillis() % 10000); // Usa timestamp come base per ID univoco
-        nuovoAppello.setID_appello(idGenerato);
-        nuovoAppello.setInsegnamento(insegnamento); // associa l'appello all'insegnamento
-        nuovoAppello.setOrario(orario);
-        nuovoAppello.setData(data);
-        nuovoAppello.setLuogo(luogo);
-        nuovoAppello.setPostiDisponibili(POSTI_MAX);
-        nuovoAppello.setTipologia(tipologia);
-        return idGenerato;
-    }*/
- /*   public void confermaAppello (Appello_esame nuovoAppello){
-        if(nuovoAppello != null){
-            exam_list.put(nuovoAppello.getID_appello(), nuovoAppello); //aggiunge l'appello alla lista
-        }
-       else {
-            System.out.println("Errore: Nessun appello da creare.");
-        }
-
-    }
-    public Map<String, Appello_esame> getExam_list() {
-        return exam_list;
-    }
-
-
-    public void setStudentList(HashMap<String, Studente> student_list) {
-        this.student_list = student_list;
-    }
-
-    public void setDocList(HashMap<String, Docente> doc_list) {
-        this.doc_list = doc_list;
-    }
-
-    public void setTeachingList(Map<String, Insegnamento> teaching_list) {
-        this.teaching_list = teaching_list;
-    }
-
-    public List<Insegnamento> visualizzaInsegnamenti() {
-        if (studenteCorrente == null) {
-            throw new IllegalStateException("Studente non loggato.");
-        }
-
-        List<Insegnamento> insegnamentiStudente = new ArrayList<>();
-        for (Insegnamento insegnamento : teaching_list.values()) {
-            if (insegnamento.getStudenti().contains(studenteCorrente)) {
-                insegnamentiStudente.add(insegnamento);
-            }
-        }
-
-        return insegnamentiStudente;
-    }
-
-    public List<Insegnamento> getInsegnamentiIscritto(Studente studente) {
-        List<Insegnamento> insegnamentiIscritto = new ArrayList<>();
-        for (Insegnamento insegnamento : teaching_list.values()) {
-            if (insegnamento.getStudenti().contains(studente)) {
-                insegnamentiIscritto.add(insegnamento);
-            }
-        }
-        return insegnamentiIscritto;
-    } */
 
     public Studente getStudenteCorrente() {
         return studenteCorrente;
@@ -294,6 +213,17 @@ public class EMS {
     public void setUtenteCorrente(Utente utente) {
         this.utenteCorrente = utente;
     }
+    public Utente getUtenteCorrente() {
+        return utenteCorrente;
+    }
+
+    public Docente getDocenteCorrente() {
+        return docenteCorrente;
+    }
+
+    public void setDocenteCorrente(Docente docente) {
+        this.docenteCorrente = docente;
+    }
 
     public Studente getStudente(String matricola) {
         for (Studente studente : this.student_list.values()) {
@@ -304,9 +234,7 @@ public class EMS {
         return null;
     }
 
-    public Utente getUtenteCorrente() {
-        return utenteCorrente;
-    }
+
 
 
   public boolean loginStudente(String matricola, String password) throws Exception {
@@ -475,9 +403,36 @@ public class EMS {
     }
 
 
+    public List<Insegnamento> getInsegnamentiByDocente(Docente docente) {
+        List<Insegnamento> insegnamentiDocente = new ArrayList<>();
 
+        if (docente == null) {
+            return insegnamentiDocente;
+        }
+
+        for (Insegnamento insegnamento : this.teaching_list.values()) {
+            List<Docente> docentiInsegnamento = insegnamento.getDocenti(); // Ottieni la lista dei docenti
+
+            if (docentiInsegnamento != null) { // Gestisci il caso di lista docenti nulla
+                for (Docente docenteInsegnamento : docentiInsegnamento) {
+                    if (docenteInsegnamento.equals(docente)) { // Confronta direttamente gli oggetti Docente
+                        insegnamentiDocente.add(insegnamento);
+                        break; // Esci dal ciclo interno se il docente è stato trovato
+                    }
+                }
+            }
+        }
+
+        return insegnamentiDocente;
+    }
 
     }
+
+
+
+
+
+
 
 
 

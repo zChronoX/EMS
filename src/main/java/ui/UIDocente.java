@@ -1,10 +1,13 @@
 package ui;
 
+import classi.Docente;
 import classi.EMS;
+import classi.Studente;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -14,9 +17,15 @@ public class UIDocente {
     public UIDocente() {}
 
     private EMS ems;
+    private Docente docente;
 
     public void setEMS(EMS ems) {
         this.ems = EMS.getInstance();
+    }
+
+    public void setDocente(Docente docente) {
+        this.docente = docente;
+        visualizzaInformazioniDocente();
     }
 
     @FXML
@@ -27,6 +36,27 @@ public class UIDocente {
     private Button BottoneVisualizzaFeedback;
     @FXML
     private Button BottoneLogoutDocente;
+
+    @FXML
+    private Label nomeLabel;
+
+    @FXML
+    private Label cognomeLabel;
+
+    @FXML
+    private Label codiceDocenteLabel;
+
+
+    private void visualizzaInformazioniDocente() {
+        if (docente != null) {
+            // Esempio: visualizzazione in Label
+            nomeLabel.setText("Nome: " + docente.getNome());
+            cognomeLabel.setText("Cognome: " + docente.getCognome());
+            codiceDocenteLabel.setText("Matricola: " + docente.getCodiceDocente());
+
+        }
+    }
+
 
     @FXML
     public void LogoutDocente() throws IOException {
