@@ -1,5 +1,7 @@
 package classi;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -34,8 +36,10 @@ public class EMS {
         if(docentiStatici != null) { //controllo per evitare null pointer exception nel caso in cui non ci siano docenti statici
             this.doc_list.putAll(docentiStatici); // Aggiungi i docenti statici alla doc_list
         }
-        teaching_list = utility.loadCourses("C:\\Users\\Gio\\IdeaProjects\\EMS_UI\\src\\main\\files\\insegnamenti.txt", doc_list, student_list);
 
+        Path currentFilePath = Paths.get("").toAbsolutePath(); // Ottenere il path della directory corrente
+        Path filePath = currentFilePath.resolve("src\\main\\files\\insegnamenti.txt");
+        teaching_list= utility.loadCourses(filePath.toAbsolutePath().toString(),doc_list,student_list);
 
 
     }
