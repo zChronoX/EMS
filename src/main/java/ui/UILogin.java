@@ -26,6 +26,9 @@ public class UILogin {
     private Button BottoneLoginDocente;
 
     @FXML
+    private Button IndietroWelcome;
+
+    @FXML
     public void apriLoginStudente() throws IOException {
         Stage primaryStage = (Stage) BottoneLoginStudente.getScene().getWindow();
 
@@ -52,5 +55,17 @@ public class UILogin {
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Login Docente");
+    }
+
+    @FXML
+    public void Indietro() throws IOException {
+        Stage primaryStage = (Stage) IndietroWelcome.getScene().getWindow(); // Ottieni lo Stage
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Carica WelcomeView.fxml
+        Scene scene = new Scene(fxmlLoader.load());
+        WelcomeController controller = fxmlLoader.getController();
+        controller.setEMS(ems);
+        primaryStage.setScene(scene); // Imposta la scena di WelcomeView sullo Stage
+        primaryStage.setTitle("EMS"); // Puoi anche reimpostare il titolo
     }
 }

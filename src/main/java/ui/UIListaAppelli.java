@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class UIListaAppelli {
+    public UIListaAppelli() {}
 
     @FXML
     private TextField idAppelloTextField; // Nuova casella di testo per l'ID dell'appello

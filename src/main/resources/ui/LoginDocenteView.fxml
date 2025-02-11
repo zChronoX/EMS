@@ -10,5 +10,6 @@
       <Label text="Password" />
       <TextField fx:id="passwordDocenteField" />
       <Button fx:id="BottoneConfermaLoginDocente" mnemonicParsing="false" onAction="#loginDocente" text="Login" />
+      <Button fx:id="Indietro" mnemonicParsing="false" onAction="#Indietro" text="Indietro" />
    </children>
 </VBox>

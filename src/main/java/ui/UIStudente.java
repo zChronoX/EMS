@@ -78,6 +78,21 @@ public class UIStudente {
         Stage currentStage = (Stage) BottonePrenotazioneStudente.getScene().getWindow();
         currentStage.close();
     }
+
+    @FXML
+    public void ApriVisualizzaInfoEsame() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaPrenotazioniInsegnamentoView.fxml")); // Assicurati che il nome del file sia corretto
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        VisualizzaPrenotazioniInsegnamentoUI controller = fxmlLoader.getController();
+        controller.setEMS(ems);
+        stage.setTitle("Visualizza info Esame");
+        stage.setScene(scene);
+        stage.show();
+
+        Stage currentStage = (Stage) BottoneVisualizzaInfoEsame.getScene().getWindow();
+        currentStage.close();
+    }
     @FXML
     public void LogoutStudente() throws IOException {
         Stage primaryStage = (Stage) BottoneLogoutStudente.getScene().getWindow(); // Ottieni lo Stage

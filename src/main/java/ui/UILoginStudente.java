@@ -36,6 +36,9 @@ public class UILoginStudente {
     @FXML
     private Button BottoneConfermaLoginStudente; // Corrisponde all'fx:id nel FXML
 
+    @FXML
+    private Button Indietro;
+
 
 
     public void loginStudente() throws IOException {
@@ -68,6 +71,17 @@ public class UILoginStudente {
         controller.setStudente(studenteLoggato);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Pagina Studente");
+    }
+    @FXML
+    public void Indietro() throws IOException {
+        Stage primaryStage = (Stage) Indietro.getScene().getWindow(); // Ottieni lo Stage
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Carica WelcomeView.fxml
+        Scene scene = new Scene(fxmlLoader.load());
+        WelcomeController controller = fxmlLoader.getController();
+        controller.setEMS(ems);
+        primaryStage.setScene(scene); // Imposta la scena di WelcomeView sullo Stage
+        primaryStage.setTitle("EMS"); // Puoi anche reimpostare il titolo
     }
 
 }
