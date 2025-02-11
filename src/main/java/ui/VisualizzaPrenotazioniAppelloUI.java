@@ -18,6 +18,8 @@ import java.io.IOException;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -105,14 +107,34 @@ public class VisualizzaPrenotazioniAppelloUI {
                 return;
             }
 
-            ems.cancellaPrenotazione(studente, appelloDaCancellare); // Implementa questo metodo in EMS
+            // Controllo sulla data
+            if (isTroppoTardiPerCancellare(appelloDaCancellare)) {
+                showAlert("Errore", "Non puoi cancellare la prenotazione a meno di 3 giorni dalla data dell'appello.");
+                return;
+            }
+
+            ems.cancellaPrenotazione(studente, appelloDaCancellare);
             showAlert("Successo", "Prenotazione cancellata con successo.");
 
-            visualizzaAppelliPrenotati(); // Aggiorna la lista degli appelli
+            visualizzaAppelliPrenotati(); // Aggiorna la lista
 
         } catch (Exception e) {
             showAlert("Errore", "Errore durante la cancellazione: " + e.getMessage());
         }
+    }
+
+    private boolean isTroppoTardiPerCancellare(Appello_esame appello) {
+        if (appello == null || appello.getData() == null) {
+            return true; // Gestisci il caso in cui l'appello o la data sono null
+        }
+
+        LocalDate dataAppello = appello.getData(); // Ottieni la data come LocalDate
+        LocalDate oggi = LocalDate.now();
+
+        // Usa ChronoUnit per calcolare la differenza in giorni
+        long giorniDiDifferenza = ChronoUnit.DAYS.between(oggi, dataAppello);
+
+        return giorniDiDifferenza < 3; // Restituisce true se mancano meno di 3 giorni
     }
     @FXML
     private void mostraPopUpCancellazione(ActionEvent event) {
