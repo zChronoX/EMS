@@ -114,6 +114,10 @@ public class Appello_esame {
         this.studenti.add(studente);
     }
 
+    public void removeStudente(Studente studente) {
+        this.studenti.remove(studente);
+    }
+
     @Override
     public String toString() {
         String insegnamentoNome = (insegnamento != null) ? insegnamento.getNome() : "Sconosciuto";

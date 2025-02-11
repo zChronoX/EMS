@@ -28,6 +28,10 @@ public class Studente extends Utente implements GeneratoreCredenziali {
         this.appelli.add(appello);
     }
 
+    public void removeAppello(Appello_esame appello) {
+        this.appelli.remove(appello);
+    }
+
     public List<Appello_esame> getAppelli() {
         return appelli;
     }

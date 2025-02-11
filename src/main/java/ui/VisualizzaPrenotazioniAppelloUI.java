@@ -61,6 +61,9 @@ public class VisualizzaPrenotazioniAppelloUI {
     @FXML
     private Button BottoneIndietroRicercaInsegnamento;
 
+    @FXML
+    private Button cancellaPrenotazioneButton;
+
     private void visualizzaInformazioniInsegnamento() {
         if (insegnamento != null) {
             nomeInsegnamentoLabel.setText("Insegnamento: " + insegnamento.getNome());
@@ -85,6 +88,55 @@ public class VisualizzaPrenotazioniAppelloUI {
                 }
             }
         }
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void cancellaPrenotazione(String idAppello) {
+        try {
+            Appello_esame appelloDaCancellare = ems.getAppelloById(idAppello);
+            if (appelloDaCancellare == null) {
+                showAlert("Errore", "Nessun appello trovato con questo ID.");
+                return;
+            }
+
+            ems.cancellaPrenotazione(studente, appelloDaCancellare); // Implementa questo metodo in EMS
+            showAlert("Successo", "Prenotazione cancellata con successo.");
+
+            visualizzaAppelliPrenotati(); // Aggiorna la lista degli appelli
+
+        } catch (Exception e) {
+            showAlert("Errore", "Errore durante la cancellazione: " + e.getMessage());
+        }
+    }
+    @FXML
+    private void mostraPopUpCancellazione(ActionEvent event) {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Cancellazione Prenotazione");
+
+        VBox vbox = new VBox();
+        TextField idAppelloTextField = new TextField();
+        idAppelloTextField.setPromptText("ID Appello");
+        vbox.getChildren().add(idAppelloTextField);
+
+        dialog.getDialogPane().setContent(vbox);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        dialog.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                String idAppello = idAppelloTextField.getText();
+                if (idAppello.isEmpty()) {
+                    showAlert("Errore", "Inserisci l'ID dell'appello.");
+                    return;
+                }
+                cancellaPrenotazione(idAppello); // Passa la stringa
+            }
+        });
     }
 
     @FXML
