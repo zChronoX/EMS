@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.InserisciEsitiPopUpUI">
+   <children>
+      <Label text="Matricola Studente:" />
+      <TextField fx:id="matricolaTextField" />
+      <Label text="Voto (0-30):" />
+      <TextField fx:id="votoTextField" />
+      <Label text="Stato:" />
+      <TextField fx:id="statoTextField" />
+      <Button fx:id="confermaButton" mnemonicParsing="false" onAction="#confermaInserimento" text="Conferma" />
+      <Button fx:id="annullaButton" mnemonicParsing="false" onAction="#annullaInserimento" text="Annulla" />
+   </children>
+</VBox>

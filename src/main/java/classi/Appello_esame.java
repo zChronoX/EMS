@@ -16,6 +16,7 @@ public class Appello_esame {
     private String Tipologia;
     private Insegnamento insegnamento;
     private List<Studente> studenti = new ArrayList<>();
+    private List<Esito_esame> esiti;
 
     public Appello_esame(String ID_appello, LocalTime orario, LocalDate data, String luogo, int postiDisponibili,
                          String tipologia, Insegnamento insegnamento) {
@@ -26,6 +27,7 @@ public class Appello_esame {
         this.postiDisponibili = postiDisponibili;
         Tipologia = tipologia;
         this.insegnamento = insegnamento;
+        this.esiti = new ArrayList<>(); // Inizializza la lista anche nel costruttore
     }
 
     public List<Studente> getStudenti() {
@@ -117,6 +119,29 @@ public class Appello_esame {
     public void removeStudente(Studente studente) {
         this.studenti.remove(studente);
     }
+    public boolean isStudentePrenotato(Studente studente) {
+        return studenti.contains(studente);
+    }
+
+    public Esito_esame getEsitoByStudente(Studente studente) {
+        if (studente == null) {
+            return null; // Gestisci il caso di studente nullo
+        }
+
+        for (Esito_esame esito : this.esiti) { // esiti è una lista di Esito_esame dentro Appello_esame
+            if (esito.getStudente().equals(studente)) {
+                return esito;
+            }
+        }
+
+        return null; // Esito non trovato
+    }
+
+    public List<Esito_esame> getEsiti() {
+        return esiti;
+    }
+
+
 
     @Override
     public String toString() {

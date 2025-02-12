@@ -14,6 +14,7 @@ public class Prenotazione {
     private Appello_esame appello;
     private Esito_esame esito;
 
+
     public Prenotazione(String ID_prenotazione, LocalDate data, LocalTime ora, int progressivo,
                         Studente studente, Appello_esame appello) {
         this.ID_prenotazione = ID_prenotazione;
@@ -77,11 +78,9 @@ public class Prenotazione {
         return esito;
     }
 
-    public void inserisciEsito(String voto,String stato) {
-
-        this.esito = new Esito_esame(voto, stato);
+    public void setEsito(Esito_esame esito) {
+        this.esito = esito;
     }
-
     // public Prenotazione getPrenotato() { return prenotato; }
 
     @Override

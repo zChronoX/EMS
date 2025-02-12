@@ -3,15 +3,23 @@ package classi;
 public class Esito_esame {
     private String voto;
     private String stato;
+    private Studente studente;
+    private Appello_esame appello;
+    private Prenotazione prenotazione;
 
-    public Esito_esame(String voto, String stato) {
-
+    public Esito_esame(String voto, String stato, Studente studente, Appello_esame appello) {
         this.voto = voto;
         this.stato = stato;
-
+        this.studente = studente;
+        this.appello = appello;
     }
 
-    public Esito_esame() {
+    public Studente getStudente() {
+        return studente;
+    }
+
+    public Appello_esame getAppello() {
+        return appello;
     }
 
     public String getVoto() {
@@ -30,13 +38,18 @@ public class Esito_esame {
         this.stato = stato;
     }
 
-    @Override
-    public String toString() {
-
-        return "Esito_esame{" +
-                "voto=" + voto +
-                ", stato=" + stato + '}';
-
+    public void setStudente(Studente studente) {
+        this.studente = studente;
     }
 
+    public void setAppello(Appello_esame appello) {
+        this.appello = appello;
+    }
+    public Prenotazione getPrenotazione() {
+        return prenotazione;
+    }
+
+    public void setPrenotazione(Prenotazione prenotazione) {
+        this.prenotazione = prenotazione;
+    }
 }

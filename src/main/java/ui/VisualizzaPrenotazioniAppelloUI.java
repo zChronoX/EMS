@@ -66,6 +66,9 @@ public class VisualizzaPrenotazioniAppelloUI {
     @FXML
     private Button cancellaPrenotazioneButton;
 
+    @FXML
+    private Button rifiutaEsitoButton;
+
     private void visualizzaInformazioniInsegnamento() {
         if (insegnamento != null) {
             nomeInsegnamentoLabel.setText("Insegnamento: " + insegnamento.getNome());
@@ -75,22 +78,92 @@ public class VisualizzaPrenotazioniAppelloUI {
     }
     private void visualizzaAppelliPrenotati() {
         if (studente != null && insegnamento != null) {
-            List<Appello_esame> appelliPrenotati = studente.getAppelli(); // Ottieni tutti gli appelli prenotati dallo studente
+            List<Appello_esame> appelliPrenotati = studente.getAppelli();
 
-            appelliPrenotatiListView.getItems().clear(); // Pulisci la lista
+            appelliPrenotatiListView.getItems().clear();
 
             if (appelliPrenotati == null || appelliPrenotati.isEmpty()) {
                 appelliPrenotatiListView.getItems().add("Non hai prenotazioni per questo insegnamento.");
+                rifiutaEsitoButton.setVisible(false); // Nascondi il bottone se non ci sono appelli
                 return;
             }
 
             for (Appello_esame appello : appelliPrenotati) {
-                if (appello.getInsegnamento().equals(insegnamento)) { // Filtra per l'insegnamento corrente
-                    appelliPrenotatiListView.getItems().add(appello.toString());
+                if (appello.getInsegnamento().equals(insegnamento)) {
+                    Prenotazione prenotazione = ems.getPrenotazioneByStudenteAndAppello(studente, appello);
+
+                    System.out.println("Appello: " + appello.getID_appello());
+                    System.out.println("  Prenotazione recuperata: " + prenotazione); // Stampa l'oggetto Prenotazione
+
+                    String esitoString = "";
+                    if (prenotazione != null && prenotazione.getEsito() != null) {
+                        esitoString = " - Esito: " + prenotazione.getEsito().getVoto() + " (" + prenotazione.getEsito().getStato() + ")";
+                    }
+
+                    appelliPrenotatiListView.getItems().add(appello.toString() + esitoString);
                 }
             }
         }
     }
+
+    @FXML
+    private void mostraPopUpRifiuto(ActionEvent event) throws IOException {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Rifiuto Esito");
+
+        VBox vbox = new VBox();
+        TextField idAppelloTextField = new TextField();
+        idAppelloTextField.setPromptText("ID Appello");
+        vbox.getChildren().add(idAppelloTextField);
+
+        dialog.getDialogPane().setContent(vbox);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        dialog.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                String idAppello = idAppelloTextField.getText();
+                if (idAppello.isEmpty()) {
+                    showAlert("Errore", "Inserisci l'ID dell'appello.");
+                    return;
+                }
+                rifiutaEsito(idAppello);
+            }
+        });
+    }
+
+    private void rifiutaEsito(String idAppello) {
+        try {
+            Appello_esame appello = ems.getAppelloById(idAppello);
+            if (appello == null) {
+                showAlert("Errore", "Nessun appello trovato con questo ID.");
+                return;
+            }
+
+            Prenotazione prenotazione = ems.getPrenotazioneByStudenteAndAppello(studente, appello);
+            if (prenotazione == null) {
+                showAlert("Errore", "Nessuna prenotazione trovata per questo appello.");
+                return;
+            }
+
+            if (prenotazione.getEsito() == null) {
+                showAlert("Errore", "Non hai ricevuto nessun esito per questo appello."); // Messaggio di errore specifico
+                return;
+            }
+
+            if (!prenotazione.getEsito().getStato().equals("Approvato")) {
+                showAlert("Errore", "L'esito può essere rifiutato solo se è nello stato 'Approvato'.");
+                return;
+            }
+
+            ems.rifiutaEsito(prenotazione.getEsito());
+            showAlert("Successo", "Esito rifiutato con successo.");
+            visualizzaAppelliPrenotati();
+
+        } catch (Exception e) {
+            showAlert("Errore", "Errore durante il rifiuto: " + e.getMessage());
+        }
+    }
+
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

@@ -16,6 +16,8 @@ public class EMS {
     private Map<String,Insegnamento> teaching_list;
     private UtenteFactory utenteFactory;
     public static final int POSTI_MAX = 500;
+    private List<Esito_esame> esitiList = new ArrayList<>();
+    private List<Prenotazione> prenotazioniList = new ArrayList<>();
    // private HashMap<String,Appello_esame> exam_list;
 
     public EMS() {
@@ -354,6 +356,18 @@ public class EMS {
         return null; // Nessun appello trovato con questo ID
     }
 
+    private String generaIdPrenotazione() {
+        Random random = new Random();
+        int idPrenotazione = 100000 + random.nextInt(900000); // Numero casuale tra 100000 e 999999
+        return String.valueOf(idPrenotazione);
+    }
+
+    private int prossimoProgressivo = 1; // Inizializza il contatore
+
+    private synchronized int generaProgressivo() {
+        return prossimoProgressivo++;
+    }
+
     public void prenotaAppello(Studente studente, Appello_esame appello) throws Exception {
         if (studente == null) {
             throw new Exception("Studente non loggato.");
@@ -372,13 +386,36 @@ public class EMS {
             throw new Exception("Non ci sono posti disponibili per questo appello.");
         }
 
+        // Crea la Prenotazione *PRIMA* di aggiungere appello e studente
+        Prenotazione prenotazione = new Prenotazione(); // Usa il costruttore senza parametri
+        prenotazione.setStudente(studente);
+        prenotazione.setAppello(appello);
+
+        // Genera e imposta ID, Data, Ora e Progressivo
+        String idPrenotazione = generaIdPrenotazione(); // Implementa questa funzione
+        prenotazione.setID_prenotazione(idPrenotazione);
+        prenotazione.setData(LocalDate.now()); // Imposta la data corrente
+        prenotazione.setOra(LocalTime.now()); // Imposta l'ora corrente
+        prenotazione.setProgressivo(generaProgressivo()); // Implementa questa funzione
+
+        // Aggiungi la prenotazione alla lista in EMS
+        prenotazioniList.add(prenotazione);
+
         appello.addStudente(studente);
         studente.addAppello(appello);
 
         // Decrementa i posti disponibili
         appello.setPostiDisponibili(appello.getPostiDisponibili() - 1);
 
+        // Stampa a console per debug
         System.out.println("Prenotazione effettuata con successo per " + studente.getNome() + " all'appello " + appello.getID_appello());
+        System.out.println("ID Prenotazione: " + prenotazione.getID_prenotazione());
+
+        // Stampa la lista di prenotazioni *dopo* aver aggiunto la nuova prenotazione
+        System.out.println("Elenco prenotazioni dopo l'aggiunta:");
+        for (Prenotazione p : prenotazioniList) {
+            System.out.println("  - " + p.getStudente().getMatricola() + " - " + p.getAppello().getID_appello());
+        }
     }
 
     public boolean isStudentePrenotato(Studente studente, Appello_esame appello) {
@@ -428,6 +465,90 @@ public class EMS {
         }
 
         return insegnamentiDocente;
+    }
+
+    public List<Studente> getStudentiByAppello(Appello_esame appello) {
+        return appello.getStudenti();
+    }
+
+    public Esito_esame getEsitoByStudente(Studente studente, Appello_esame appello) {
+        if (studente == null || appello == null) {
+            return null; // Gestisci il caso di input nulli
+        }
+
+        for (Esito_esame esito : this.esitiList) { // Itera sulla lista di esiti in EMS
+            if (esito.getStudente().equals(studente) && esito.getAppello().equals(appello)) {
+                return esito;
+            }
+        }
+
+        return null; // Esito non trovato
+    }
+    public void inserisciEsito(String idPrenotazione, Esito_esame esito) {
+        if (idPrenotazione == null || esito == null) {
+            return; // Gestisci il caso di input nulli
+        }
+
+        for (Prenotazione prenotazione : prenotazioniList) {
+            if (prenotazione.getID_prenotazione().equals(idPrenotazione)) {
+                prenotazione.setEsito(esito); // Associa l'esito alla prenotazione
+                esito.setPrenotazione(prenotazione); //Associa la prenotazione all'esito
+                return; // Esci dalla funzione dopo aver trovato e aggiornato la prenotazione
+            }
+        }
+
+        // Gestisci il caso in cui non viene trovata alcuna prenotazione con l'ID specificato
+        System.out.println("Nessuna prenotazione trovata con ID: " + idPrenotazione);
+    }
+
+    public void rifiutaEsito(Esito_esame esito) {
+        if (esito != null) {
+            esito.setStato("Rifiutato");
+
+        }
+
+
+    }
+    public List<Prenotazione> getPrenotazioniList() { // Aggiungi il getter per la lista
+        return prenotazioniList;
+    }
+
+    public Prenotazione getPrenotazioneByStudenteAndAppello(Studente studente, Appello_esame appello) {
+        System.out.println("getPrenotazioneByStudenteAndAppello() chiamata per studente: " + studente.getMatricola() + " e appello: " + appello.getID_appello());
+
+        if (studente == null || appello == null) {
+            System.out.println("Studente o appello null");
+            return null;
+        }
+
+        System.out.println("Lista prenotazioni:");
+        if (prenotazioniList.isEmpty()) {
+            System.out.println("  La lista è vuota.");
+        } else {
+            for (Prenotazione p : prenotazioniList) {
+                System.out.println("  - " + p.getStudente().getMatricola() + " - " + p.getAppello().getID_appello());
+            }
+        }
+
+        for (Prenotazione p : prenotazioniList) {
+            System.out.println("Confronto con prenotazione: " + p.getStudente().getMatricola() + " - " + p.getAppello().getID_appello());
+            if (p.getStudente().equals(studente) && p.getAppello().equals(appello)) {
+                System.out.println("Prenotazione trovata!");
+                return p;
+            }
+        }
+
+        System.out.println("Prenotazione non trovata per studente: " + studente.getMatricola() + " e appello: " + appello.getID_appello());
+        return null;
+    }
+
+    public Esito_esame getEsitoByPrenotazione(Prenotazione prenotazione) {
+        for (Esito_esame esito : esitiList) {
+            if (esito.getPrenotazione().equals(prenotazione)) {
+                return esito;
+            }
+        }
+        return null;
     }
 
     }

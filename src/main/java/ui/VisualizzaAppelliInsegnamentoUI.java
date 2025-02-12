@@ -32,6 +32,12 @@ public class VisualizzaAppelliInsegnamentoUI {
     @FXML
     private Button BottoneIndietroInsegnamentiDocente;
 
+    @FXML
+    private TextField idAppelloTextField;
+
+    @FXML
+    private Button scegliAppelloButton;
+
     private Insegnamento insegnamento;
     private Docente docente;
     private EMS ems;
@@ -64,6 +70,39 @@ public class VisualizzaAppelliInsegnamentoUI {
     }
 
     @FXML
+    private void visualizzaStudentiPrenotati(ActionEvent event) throws IOException {
+        String idAppello = idAppelloTextField.getText();
+
+        if (idAppello == null || idAppello.isEmpty()) {
+            showAlert("Errore", "Inserisci l'ID dell'appello.");
+            return;
+        }
+
+        Appello_esame appello = ems.getAppelloById(idAppello); // Implementa questo metodo in EMS, accetta una stringa
+
+        if (appello == null) {
+            showAlert("Errore", "Appello non trovato.");
+            return;
+        }
+
+        apriListaStudentiView(appello, insegnamento);
+    }
+
+    private void apriListaStudentiView(Appello_esame appello, Insegnamento insegnamento) throws IOException {
+        Stage primaryStage = (Stage) idAppelloTextField.getScene().getWindow();
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaStudentiPrenotatiView.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        VisualizzaStudentiPrenotatiUI controller = fxmlLoader.getController();
+        controller.setEMS(ems);
+        controller.setAppello(appello);
+        controller.setInsegnamento(insegnamento); // Passa anche l'insegnamento
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Studenti prenotati all'appello " + appello.getID_appello());
+    }
+
+
+    @FXML
     public void IndietroInsegnamentiDocente() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaPrenotatiEsameView.fxml")); // Assicurati che il nome del file sia corretto
         Scene scene = new Scene(fxmlLoader.load());
@@ -76,5 +115,12 @@ public class VisualizzaAppelliInsegnamentoUI {
 
         Stage currentStage = (Stage) BottoneIndietroInsegnamentiDocente.getScene().getWindow();
         currentStage.close();
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

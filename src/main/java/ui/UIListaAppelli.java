@@ -142,16 +142,15 @@ public class UIListaAppelli {
         vbox.getChildren().add(new Label("Orario: " + appello.getOrario()));
         vbox.getChildren().add(new Label("Luogo: " + appello.getLuogo()));
 
-
         dialog.getDialogPane().setContent(vbox);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
-
 
         dialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
                     ems.prenotaAppello(studente, appello); // Metodo da implementare in EMS
                     showAlert("Successo", "Prenotazione effettuata con successo.");
+                    visualizzaAppelli(); // <-- Aggiorna la lista degli appelli
                 } catch (Exception e) {
                     showAlert("Errore", "Errore durante la prenotazione: " + e.getMessage());
                 }
