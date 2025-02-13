@@ -6,11 +6,7 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.nio.file.Paths;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 
 public class EMS {
     private static EMS ems; //CAMPO PER MEMORIZZARE L'UNICA ISTANZA
@@ -336,6 +332,18 @@ public class EMS {
         return null; // Nessun appello trovato con questo ID
     }
 
+    private String generaIdPrenotazione() {
+        Random random = new Random();
+        int idPrenotazione = 100000 + random.nextInt(900000); // Numero casuale tra 100000 e 999999
+        return String.valueOf(idPrenotazione);
+    }
+
+    private int prossimoProgressivo = 1; // Inizializza il contatore
+
+    private synchronized int generaProgressivo() {
+        return prossimoProgressivo++;
+    }
+
     public void prenotaAppello(Studente studente, Appello_esame appello) throws Exception {
         if (studente == null) {
             throw new Exception("Studente non loggato.");
@@ -354,13 +362,41 @@ public class EMS {
             throw new Exception("Non ci sono posti disponibili per questo appello.");
         }
 
+        // Crea la Prenotazione *PRIMA* di aggiungere appello e studente
+        Prenotazione prenotazione = new Prenotazione(); // Usa il costruttore senza parametri
+        prenotazione.setStudente(studente);
+        prenotazione.setAppello(appello);
+
+        // Genera e imposta ID, Data, Ora e Progressivo
+        String idPrenotazione = generaIdPrenotazione(); // Implementa questa funzione
+        prenotazione.setID_prenotazione(idPrenotazione);
+        prenotazione.setData(LocalDate.now()); // Imposta la data corrente
+        prenotazione.setOra(LocalTime.now()); // Imposta l'ora corrente
+        prenotazione.setProgressivo(generaProgressivo()); // Implementa questa funzione
+
+        // Aggiungi la prenotazione alla mappa in EMS
+        reservation_list.put(idPrenotazione, prenotazione); // Usa la mappa per memorizzare la prenotazione
+
         appello.addStudente(studente);
         studente.addAppello(appello);
 
         // Decrementa i posti disponibili
         appello.setPostiDisponibili(appello.getPostiDisponibili() - 1);
 
+        // Stampa a console per debug
         System.out.println("Prenotazione effettuata con successo per " + studente.getNome() + " all'appello " + appello.getID_appello());
+        System.out.println("ID Prenotazione: " + prenotazione.getID_prenotazione());
+
+        // Stampa la mappa di prenotazioni *dopo* aver aggiunto la nuova prenotazione
+        System.out.println("Elenco prenotazioni dopo l'aggiunta:");
+        if (reservation_list.isEmpty()) {
+            System.out.println("  La mappa è vuota.");
+        } else {
+            for (Map.Entry<String, Prenotazione> entry : reservation_list.entrySet()) {
+                Prenotazione p = entry.getValue();
+                System.out.println("  - " + p.getStudente().getMatricola() + " - " + p.getAppello().getID_appello());
+            }
+        }
     }
 
     public boolean isStudentePrenotato(Studente studente, Appello_esame appello) {
