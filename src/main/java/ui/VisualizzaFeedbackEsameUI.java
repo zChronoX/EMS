@@ -1,12 +1,18 @@
 package ui;
 
 import classi.EMS;
+import javafx.fxml.Initializable;
 
-public class VisualizzaFeedbackEsameUI {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class VisualizzaFeedbackEsameUI implements Initializable {
     public VisualizzaFeedbackEsameUI() {}
     private EMS ems;
 
-    public void setEMS(EMS ems) {
-        this.ems = EMS.getInstance();
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ems=EMS.getInstance();
     }
+
 }

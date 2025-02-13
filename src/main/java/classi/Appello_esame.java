@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Appello_esame {
-    private HashMap<String,Prenotazione> reservation_list;
+    //private HashMap<String,Prenotazione> reservation_list;
     private String ID_appello;
     private LocalTime Orario;
     private LocalDate Data;
@@ -16,7 +16,7 @@ public class Appello_esame {
     private String Tipologia;
     private Insegnamento insegnamento;
     private List<Studente> studenti = new ArrayList<>();
-    private List<Esito_esame> esiti;
+    private List<Esito_esame> result_list;
 
     public Appello_esame(String ID_appello, LocalTime orario, LocalDate data, String luogo, int postiDisponibili,
                          String tipologia, Insegnamento insegnamento) {
@@ -27,11 +27,18 @@ public class Appello_esame {
         this.postiDisponibili = postiDisponibili;
         Tipologia = tipologia;
         this.insegnamento = insegnamento;
-        this.esiti = new ArrayList<>(); // Inizializza la lista anche nel costruttore
     }
 
     public List<Studente> getStudenti() {
         return studenti;
+    }
+
+    public void removeStudente(Studente studente) {
+        this.studenti.remove(studente);
+    }
+
+    public boolean isStudentePrenotato(Studente studente) {
+        return studenti.contains(studente);
     }
 
     public Appello_esame() {};
@@ -90,12 +97,12 @@ public class Appello_esame {
 
     public void setInsegnamento(Insegnamento insegnamento) { this.insegnamento = insegnamento; }
 
-    public void aggiungiPrenotazione(Prenotazione prenotato) {
+  /*  public void aggiungiPrenotazione(Prenotazione prenotato) {
 
         reservation_list.put(prenotato.getID_prenotazione(),prenotato);
-    }
+    }*/
 
-    public HashMap<String, Prenotazione> getPrenotazioniStudenti(String ID_appello){
+   /* public HashMap<String, Prenotazione> getPrenotazioniStudenti(String ID_appello){
 
         if(ID_appello.equals(this.ID_appello)){
 
@@ -104,44 +111,7 @@ public class Appello_esame {
 
             return new HashMap<>();
         }
-    }
-
-    public void addStudente(Studente studente) throws Exception {
-        if (studente == null) {
-            throw new Exception("Studente non valido.");
-        }
-        if (this.studenti.contains(studente)) {
-            throw new Exception("Studente già prenotato a questo appello.");
-        }
-        this.studenti.add(studente);
-    }
-
-    public void removeStudente(Studente studente) {
-        this.studenti.remove(studente);
-    }
-    public boolean isStudentePrenotato(Studente studente) {
-        return studenti.contains(studente);
-    }
-
-    public Esito_esame getEsitoByStudente(Studente studente) {
-        if (studente == null) {
-            return null; // Gestisci il caso di studente nullo
-        }
-
-        for (Esito_esame esito : this.esiti) { // esiti è una lista di Esito_esame dentro Appello_esame
-            if (esito.getStudente().equals(studente)) {
-                return esito;
-            }
-        }
-
-        return null; // Esito non trovato
-    }
-
-    public List<Esito_esame> getEsiti() {
-        return esiti;
-    }
-
-
+    }*/
 
     @Override
     public String toString() {
@@ -168,5 +138,15 @@ public class Appello_esame {
                 ", insegnamento=" + insegnamentoNome +
                 ", docenti=" + docentiString + // Usa direttamente la stringa
                 '}';
+    }
+
+    public void addStudente(Studente studente) throws Exception {
+        if (studente == null) {
+            throw new Exception("Studente non valido.");
+        }
+        if (this.studenti.contains(studente)) {
+            throw new Exception("Studente già prenotato a questo appello.");
+        }
+        this.studenti.add(studente);
     }
 }

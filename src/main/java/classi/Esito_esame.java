@@ -12,14 +12,10 @@ public class Esito_esame {
         this.stato = stato;
         this.studente = studente;
         this.appello = appello;
+
     }
 
-    public Studente getStudente() {
-        return studente;
-    }
-
-    public Appello_esame getAppello() {
-        return appello;
+    public Esito_esame() {
     }
 
     public String getVoto() {
@@ -38,13 +34,14 @@ public class Esito_esame {
         this.stato = stato;
     }
 
-    public void setStudente(Studente studente) {
-        this.studente = studente;
+    public Studente getStudente() {
+        return studente;
     }
 
-    public void setAppello(Appello_esame appello) {
-        this.appello = appello;
+    public Appello_esame getAppello() {
+        return appello;
     }
+
     public Prenotazione getPrenotazione() {
         return prenotazione;
     }
@@ -52,4 +49,14 @@ public class Esito_esame {
     public void setPrenotazione(Prenotazione prenotazione) {
         this.prenotazione = prenotazione;
     }
+
+    @Override
+    public String toString() {
+
+        return "Esito_esame{" +
+                "voto=" + voto +
+                ", stato=" + stato + '}';
+
+    }
+
 }

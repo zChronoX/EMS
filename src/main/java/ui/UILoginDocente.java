@@ -3,6 +3,7 @@ package ui;
 import classi.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -12,19 +13,23 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
-import javax.print.Doc;
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class UILoginDocente {
-
+public class UILoginDocente implements Initializable {
     private EMS ems;
 
-    public void setEMS(EMS ems) {
-        this.ems = EMS.getInstance();
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ems=EMS.getInstance();
     }
+
+    @FXML
+    private Button Indietro;
 
     @FXML
     private TextField codiceDocenteField; // Corrisponde all'fx:id nel FXML
@@ -34,10 +39,9 @@ public class UILoginDocente {
 
     @FXML
     private Button BottoneConfermaLoginDocente; // Corrisponde all'fx:id nel FXML
-    @FXML
-    private Button Indietro;
 
     public void loginDocente() throws IOException {
+
         String codiceDocente = codiceDocenteField.getText(); // Ottieni il codice docente dal campo di testo
         String password = passwordDocenteField.getText(); // Ottieni la password dal campo di testo
 
@@ -59,10 +63,6 @@ public class UILoginDocente {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DocenteView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        UIDocente controller = fxmlLoader.getController();
-        controller.setEMS(ems);
-        Docente docenteLoggato = ems.getDocenteCorrente();
-        controller.setDocente(docenteLoggato);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Pagina Docente");
     }
@@ -73,8 +73,6 @@ public class UILoginDocente {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Carica WelcomeView.fxml
         Scene scene = new Scene(fxmlLoader.load());
-        WelcomeController controller = fxmlLoader.getController();
-        controller.setEMS(ems);
         primaryStage.setScene(scene); // Imposta la scena di WelcomeView sullo Stage
         primaryStage.setTitle("EMS"); // Puoi anche reimpostare il titolo
     }

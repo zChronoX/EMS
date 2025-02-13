@@ -3,13 +3,30 @@ package ui;
 import classi.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class InserisciEsitiPopUpUI {
+
+public class InserisciEsitiPopUpUI implements Initializable {
+    private EMS ems;
+    private Appello_esame appello;
+
+    //public void setAppello(Appello_esame appello) {
+    //    this.appello = appello;
+    //}
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ems=EMS.getInstance();
+        //recuperare appello d'esame
+        appello=ems.getAppelloSelezionato();
+    }
 
     public InserisciEsitiPopUpUI() {}
 
@@ -27,17 +44,6 @@ public class InserisciEsitiPopUpUI {
 
     @FXML
     private Button annullaButton;
-
-    private EMS ems;
-    private Appello_esame appello;
-
-    public void setEMS(EMS ems) {
-        this.ems = ems;
-    }
-
-    public void setAppello(Appello_esame appello) {
-        this.appello = appello;
-    }
 
     @FXML
     private void confermaInserimento(ActionEvent event) {
@@ -111,10 +117,9 @@ public class InserisciEsitiPopUpUI {
     }
 
     private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setContentText(message);
         alert.showAndWait();
     }
 }
-

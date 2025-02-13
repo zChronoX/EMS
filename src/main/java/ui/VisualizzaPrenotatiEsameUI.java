@@ -1,8 +1,12 @@
 package ui;
 
-import classi.*;
+import classi.Docente;
+import classi.EMS;
+import classi.Insegnamento;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -10,22 +14,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import javafx.event.ActionEvent;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class VisualizzaPrenotatiEsameUI {
-    public VisualizzaPrenotatiEsameUI() {}
+public class VisualizzaPrenotatiEsameUI implements Initializable {
     private EMS ems;
     private Docente docente;
-
-    public void setEMS(EMS ems) {
-        this.ems = EMS.getInstance();
-        docente = ems.getDocenteCorrente();
-        visualizzaInsegnamentiDocente();
-    }
-
-
 
     @FXML
     private ListView<String> insegnamentiDocenteListView;
@@ -38,6 +34,13 @@ public class VisualizzaPrenotatiEsameUI {
 
     @FXML
     private Button BottoneIndietroPaginaDocente;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ems = EMS.getInstance();
+        docente = ems.getDocenteCorrente();
+        visualizzaInsegnamentiDocente();
+    }
 
     private void visualizzaInsegnamentiDocente() {
         System.out.println("Docente: " + docente);
@@ -54,6 +57,12 @@ public class VisualizzaPrenotatiEsameUI {
             }
         }
     }
+
+    public VisualizzaPrenotatiEsameUI() {}
+
+    @FXML
+    private Button BottoneIndietroPrenotatiEsame;
+
     @FXML
     private void visualizzaAppelliInsegnamento(ActionEvent event) throws IOException { // Metodo mancante!
         String codiceInsegnamento = codiceInsegnamentoTextField.getText();
@@ -73,15 +82,12 @@ public class VisualizzaPrenotatiEsameUI {
         apriListaAppelliView(insegnamento);
     }
 
-
     private void apriListaAppelliView(Insegnamento insegnamento) throws IOException {
         Stage primaryStage = (Stage) codiceInsegnamentoTextField.getScene().getWindow(); // Ottieni lo Stage corrente
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaAppelliInsegnamentoView.fxml")); // Crea un nuovo FXMLLoader
         Scene scene = new Scene(fxmlLoader.load());
-        VisualizzaAppelliInsegnamentoUI controller = fxmlLoader.getController(); // Ottieni il controller della nuova view
-        controller.setEMS(ems);
-        controller.setInsegnamento(insegnamento);
+
         primaryStage.setScene(scene); // Imposta la nuova scena sullo Stage
         primaryStage.setTitle("Appelli di " + insegnamento.getNome());
     }
@@ -98,8 +104,7 @@ public class VisualizzaPrenotatiEsameUI {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DocenteView.fxml")); // Assicurati che il nome del file sia corretto
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
-        UIDocente controller = fxmlLoader.getController();
-        controller.setEMS(ems);
+
         stage.setTitle("Pagina Docente");
         stage.setScene(scene);
         stage.show();
@@ -107,6 +112,4 @@ public class VisualizzaPrenotatiEsameUI {
         Stage currentStage = (Stage) BottoneIndietroPaginaDocente.getScene().getWindow();
         currentStage.close();
     }
-
-
 }

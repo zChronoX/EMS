@@ -2,8 +2,6 @@ package classi;
 
 import interfacce.GeneratoreCredenziali;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,25 +17,6 @@ public class Studente extends Utente implements GeneratoreCredenziali {
         this.Matricola = generaMatricola();
         this.Password = generaPassword();
     }
-
-    public void addAppello(Appello_esame appello) throws Exception {
-        if (appello == null) {
-            throw new Exception("Appello non valido.");
-        }
-        if (this.appelli.contains(appello)) {
-            throw new Exception("Appello già presente nella lista.");
-        }
-        this.appelli.add(appello);
-    }
-
-    public void removeAppello(Appello_esame appello) {
-        this.appelli.remove(appello);
-    }
-
-    public List<Appello_esame> getAppelli() {
-        return appelli;
-    }
-
 
 
     /*public Studente(String nome, String cognome, String genere, Date data_nascita, String codice_fiscale, String residenza, String email, String telefono, TipoProfilo tipoProfilo, String matricola, String password, String categoria, int annoCorso) {
@@ -132,19 +111,7 @@ public class Studente extends Utente implements GeneratoreCredenziali {
 
     @Override
     public String generaMatricola() {
-
-        //salvo la matricola per verificare che non esista altro studente con tale matricola
-        String buffer=  GeneratoreCredenziali.super.generaMatricola();
-        Path currentFilePath = Paths.get("").toAbsolutePath(); // Ottenere il path della directory corrente
-        Path filePath = currentFilePath.resolve("src/main/files/matricole.txt");
-
-        boolean result = Utility.verificaEAggiungiMatricola(String.valueOf(filePath),buffer);
-
-       while( result== false){
-           buffer = GeneratoreCredenziali.super.generaMatricola();
-           result = Utility.verificaEAggiungiMatricola(String.valueOf(filePath) ,buffer);
-       }
-        return buffer;
+        return GeneratoreCredenziali.super.generaMatricola();
     }
 
     @Override
@@ -169,5 +136,23 @@ public class Studente extends Utente implements GeneratoreCredenziali {
                 ", Telefono='" + Telefono + '\'' +
                 ", tipoProfilo=" + tipoProfilo +
                 '}';
+    }
+
+    public List<Appello_esame> getAppelli() {
+        return appelli;
+    }
+
+    public void addAppello(Appello_esame appello) throws Exception {
+        if (appello == null) {
+            throw new Exception("Appello non valido.");
+        }
+        if (this.appelli.contains(appello)) {
+            throw new Exception("Appello già presente nella lista.");
+        }
+        this.appelli.add(appello);
+    }
+
+    public void removeAppello(Appello_esame appello) {
+        this.appelli.remove(appello);
     }
 }

@@ -3,6 +3,7 @@ package ui;
 import classi.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -17,12 +18,30 @@ import java.io.IOException;
 
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class UIListaAppelli {
+public class UIListaAppelli implements Initializable {
+    private EMS ems;
+    private Insegnamento insegnamento;
+    private Studente studente;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ems = EMS.getInstance();
+        studente = ems.getStudenteCorrente();
+
+        //codice inserito in UIPrenotazioneAppello, come faccio a recuperarlo?
+        insegnamento=ems.getInsegnamentoSelezionato();
+
+        visualizzaAppelli(); // Visualizza gli appelli subito dopo aver ricevuto l'insegnamento
+
+    }
+
     public UIListaAppelli() {}
 
     @FXML
@@ -31,26 +50,13 @@ public class UIListaAppelli {
     @FXML
     private Button confermaPrenotazioneButton;
 
-    private Insegnamento insegnamento;
-    private Studente studente; // Se gestisci il login
-    private EMS ems;
-
-    public void setEMS(EMS ems) {
-        this.ems = EMS.getInstance();
-        studente = ems.getStudenteCorrente();
-        System.out.println("UIListaAppelli: Studente (set): " + studente);
-    }
-
-    public void setStudente(Studente studente) {
-        this.studente = studente;
-
-    }
-
+    /*
     public void setInsegnamento(Insegnamento insegnamento) {
         this.insegnamento = insegnamento;
         System.out.println("UIListaAppelli: Insegnamento (set): " + insegnamento);
         visualizzaAppelli(); // Visualizza gli appelli subito dopo aver ricevuto l'insegnamento
-    }
+    }*/
+
     @FXML
     private ListView<String> appelliListView;
     @FXML
@@ -142,15 +148,18 @@ public class UIListaAppelli {
         vbox.getChildren().add(new Label("Orario: " + appello.getOrario()));
         vbox.getChildren().add(new Label("Luogo: " + appello.getLuogo()));
 
+
         dialog.getDialogPane().setContent(vbox);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
+
 
         dialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
                     ems.prenotaAppello(studente, appello); // Metodo da implementare in EMS
                     showAlert("Successo", "Prenotazione effettuata con successo.");
-                    visualizzaAppelli(); // <-- Aggiorna la lista degli appelli
+                    visualizzaAppelli();
+
                 } catch (Exception e) {
                     showAlert("Errore", "Errore durante la prenotazione: " + e.getMessage());
                 }
@@ -164,8 +173,7 @@ public class UIListaAppelli {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PrenotazioneAppelloView.fxml")); // Assicurati che il nome del file sia corretto
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
-        UIPrenotazioneAppello controller = fxmlLoader.getController();
-        controller.setEMS(ems);
+
         stage.setTitle("Prenotazione Appello");
         stage.setScene(scene);
         stage.show();

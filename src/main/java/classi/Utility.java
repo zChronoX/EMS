@@ -36,8 +36,8 @@ public class Utility {
             );
 
         Studente s2 = new Studente(
-                "Nappo", // Nome
-                "Giuseppe", // Cognome
+                "Giuseppe", // Nome
+                "Nappo", // Cognome
                 "M", // Genere
                 new Date(), // Data di nascita
                 "NPPGGPS214312PP", // Codice fiscale
@@ -125,7 +125,56 @@ public class Utility {
         return prof_list;
     }
 
-    private Docente trovaDocente(Map<String, Docente> docenti, String nomeDocente) {
+
+    public HashMap<String, Insegnamento> loadCourses(String nomeFile, HashMap<String, Docente> docenti, HashMap<String, Studente> studenti) throws IOException {
+        HashMap<String, Insegnamento> teaching_list = new HashMap<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(nomeFile))) {
+            reader.readLine(); // Salta la prima riga (intestazione)
+
+            String riga;
+            while ((riga = reader.readLine()) != null) {
+                String[] dati = riga.split(",");
+                if (dati.length >= 6) { // Verifica che ci siano almeno 6 elementi (e opzionalmente studenti)
+                    try {
+                        String id = dati[0].trim();
+                        String nome = dati[1].trim();
+                        int cfu = Integer.parseInt(dati[2].trim());
+                        String descrizione = dati[3].trim();
+                        int anno = Integer.parseInt(dati[4].trim());
+                        String[] nomiDocenti = dati[5].trim().split(";");
+
+                        Insegnamento insegnamento = new Insegnamento(id, nome, cfu, descrizione, anno);
+
+                        for (String nomeDocente : nomiDocenti) { // Itera sui nomi dei docenti
+                            Docente docente = trovaDocente(docenti, nomeDocente.trim()); // Trova il docente
+                            if (docente != null) { // Aggiungi controllo null
+                                //System.out.println("Aggiungo docente " + docente.getNome() + " all'insegnamento " + insegnamento.getNome());
+                                insegnamento.aggiungiDocente(docente);
+                               // System.out.println("agaga"+insegnamento.getDocenti().toString());
+                            } else {
+                                System.out.println("Docente " + nomeDocente + " non trovato!");
+                            }
+                        }
+
+                        // Iscrizione automatica di tutti gli studenti
+                        for (Studente studente : studenti.values()) {
+                            insegnamento.iscriviStudente(studente);
+                        }
+
+                        teaching_list.put(id, insegnamento);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Errore di formato numerico: " + e.getMessage());
+                    }
+                } else {
+                    System.err.println("Errore: Numero di elementi non corretto.");
+                }
+            }
+        }
+        return teaching_list; //lista degli insegnamenti
+    }
+
+
+    private Docente trovaDocente(HashMap<String, Docente> docenti, String nomeDocente) {
         //System.out.println("Cerco docente: " + nomeDocente);
         if (docenti != null) { // Aggiungi controllo null
             for (Docente docente : docenti.values()) {
@@ -140,100 +189,12 @@ public class Utility {
         }
         return null; // Restituisci null se il docente non viene trovato
     }
-
-    public Map<String, Insegnamento> loadCourses(String nomeFile, Map<String, Docente> docenti, Map<String, Studente> studenti) {
-        Map<String, Insegnamento> teaching_list = new HashMap<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(nomeFile))) {
-            reader.readLine(); // Salta la prima riga (intestazione)
-
-            String riga;
-            while ((riga = reader.readLine()) != null) {
-                String[] dati = riga.split(",");
-                if (dati.length >= 6) { // Verifica che ci siano almeno 6 elementi
-                    try {
-                        String id = dati[0].trim();
-                        String nome = dati[1].trim();
-                        int cfu = Integer.parseInt(dati[2].trim());
-                        String descrizione = dati[3].trim();
-                        int anno = Integer.parseInt(dati[4].trim());
-                        String[] nomiDocenti = dati[5].trim().split(";"); // Dividi i nomi dei docenti
-
-                        Insegnamento insegnamento = new Insegnamento(id, nome, cfu, descrizione, anno);
-
-                        for (String nomeDocente : nomiDocenti) { // Itera sui nomi dei docenti
-                            Docente docente = trovaDocente(docenti, nomeDocente.trim()); // Trova il docente
-
-                            if (docente != null) { // Aggiungi controllo null
-                                //System.out.println("Aggiungo docente " + docente.getNome() + " all'insegnamento " + insegnamento.getNome());
-                                insegnamento.aggiungiDocente(docente);
-                            } else {
-                                System.out.println("Docente " + nomeDocente + " non trovato!");
-                            }
-                        }
-
-                        // Iscrizione automatica di tutti gli studenti
-                        for (Studente studente : studenti.values()) {
-                            insegnamento.iscriviStudente(studente);
-                        }
-
-                        teaching_list.put(id, insegnamento);
-                    } catch (NumberFormatException e) {
-                        System.err.println("Errore di formato numerico nella riga: " + riga);
-                    }
-                } else {
-                    System.err.println("Errore: Numero di elementi non corretto nella riga: " + riga);
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("Errore durante la lettura del file: " + e.getMessage());
-        }
-        return teaching_list;
-    }
-
+/*
     public void loadResults(){
         //todo
     }
 
-
-
-
-    public static boolean verificaEAggiungiMatricola(String filePath, String nuovaMatricola) {
-            // Lista per memorizzare le matricole lette dal file
-        List<String> matricole = new ArrayList<>();
-
-            // Leggere le matricole esistenti dal file
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                matricole.add(line.trim()); // Aggiunge ogni riga (senza spazi) alla lista
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("File non trovato. Verrà creato un nuovo file.");
-        } catch (IOException e) {
-            System.out.println("Errore durante la lettura del file: " + e.getMessage());
-        }
-
-            // Controlla se la nuova matricola esiste già
-        if (matricole.contains(nuovaMatricola)) {
-            System.out.println("La matricola esiste già.");
-            return false; // Restituisce false se la matricola è già presente
-        }
-
-            // Se non esiste, aggiungila al file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
-            writer.write(nuovaMatricola);
-            writer.newLine(); // Aggiunge una nuova riga
-        } catch (IOException e) {
-            System.out.println("Errore durante la scrittura nel file: " + e.getMessage());
-            return false; // Restituisce false in caso di errore
-        }
-
-        System.out.println("Matricola aggiunta con successo.");
-        return true; // Restituisce true se la matricola è stata aggiunta
-    }
-
-
-
+*/
 
 }
 

@@ -9,18 +9,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class UIMain extends Application {
-
-    //EMS ems = new EMS(); // Crea l'istanza di EMS *PRIMA* di caricare il FXML
-    private final EMS ems = EMS.getInstance();
     @Override
     public void start(Stage stage) throws IOException {
-
+        EMS ems = EMS.getInstance();
 
         FXMLLoader fxmlLoader = new FXMLLoader(UIMain.class.getResource("WelcomeView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-
-        WelcomeController welcomeController = fxmlLoader.getController();
-        welcomeController.setEMS(ems); // Passa l'istanza di EMS *PRIMA* di mostrare la finestra
 
         stage.setTitle("EMS");
         stage.setScene(scene);

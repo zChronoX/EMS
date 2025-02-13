@@ -3,43 +3,31 @@ package ui;
 import classi.EMS;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-
-public class VisualizzaStudentiUI {
-    public VisualizzaStudentiUI() {}
-
+import java.net.URL;
+import java.util.ResourceBundle;
+//Metodo initialize(): Il modo corretto per inizializzare gli elementi FXML
+// è utilizzare il metodo initialize() del tuo controller. Questo metodo viene
+// chiamato automaticamente dopo che il file FXML è stato caricato e tutti gli
+// elementi sono stati iniettati.
+public class VisualizzaStudentiUI implements Initializable {
     private EMS ems;
-
-    public void setEMS(EMS ems) {
-        this.ems = EMS.getInstance();
-        displayStudentList();
-    }
-
     @FXML
     private Button BottoneIndietroStudentiView;
     @FXML
-    private TextArea studentListTextArea; // Assuming you have a TextArea in your FXML
-
-    public void displayStudentList() { // New method to display students
-        if (ems != null) {
-            studentListTextArea.setText(ems.stampa_studentiView());
-        } else {
-            studentListTextArea.setText("EMS instance is null. Cannot display students.");
-        }
-    }
+    private TextArea studentListTextArea;
 
     @FXML
     public void IndietroWelcomeView() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Assicurati che il nome del file sia corretto
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
-        WelcomeController controller = fxmlLoader.getController();
-        controller.setEMS(ems);
         stage.setTitle("EMS");
         stage.setScene(scene);
         stage.show();
@@ -48,4 +36,21 @@ public class VisualizzaStudentiUI {
         currentStage.close();
     }
 
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ems = EMS.getInstance();
+        studentListTextArea.appendText(ems.stampa_studentiView());
+        //displayStudentList();
+
+    }
+
+    //FORSE NON SERVE
+   /* public void displayStudentList() { // New method to display students
+        if (ems != null) {
+            studentListTextArea.setText(ems.stampa_studentiView());
+        } else {
+            studentListTextArea.setText("EMS instance is null. Cannot display students.");
+        }
+    }*/
 }

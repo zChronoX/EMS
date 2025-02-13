@@ -4,28 +4,24 @@ import classi.EMS;
 import classi.Studente;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class UIStudente {
+public class UIStudente implements Initializable {
 
     public UIStudente() { }
 
     private EMS ems; // Istanza di EMS
     private Studente studente;
 
-    public void setEMS(EMS ems) {
-        this.ems = EMS.getInstance();
-    }
 
-    public void setStudente(Studente studente) {
-        this.studente = studente;
-        visualizzaInformazioniStudente();
-    }
 
     @FXML
     private Button BottonePrenotazioneStudente;
@@ -53,10 +49,8 @@ public class UIStudente {
     @FXML
     private Label matricolaLabel;
 
-
     private void visualizzaInformazioniStudente() {
         if (studente != null) {
-            // Esempio: visualizzazione in Label
             nomeLabel.setText("Nome: " + studente.getNome());
             cognomeLabel.setText("Cognome: " + studente.getCognome());
             matricolaLabel.setText("Matricola: " + studente.getMatricola());
@@ -69,9 +63,8 @@ public class UIStudente {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PrenotazioneAppelloView.fxml")); // Assicurati che il nome del file sia corretto
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
-        UIPrenotazioneAppello controller = fxmlLoader.getController();
-        controller.setEMS(ems);
-        stage.setTitle("Prenotazione Appello");
+
+        stage.setTitle("Login");
         stage.setScene(scene);
         stage.show();
 
@@ -84,8 +77,7 @@ public class UIStudente {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaPrenotazioniInsegnamentoView.fxml")); // Assicurati che il nome del file sia corretto
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
-        VisualizzaPrenotazioniInsegnamentoUI controller = fxmlLoader.getController();
-        controller.setEMS(ems);
+
         stage.setTitle("Visualizza info Esame");
         stage.setScene(scene);
         stage.show();
@@ -93,15 +85,22 @@ public class UIStudente {
         Stage currentStage = (Stage) BottoneVisualizzaInfoEsame.getScene().getWindow();
         currentStage.close();
     }
+
     @FXML
     public void LogoutStudente() throws IOException {
         Stage primaryStage = (Stage) BottoneLogoutStudente.getScene().getWindow(); // Ottieni lo Stage
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Carica WelcomeView.fxml
         Scene scene = new Scene(fxmlLoader.load());
-        WelcomeController controller = fxmlLoader.getController();
-        controller.setEMS(ems);
+
         primaryStage.setScene(scene); // Imposta la scena di WelcomeView sullo Stage
         primaryStage.setTitle("EMS"); // Puoi anche reimpostare il titolo
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ems = EMS.getInstance();
+        studente=ems.getStudenteCorrente();
+        visualizzaInformazioniStudente();
     }
 }

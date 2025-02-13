@@ -1,10 +1,16 @@
 package classi;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.*;
+import java.nio.file.Paths;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class EMS {
     private static EMS ems; //CAMPO PER MEMORIZZARE L'UNICA ISTANZA
@@ -13,63 +19,49 @@ public class EMS {
     private Docente docenteCorrente;
     private HashMap<String,Studente> student_list;
     private HashMap<String,Docente> doc_list;
-    private Map<String,Insegnamento> teaching_list;
+    private HashMap<String,Insegnamento> teaching_list;
     private UtenteFactory utenteFactory;
     public static final int POSTI_MAX = 500;
-    private List<Esito_esame> esitiList = new ArrayList<>();
-    private List<Prenotazione> prenotazioniList = new ArrayList<>();
-   // private HashMap<String,Appello_esame> exam_list;
+    //private HashMap<String,Appello_esame> exam_list;
+    private Insegnamento insegnamentoSelezionato;
+    private Appello_esame appelloSelezionato;
+    //private List<Prenotazione> prenotazioniList = new ArrayList<>();
+    private HashMap<String, Prenotazione> reservation_list;
+    private List<Esito_esame> result_list = new ArrayList<>();
 
     public EMS() {
-        //this.exam_list = new HashMap<>(); // Initialization in the constructor
+
         this.student_list = new HashMap<>();
         this.doc_list = new HashMap<>();
-        this.teaching_list = new HashMap<>();
-
+        this.teaching_list = new HashMap<>(); //lista insegnamenti
+        this.reservation_list = new HashMap<>(); //lista prenotazioni
 
         Utility utility = new Utility(); // Crea un'istanza di Utility
 
         // Carica gli studenti statici
         HashMap<String, Studente> studentiStatici = utility.loadStudents();
-        this.student_list.putAll(studentiStatici); // Aggiungi gli studenti statici alla student_list
+        this.student_list.putAll(studentiStatici); // Aggiunge gli studenti statici alla student_list
 
         // Carica i docenti statici
-        HashMap<String, Docente> docentiStatici = utility.loadProfessors(); // Assumi che tu abbia un metodo del genere
+        HashMap<String, Docente> docentiStatici = utility.loadProfessors();
         if(docentiStatici != null) { //controllo per evitare null pointer exception nel caso in cui non ci siano docenti statici
-            this.doc_list.putAll(docentiStatici); // Aggiungi i docenti statici alla doc_list
+            this.doc_list.putAll(docentiStatici); // Aggiunge i docenti statici alla doc_list
         }
 
-        Path currentFilePath = Paths.get("").toAbsolutePath(); // Ottenere il path della directory corrente
-        Path filePath = currentFilePath.resolve("src\\main\\files\\insegnamenti.txt");
-        teaching_list= utility.loadCourses(filePath.toAbsolutePath().toString(),doc_list,student_list);
+        Path filePath = Paths.get("src/main/files/insegnamenti.txt");
 
-
-    }
-
-    public void stampa_studenti() {
-        // Stampa la student_list
-        System.out.println("Studenti caricati:");
-        for (Map.Entry<String, Studente> entry : this.student_list.entrySet()) {
-            String chiave = entry.getKey();
-            Studente studente = entry.getValue();
-            System.out.println("Matricola: " + chiave + ", Studente: " + studente);
+        // Verifica se il file esiste prima di tentare di caricarlo
+        if (!Files.exists(filePath)) {
+            System.err.println("Errore: il file insegnamenti.txt non esiste nel percorso: " + filePath.toAbsolutePath());
+        } else {
+            try {
+                teaching_list = utility.loadCourses(filePath.toString(), doc_list, student_list);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println( teaching_list);
         }
-    }
 
-    public void stampa_docenti() {
-        // Stampa la doc_list
-        System.out.println("\nDocenti caricati:"); // Aggiunto un newline per separare le stampe
-        for (Map.Entry<String, Docente> entry : this.doc_list.entrySet()) {
-            String chiave = entry.getKey();
-            Docente docente = entry.getValue();
-            System.out.println("Codice Docente: " + chiave + ", Docente: " + docente);
-        }
-    }
-    public void stampa_insegnamenti() {
-        System.out.println("Lista degli insegnamenti:");
-        for (Insegnamento insegnamento : teaching_list.values()) {
-            System.out.println(insegnamento);
-        }
     }
 
     public void stampa_tutti_gli_appelli() {
@@ -93,36 +85,34 @@ public class EMS {
         }
     }
 
+    public void stampa_studenti() {
+        // Stampa la student_list
+        System.out.println("Studenti caricati:");
+        for (HashMap.Entry<String, Studente> entry : this.student_list.entrySet()) {
+            String chiave = entry.getKey();
+            Studente studente = entry.getValue();
+            System.out.println("Matricola: " + chiave + ", Studente: " + studente);
+        }
+    }
+
+    public void stampa_docenti() {
+        // Stampa la doc_list
+        System.out.println("\nDocenti caricati:"); // Aggiunto un newline per separare le stampe
+        for (HashMap.Entry<String, Docente> entry : this.doc_list.entrySet()) {
+            String chiave = entry.getKey();
+            Docente docente = entry.getValue();
+            System.out.println("Codice Docente: " + chiave + ", Docente: " + docente);
+        }
+    }
+
     public void stampa_utenti(){
         stampa_studenti();
         stampa_docenti();
-        stampa_insegnamenti();
-        stampa_tutti_gli_appelli();
     }
-    public Map<String, Insegnamento> getInsegnamenti() {
-        return teaching_list;
-    }
-    /*public static void EMS() {
-        //todo
-    };*/
-   /* public void loadStudents () {
-        //todo
-    };
-    public void loadProfessors () {
-        //todo
-    };
-    public void loadCourses() {
-        //todo
-    };
-    public void loadExams () {
-        //todo
-    };
-    public void loadResults () {
-        //todo
-    }; */
+
     //Pattern Singleton
     public static EMS getInstance(){
-        //todo
+
         if(ems == null){
             ems = new EMS();
             return ems;
@@ -133,15 +123,13 @@ public class EMS {
     };
     //come fa questa funzione a capire qual è l'utente corrente? penso ci voglia una get
     public void AggiungiInfoStudente(String categoria, int anno_corso){
-        utenteCorrente=ems.getUtenteCorrente(); //aggiunta da me, non so se è giusto
-        if(utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) { //NON FA QUESTO IF
+        utenteCorrente=ems.getUtenteCorrente();
+        if(utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) {
             studenteCorrente = (Studente) utenteCorrente;
             studenteCorrente.setCategoria(categoria);
             studenteCorrente.setAnnoCorso(anno_corso);
         }
     }
-
-
 
     public void confermaUtente() {
         utenteCorrente = ems.getUtenteCorrente();
@@ -183,64 +171,35 @@ public class EMS {
             studenteCorrente = (Studente) utenteCorrente;
             studenteCorrente.assegnaIdentificativiStudente();
 
-            //System.out.println("CODICE: " + studenteCorrente.getMatricola());
-            //System.out.println("PASSWORD: " + studenteCorrente.getPassword());
         }
         else if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Docente) {
             docenteCorrente = (Docente) utenteCorrente;
             docenteCorrente.assegnaIdentificativiDocente();
 
-            //System.out.println("CODICE: " + docenteCorrente.getCodiceDocente());
-            //System.out.println("PASSWORD: " + docenteCorrente.getPassword());
         }
-        //QUESTA STAMPA VIENE FATTA
-
-        //System.out.println("CODICE: " + studenteCorrente.getMatricola());
-        //System.out.println("PASSWORD: " + studenteCorrente.getPassword());
     }
 
-    //USATA
     public void scegliTipoProfilo(Utente.TipoProfilo tipoProfilo) {
         utenteFactory = new UtenteFactory();
 
         utenteCorrente= utenteFactory.newUser(tipoProfilo);
-        //System.out.println("STAMPA TIPO PROFILO DOPO ScegliTipoProfilo: " + utenteCorrente.getTipoProfilo()); //STAMPA NULL!!!!!
     }
 
-
-    public Studente getStudenteCorrente() {
+   public Studente getStudenteCorrente() {
         return studenteCorrente;
-    }
+   }
 
-    public void setStudenteCorrente(Studente studente) {
-        this.studenteCorrente = studente;
+    public Docente getDocenteCorrente() {
+       return docenteCorrente;
     }
 
     public void setUtenteCorrente(Utente utente) {
         this.utenteCorrente = utente;
     }
+
     public Utente getUtenteCorrente() {
         return utenteCorrente;
     }
-
-    public Docente getDocenteCorrente() {
-        return docenteCorrente;
-    }
-
-    public void setDocenteCorrente(Docente docente) {
-        this.docenteCorrente = docente;
-    }
-
-    public Studente getStudente(String matricola) {
-        for (Studente studente : this.student_list.values()) {
-            if (studente.getMatricola().equals(matricola)) {
-                return studente;
-            }
-        }
-        return null;
-    }
-
-
 
 
   public boolean loginStudente(String matricola, String password) throws Exception {
@@ -271,17 +230,30 @@ public class EMS {
         docenteCorrente = docente; // Memorizza il docente corrente
         return true;
     }
+
     public String stampa_studentiView() {
+
         if (student_list == null || student_list.isEmpty()) {
             return "Non ci sono studenti registrati."; // Gestione del caso in cui la mappa è vuota
         }
 
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, Studente> entry : student_list.entrySet()) {
-            String matricola = entry.getKey();
-            Studente studente = entry.getValue();
+        for (HashMap.Entry<String, Studente> entry : student_list.entrySet()) {
+
+            //
+                String matricola = entry.getKey();
+                Studente studente = entry.getValue();
+               // System.out.println("Matricola: " + matricola + ", Studente: " + studente);
+            //
+
+
+           // String matricola = entry.getKey();
+          //  Studente studente = entry.getValue();
+
             sb.append("Matricola: ").append(matricola).append("\n"); // Includi la matricola
+
             sb.append(studente.toString()).append("\n\n"); // Aggiungi una riga vuota per chiarezza
+            System.out.println(sb.toString());
         }
         return sb.toString();
     }
@@ -300,6 +272,24 @@ public class EMS {
         return sb.toString();
     }
 
+    public HashMap<String, Docente> getDoc_list() {
+        return doc_list;
+    }
+
+    public HashMap<String, Insegnamento> getInsegnamenti() {
+        return teaching_list;
+    }
+
+    public Insegnamento getInsegnamento(String codice) {
+        if (this.teaching_list != null) {
+            return this.teaching_list.get(codice);
+        }
+        return null;
+    }
+
+    public HashMap<String, Studente> getStudenti() {
+        return student_list;
+    }
 
     public boolean cancellaStudente(String matricola, String password) throws Exception {
         Studente studente = student_list.get(matricola);
@@ -314,9 +304,6 @@ public class EMS {
 
         student_list.remove(matricola); // Rimozione dalla mappa
         return true;
-    }
-    public HashMap<String, Studente> getStudenti() {
-        return student_list;
     }
 
     public List<Appello_esame> getAppelliByInsegnamento(Insegnamento insegnamento) {
@@ -334,13 +321,6 @@ public class EMS {
         return appelliFiltrati;
     }
 
-    public Insegnamento getInsegnamento(String codice) {
-        if (this.teaching_list != null) {
-            return this.teaching_list.get(codice);
-        }
-        return null;
-    }
-
     public Appello_esame getAppelloById(String idAppello) {
         for (Insegnamento insegnamento : this.teaching_list.values()) { // Itera sugli insegnamenti
             List<Appello_esame> appelli = this.getAppelliByInsegnamento(insegnamento); // Recupera gli appelli per l'insegnamento
@@ -354,18 +334,6 @@ public class EMS {
             }
         }
         return null; // Nessun appello trovato con questo ID
-    }
-
-    private String generaIdPrenotazione() {
-        Random random = new Random();
-        int idPrenotazione = 100000 + random.nextInt(900000); // Numero casuale tra 100000 e 999999
-        return String.valueOf(idPrenotazione);
-    }
-
-    private int prossimoProgressivo = 1; // Inizializza il contatore
-
-    private synchronized int generaProgressivo() {
-        return prossimoProgressivo++;
     }
 
     public void prenotaAppello(Studente studente, Appello_esame appello) throws Exception {
@@ -386,36 +354,13 @@ public class EMS {
             throw new Exception("Non ci sono posti disponibili per questo appello.");
         }
 
-        // Crea la Prenotazione *PRIMA* di aggiungere appello e studente
-        Prenotazione prenotazione = new Prenotazione(); // Usa il costruttore senza parametri
-        prenotazione.setStudente(studente);
-        prenotazione.setAppello(appello);
-
-        // Genera e imposta ID, Data, Ora e Progressivo
-        String idPrenotazione = generaIdPrenotazione(); // Implementa questa funzione
-        prenotazione.setID_prenotazione(idPrenotazione);
-        prenotazione.setData(LocalDate.now()); // Imposta la data corrente
-        prenotazione.setOra(LocalTime.now()); // Imposta l'ora corrente
-        prenotazione.setProgressivo(generaProgressivo()); // Implementa questa funzione
-
-        // Aggiungi la prenotazione alla lista in EMS
-        prenotazioniList.add(prenotazione);
-
         appello.addStudente(studente);
         studente.addAppello(appello);
 
         // Decrementa i posti disponibili
         appello.setPostiDisponibili(appello.getPostiDisponibili() - 1);
 
-        // Stampa a console per debug
         System.out.println("Prenotazione effettuata con successo per " + studente.getNome() + " all'appello " + appello.getID_appello());
-        System.out.println("ID Prenotazione: " + prenotazione.getID_prenotazione());
-
-        // Stampa la lista di prenotazioni *dopo* aver aggiunto la nuova prenotazione
-        System.out.println("Elenco prenotazioni dopo l'aggiunta:");
-        for (Prenotazione p : prenotazioniList) {
-            System.out.println("  - " + p.getStudente().getMatricola() + " - " + p.getAppello().getID_appello());
-        }
     }
 
     public boolean isStudentePrenotato(Studente studente, Appello_esame appello) {
@@ -424,25 +369,6 @@ public class EMS {
         }
         return appello.getStudenti().contains(studente);
     }
-
-    public void cancellaPrenotazione(Studente studente, Appello_esame appello) throws Exception {
-        if (studente == null || appello == null) {
-            throw new Exception("Studente o appello non validi.");
-        }
-
-        if (!appello.getStudenti().contains(studente)) {
-            throw new Exception("Studente non prenotato a questo appello.");
-        }
-
-        appello.removeStudente(studente); // Implementa questo metodo in Appello_esame
-        studente.removeAppello(appello); // Implementa questo metodo in Studente
-
-        // Incrementa i posti disponibili
-        appello.setPostiDisponibili(appello.getPostiDisponibili() + 1);
-
-        System.out.println("Prenotazione cancellata con successo per " + studente.getNome() + " all'appello " + appello.getID_appello());
-    }
-
 
     public List<Insegnamento> getInsegnamentiByDocente(Docente docente) {
         List<Insegnamento> insegnamentiDocente = new ArrayList<>();
@@ -467,50 +393,39 @@ public class EMS {
         return insegnamentiDocente;
     }
 
-    public List<Studente> getStudentiByAppello(Appello_esame appello) {
-        return appello.getStudenti();
-    }
-
-    public Esito_esame getEsitoByStudente(Studente studente, Appello_esame appello) {
+    public void cancellaPrenotazione(Studente studente, Appello_esame appello) throws Exception {
         if (studente == null || appello == null) {
-            return null; // Gestisci il caso di input nulli
+            throw new Exception("Studente o appello non validi.");
         }
 
-        for (Esito_esame esito : this.esitiList) { // Itera sulla lista di esiti in EMS
-            if (esito.getStudente().equals(studente) && esito.getAppello().equals(appello)) {
-                return esito;
-            }
+        if (!appello.getStudenti().contains(studente)) {
+            throw new Exception("Studente non prenotato a questo appello.");
         }
 
-        return null; // Esito non trovato
-    }
-    public void inserisciEsito(String idPrenotazione, Esito_esame esito) {
-        if (idPrenotazione == null || esito == null) {
-            return; // Gestisci il caso di input nulli
-        }
+        appello.removeStudente(studente); // Implementa questo metodo in Appello_esame
+        studente.removeAppello(appello); // Implementa questo metodo in Studente
 
-        for (Prenotazione prenotazione : prenotazioniList) {
-            if (prenotazione.getID_prenotazione().equals(idPrenotazione)) {
-                prenotazione.setEsito(esito); // Associa l'esito alla prenotazione
-                esito.setPrenotazione(prenotazione); //Associa la prenotazione all'esito
-                return; // Esci dalla funzione dopo aver trovato e aggiornato la prenotazione
-            }
-        }
+        // Incrementa i posti disponibili
+        appello.setPostiDisponibili(appello.getPostiDisponibili() + 1);
 
-        // Gestisci il caso in cui non viene trovata alcuna prenotazione con l'ID specificato
-        System.out.println("Nessuna prenotazione trovata con ID: " + idPrenotazione);
+        System.out.println("Prenotazione cancellata con successo per " + studente.getNome() + " all'appello " + appello.getID_appello());
     }
 
-    public void rifiutaEsito(Esito_esame esito) {
-        if (esito != null) {
-            esito.setStato("Rifiutato");
-
-        }
-
-
+    
+    public void setInsegnamentoSelezionato(Insegnamento insegnamento) {
+        this.insegnamentoSelezionato = insegnamento;
     }
-    public List<Prenotazione> getPrenotazioniList() { // Aggiungi il getter per la lista
-        return prenotazioniList;
+
+    public Insegnamento getInsegnamentoSelezionato() {
+       return this.insegnamentoSelezionato;
+    }
+
+    public void setAppelloSelezionato(Appello_esame appello) {
+        this.appelloSelezionato = appello;
+    }
+
+    public Appello_esame getAppelloSelezionato() {
+        return this.appelloSelezionato;
     }
 
     public Prenotazione getPrenotazioneByStudenteAndAppello(Studente studente, Appello_esame appello) {
@@ -522,15 +437,17 @@ public class EMS {
         }
 
         System.out.println("Lista prenotazioni:");
-        if (prenotazioniList.isEmpty()) {
+        if (reservation_list.isEmpty()) {
             System.out.println("  La lista è vuota.");
         } else {
-            for (Prenotazione p : prenotazioniList) {
+            for (Map.Entry<String, Prenotazione> entry : reservation_list.entrySet()) { // Usa entrySet()
+                Prenotazione p = entry.getValue(); // Ottieni l'oggetto Prenotazione
                 System.out.println("  - " + p.getStudente().getMatricola() + " - " + p.getAppello().getID_appello());
             }
         }
 
-        for (Prenotazione p : prenotazioniList) {
+        for (Map.Entry<String, Prenotazione> entry : reservation_list.entrySet()) { // Usa entrySet() anche qui
+            Prenotazione p = entry.getValue();
             System.out.println("Confronto con prenotazione: " + p.getStudente().getMatricola() + " - " + p.getAppello().getID_appello());
             if (p.getStudente().equals(studente) && p.getAppello().equals(appello)) {
                 System.out.println("Prenotazione trovata!");
@@ -542,8 +459,42 @@ public class EMS {
         return null;
     }
 
+    public void rifiutaEsito(Esito_esame esito) {
+        if (esito != null) {
+            esito.setStato("Rifiutato");
+
+        }
+    }
+
+    public List<Studente> getStudentiByAppello(Appello_esame appello) {
+        return appello.getStudenti();
+    }
+
+    public Studente getStudente(String matricola) {
+        for (Studente studente : this.student_list.values()) {
+            if (studente.getMatricola().equals(matricola)) {
+                return studente;
+            }
+        }
+        return null;
+    }
+
+    public Esito_esame getEsitoByStudente(Studente studente, Appello_esame appello) {
+        if (studente == null || appello == null) {
+            return null; // Gestisci il caso di input nulli
+        }
+
+        for (Esito_esame esito : this.result_list) { // Itera sulla lista di esiti in EMS
+            if (esito.getStudente().equals(studente) && esito.getAppello().equals(appello)) {
+                return esito;
+            }
+        }
+
+        return null; // Esito non trovato
+    }
+
     public Esito_esame getEsitoByPrenotazione(Prenotazione prenotazione) {
-        for (Esito_esame esito : esitiList) {
+        for (Esito_esame esito : result_list) {
             if (esito.getPrenotazione().equals(prenotazione)) {
                 return esito;
             }
@@ -551,13 +502,25 @@ public class EMS {
         return null;
     }
 
+    public void inserisciEsito(String idPrenotazione, Esito_esame esito) {
+        if (idPrenotazione == null || esito == null) {
+            return; // Gestisci il caso di input nulli
+        }
+
+        for (Prenotazione prenotazione : reservation_list.values()) {
+            if (prenotazione.getID_prenotazione().equals(idPrenotazione)) {
+                prenotazione.setEsito(esito); // Associa l'esito alla prenotazione
+                esito.setPrenotazione(prenotazione); //Associa la prenotazione all'esito
+                return; // Esci dalla funzione dopo aver trovato e aggiornato la prenotazione
+            }
+        }
+
+        // Gestisci il caso in cui non viene trovata alcuna prenotazione con l'ID specificato
+        System.out.println("Nessuna prenotazione trovata con ID: " + idPrenotazione);
     }
 
 
-
-
-
-
+}
 
 
 

@@ -10,6 +10,7 @@ module com.example.exammanagmentsystem {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires com.fasterxml.jackson.core;
     requires java.desktop;
 
     opens ui to javafx.fxml;

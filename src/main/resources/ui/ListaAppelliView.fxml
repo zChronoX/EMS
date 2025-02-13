@@ -4,11 +4,11 @@
 <?import javafx.scene.layout.*?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.UIListaAppelli">
-   <children>
-      <Label text="Lista Appelli" />
-      <ListView fx:id="appelliListView" prefHeight="200.0" prefWidth="200.0" />
-      <Button fx:id="BottoneIndietroCercaInsegnamento" mnemonicParsing="false" onAction="#IndietroCercaInsegnamento" text="Indietro" />
-      <TextField fx:id="idAppelloTextField" promptText="Inserisci l'ID Appello al quale prenotarsi" />
-      <Button fx:id="confermaPrenotazioneButton" mnemonicParsing="false" onAction="#handleConfermaPrenotazione" text="Conferma Prenotazione" />
-   </children>
+    <children>
+        <Label text="Lista Appelli" />
+        <ListView fx:id="appelliListView" prefHeight="200.0" prefWidth="200.0" />
+        <Button fx:id="BottoneIndietroCercaInsegnamento" mnemonicParsing="false" onAction="#IndietroCercaInsegnamento" text="Indietro" />
+        <TextField fx:id="idAppelloTextField" promptText="Inserisci l'ID Appello al quale prenotarsi" />
+        <Button fx:id="confermaPrenotazioneButton" mnemonicParsing="false" onAction="#handleConfermaPrenotazione" text="Conferma Prenotazione" />
+    </children>
 </VBox>

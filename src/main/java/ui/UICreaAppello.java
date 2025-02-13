@@ -1,38 +1,38 @@
 package ui;
 
-import classi.*;
+import classi.Appello_esame;
+import classi.Docente;
+import classi.EMS;
+import classi.Insegnamento;
+import com.fasterxml.jackson.core.JsonParser;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
-public class UICreaAppello {
+public class UICreaAppello implements Initializable {
 
     @FXML
-    private Button nuovaRicercaButton;
-    @FXML
-    private Button confermaButton;
-    @FXML
-    private Button BottoneIndietroWelcomeViewAppello;
+    private TextField idInsegnamentoTextField;
 
     @FXML
     private Label codiceInsegnamentoLabel;
-    @FXML
-    private TextField idInsegnamentoTextField;
+
     @FXML
     private Button cercaInsegnamentoButton;
+
     @FXML
     private TextField idAppelloTextField;
     @FXML
@@ -46,27 +46,39 @@ public class UICreaAppello {
     @FXML
     private TextField tipologiaTextField;
     @FXML
-    private ListView<String> docentiListView; // ListView per visualizzare i docenti
+    private Button nuovaRicercaButton;
+    @FXML
+    private Button confermaButton;
+    @FXML
+    private Button BottoneIndietroWelcomeViewAppello;
+    @FXML
+    private ListView<String> docentiListView; // ListView per visualizzare i docenti*/
 
+
+
+    private EMS ems;
     private Insegnamento insegnamento;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ems=EMS.getInstance();
 
-    public UICreaAppello() {}
-    private EMS ems;
-
-    public void setEMS(EMS ems) {
-        this.ems = EMS.getInstance();
     }
 
+    //verificare caricamento insegnamenti --> dovrebbero essere caricati
+
+    //cosa succede quando premo "Cerca insegnamento"
     @FXML
     private void handleCercaInsegnamento(ActionEvent event) {
+
         String codice = idInsegnamentoTextField.getText();
-        Map<String, Insegnamento> insegnamenti = ems.getInsegnamenti();
+        HashMap<String, Insegnamento> insegnamenti = ems.getInsegnamenti();
 
         if (insegnamenti != null && insegnamenti.containsKey(codice)) {
-            insegnamento = insegnamenti.get(codice);
+             insegnamento = insegnamenti.get(codice);
 
-            docentiListView.getItems().clear();
+            //docentiListView.getItems().clear(); capire se serve
+            idInsegnamentoTextField.clear(); //capire se serve
             List<Docente> docenti = insegnamento.getDocenti();
 
             if (docenti != null && !docenti.isEmpty()) {
@@ -76,7 +88,6 @@ public class UICreaAppello {
             } else {
                 docentiListView.getItems().add("Nessun docente assegnato.");
             }
-
 
             codiceInsegnamentoLabel.setVisible(false);
             idInsegnamentoTextField.setVisible(false);
@@ -99,6 +110,25 @@ public class UICreaAppello {
             idInsegnamentoTextField.clear();
             docentiListView.getItems().clear();
         }
+    }
+
+    private void mostraCampi() {
+        idAppelloTextField.setVisible(true);
+        orarioTextField.setVisible(true);
+        dataDatePicker.setVisible(true);
+        luogoTextField.setVisible(true);
+        postiTextField.setVisible(true);
+        tipologiaTextField.setVisible(true);
+        docentiListView.setVisible(true);
+        nuovaRicercaButton.setVisible(true);
+        confermaButton.setVisible(true);
+    }
+
+    private int generateRandomInt(int digits) {
+        Random random = new Random();
+        int min = (int) Math.pow(10, digits - 1);
+        int max = (int) Math.pow(10, digits) - 1;
+        return min + random.nextInt(max - min + 1);
     }
 
     @FXML
@@ -185,20 +215,11 @@ public class UICreaAppello {
             e.printStackTrace(); // Stampa l'errore sulla console (utile per il debug)
             mostraErrore("Errore durante la creazione dell'appello", e.getMessage()); // Mostra un messaggio all'utente
         }
+
     }
-
-
 
     private void mostraErrore(String titolo, String messaggio) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(titolo);
-        alert.setHeaderText(titolo);
-        alert.setContentText(messaggio);
-        alert.showAndWait();
-    }
-
-    private void mostraMessaggio(String titolo, String messaggio) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titolo);
         alert.setHeaderText(titolo);
         alert.setContentText(messaggio);
@@ -214,18 +235,20 @@ public class UICreaAppello {
         codiceInsegnamentoLabel.setVisible(true);
         idInsegnamentoTextField.setVisible(true);
         cercaInsegnamentoButton.setVisible(true);
+
     }
 
-    private void mostraCampi() {
-        idAppelloTextField.setVisible(true);
-        orarioTextField.setVisible(true);
-        dataDatePicker.setVisible(true);
-        luogoTextField.setVisible(true);
-        postiTextField.setVisible(true);
-        tipologiaTextField.setVisible(true);
-        docentiListView.setVisible(true);
-        nuovaRicercaButton.setVisible(true);
-        confermaButton.setVisible(true);
+    @FXML
+    public void IndietroWelcomeView() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.setTitle("EMS");
+        stage.setScene(scene);
+        stage.show();
+
+        Stage currentStage = (Stage) BottoneIndietroWelcomeViewAppello.getScene().getWindow();
+        currentStage.close();
     }
 
     private void nascondiCampi() {
@@ -240,27 +263,5 @@ public class UICreaAppello {
         confermaButton.setVisible(false);
     }
 
-    private int generateRandomInt(int digits) {
-        Random random = new Random();
-        int min = (int) Math.pow(10, digits - 1);
-        int max = (int) Math.pow(10, digits) - 1;
-        return min + random.nextInt(max - min + 1);
-    }
-
-    public void IndietroWelcomeView() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Stage stage = new Stage();
-        WelcomeController controller = fxmlLoader.getController();
-        controller.setEMS(ems); // Passa l'istanza di EMS
-        stage.setTitle("EMS");
-        stage.setScene(scene);
-        stage.show();
-
-        Stage currentStage = (Stage) BottoneIndietroWelcomeViewAppello.getScene().getWindow();
-        currentStage.close();
-    }
 
 }
-
-

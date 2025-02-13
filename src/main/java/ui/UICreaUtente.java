@@ -3,6 +3,7 @@ package ui;
 import classi.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -13,11 +14,20 @@ import javafx.stage.Stage;
 
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class UICreaUtente {
+public class UICreaUtente implements Initializable {
+    private EMS ems;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ems=EMS.getInstance();
+    }
+
     String nome;
     String cognome;
     Date data_nascita; //qui bisogna capire che tipo dobbiamo mettere --> Date
@@ -32,14 +42,6 @@ public class UICreaUtente {
     String categoria;
     int anno_corso;
 
-
-    private EMS ems;
-
-
-    public void setEMS(EMS ems) {
-        this.ems = EMS.getInstance();
-    }
-
     @FXML
     private Button BottoneCreaUtente;
 
@@ -52,8 +54,7 @@ public class UICreaUtente {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Carica WelcomeView.fxml
         Scene scene = new Scene(fxmlLoader.load());
-        WelcomeController controller = fxmlLoader.getController();
-        controller.setEMS(ems);
+
         primaryStage.setScene(scene); // Imposta la scena di WelcomeView sullo Stage
         primaryStage.setTitle("EMS"); // Puoi anche reimpostare il titolo
     }
@@ -121,7 +122,7 @@ public class UICreaUtente {
             BottoneStudente.setVisible(false); // Nascondi il bottone "Studente"
         }
         //settare la scelta e mostrare l'elenco con i parametri da riempire e registrare
-        ems=EMS.getInstance();
+
         tipoProfilo= Utente.TipoProfilo.Docente;
 
         ems.scegliTipoProfilo(tipoProfilo); //qui si richiama EMS che richiama la factory
@@ -144,8 +145,14 @@ public class UICreaUtente {
             BottoneStudente.setVisible(false); // Nascondi il bottone "Studente"
             BottoneDocente.setVisible(false); // Nascondi il bottone "Docente"
         }
+        if(SezioneCategoria.isVisible()==false){
+            SezioneCategoria.setVisible(true);
+        }
+        if(SezioneAnnoCorso.isVisible()==false){
+            SezioneAnnoCorso.setVisible(true);
+        }
         //settare la scelta e mostrare l'elenco con i parametri da riempire e registrare
-        ems=EMS.getInstance();
+
         tipoProfilo= Utente.TipoProfilo.Studente;
 
         ems.scegliTipoProfilo(tipoProfilo); //qui si richiama ems che richiama la factory
@@ -175,38 +182,31 @@ public class UICreaUtente {
         residenza=CasellaResidenza.getText();
         email=CasellaEmail.getText();
         telefono=CasellaTelefono.getText();
-        ems=EMS.getInstance();
-        if (ems.creaProfiloUtente(nome, cognome, data_nascita, genere, codice_fiscale, residenza, email, telefono))
-            System.out.println("Utente creato con successo");
         if(tipoProfilo==Utente.TipoProfilo.Studente){
             categoria=CasellaCategoria.getText();
             anno_corso=Integer.parseInt(CasellaAnnoCorso.getText());
-            ems.AggiungiInfoStudente(categoria, anno_corso);
-            System.out.println("Categoria e anno corso aggiunti");
+            }
 
-        }
+
+        if (ems.creaProfiloUtente(nome, cognome, data_nascita, genere, codice_fiscale, residenza, email, telefono))
+            System.out.println("Utente creato con successo");
 
         //devo capire come memorizzare categoria e anno corso, credo ci sia un problema con l'utente corrente
             //System.out.println("Categoria: " + categoria); //qui sono memorizzati correttamente
             //System.out.println("Anno corso: " + anno_corso);
-
-
+        if(tipoProfilo==Utente.TipoProfilo.Studente){
+           ems.AggiungiInfoStudente(categoria, anno_corso);
+           System.out.println("Categoria e anno corso aggiunti");
+        }
 
         //nascondo i campi dopo averli acquisiti
         ContenitoreInformazioni.setVisible(false);
 
-        //Il sistema genera una password temporanea e assegna un ID utente come credenziali di accesso per il nuovo utente.
-        //RICHIAMARE generaCredenziali ???
         ems.generaCredenziali();
-
-        // Per gli studenti l’ID utente corrisponde alla matricola, mentre per i docenti corrisponde al codice utente.
-
-        //L’Amministratore indica di aver finito. --> capire se serve la funzione confermaUtente in EMS
 
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Riepilogo Informazioni");
         if(tipoProfilo==Utente.TipoProfilo.Studente){
-            //dialog.setHeaderText("LALALA"); //CAPIRE COME VISUALIZZARE LE INFORMAZIONI
             String dati = "Nome: " + studente.getNome() + "\nCognome: " + studente.getCognome() + "\nData nascita: " + studente.getData_nascita() + "\nGenere: " + studente.getGenere() + "\nCodice fiscale: " + studente.getCodice_fiscale() + "\nResidenza: " + studente.getResidenza() + "\nEmail: " + studente.getEmail() + "\nTelefono: " + studente.getTelefono() + "\nCategoria: " + studente.getCategoria() + "\nAnno corso: " + studente.getAnnoCorso() + "\nMatricola: " + studente.getMatricola() + "\nPassword: " + studente.getPassword();
             dialog.setContentText(dati);
         }else{
@@ -224,8 +224,6 @@ public class UICreaUtente {
 
             BottoneCreaUtente.setVisible(true); //setto visibile BottoneCreaUtente
             BottoneIndietroWelcomeView.setVisible(true);
-            //problema con visibilità campi categoria e anno corso se si prova a creare un altro utente
-            //ne segue che memorizza nella mappa le cose inserite per lo studente precedente
 
         }
 

@@ -3,6 +3,7 @@ package ui;
 import classi.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -17,36 +18,48 @@ import java.io.IOException;
 
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class VisualizzaPrenotazioniAppelloUI {
+public class VisualizzaPrenotazioniAppelloUI implements Initializable {
 
     private Insegnamento insegnamento;
-    private Studente studente; // Se gestisci il login
+    private Studente studente;
     private EMS ems;
 
-    public void setEMS(EMS ems) {
-        this.ems = EMS.getInstance();
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ems=EMS.getInstance();
         studente = ems.getStudenteCorrente();
         System.out.println("UIListaAppelli: Studente (set): " + studente);
+
+        //RECUPERARE INSEGNAMENTO SELEZIONATO DOPO FARE LE ISTRUZIONI CHE SEGUONO
+        insegnamento=ems.getInsegnamentoSelezionato();
+
+        visualizzaInformazioniInsegnamento();
+        visualizzaAppelliPrenotati();
     }
 
-    public void setStudente(Studente studente) {
+    //CAPIRE A COSA SERVIVA QUESTO DATO CHE IN TEORIA LO STUDENTE CORRENTE è GIà STATO RECUPERATO
+    /*public void setStudente(Studente studente) {
         this.studente = studente;
 
-    }
+    }*/
 
-    public void setInsegnamento(Insegnamento insegnamento) {
+
+    //FORSE PURE QUA STESSO DISCORSO DEL SETTARE INSEGNAMENTO CORRENTE?? VA FATTO IN INITIALIZE
+   /* public void setInsegnamento(Insegnamento insegnamento) {
         this.insegnamento = insegnamento;
         System.out.println("UIListaAppelli: Insegnamento (set): " + insegnamento);
         visualizzaInformazioniInsegnamento();
         visualizzaAppelliPrenotati();
-    }
+    }*/
 
     @FXML
     private Label nomeInsegnamentoLabel;
@@ -76,11 +89,12 @@ public class VisualizzaPrenotazioniAppelloUI {
             cfuInsegnamentoLabel.setText("CFU: " + insegnamento.getCFU());
         }
     }
+
     private void visualizzaAppelliPrenotati() {
         if (studente != null && insegnamento != null) {
-            List<Appello_esame> appelliPrenotati = studente.getAppelli();
+            List<Appello_esame> appelliPrenotati = studente.getAppelli(); // Ottieni tutti gli appelli prenotati dallo studente
 
-            appelliPrenotatiListView.getItems().clear();
+            appelliPrenotatiListView.getItems().clear(); // Pulisci la lista
 
             if (appelliPrenotati == null || appelliPrenotati.isEmpty()) {
                 appelliPrenotatiListView.getItems().add("Non hai prenotazioni per questo insegnamento.");
@@ -164,7 +178,6 @@ public class VisualizzaPrenotazioniAppelloUI {
         }
     }
 
-
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -198,13 +211,13 @@ public class VisualizzaPrenotazioniAppelloUI {
 
     private boolean isTroppoTardiPerCancellare(Appello_esame appello) {
         if (appello == null || appello.getData() == null) {
-            return true; // Gestisci il caso in cui l'appello o la data sono null
+            return true; // Gestisce il caso in cui l'appello o la data sono null
         }
 
-        LocalDate dataAppello = appello.getData(); // Ottieni la data come LocalDate
+        LocalDate dataAppello = appello.getData(); // Ottiene la data come LocalDate
         LocalDate oggi = LocalDate.now();
 
-        // Usa ChronoUnit per calcolare la differenza in giorni
+        // ChronoUnit per calcolare la differenza in giorni
         long giorniDiDifferenza = ChronoUnit.DAYS.between(oggi, dataAppello);
 
         return giorniDiDifferenza < 3; // Restituisce true se mancano meno di 3 giorni
@@ -239,8 +252,7 @@ public class VisualizzaPrenotazioniAppelloUI {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaPrenotazioniInsegnamentoView.fxml")); // Assicurati che il nome del file sia corretto
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
-        VisualizzaPrenotazioniInsegnamentoUI controller = fxmlLoader.getController();
-        controller.setEMS(ems);
+
         stage.setTitle("Prenotazione Appello");
         stage.setScene(scene);
         stage.show();

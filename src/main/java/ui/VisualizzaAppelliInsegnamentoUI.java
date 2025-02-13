@@ -3,6 +3,7 @@ package ui;
 import classi.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -17,14 +18,27 @@ import java.io.IOException;
 
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class VisualizzaAppelliInsegnamentoUI {
+public class VisualizzaAppelliInsegnamentoUI implements Initializable {
+    private EMS ems;
+    private Insegnamento insegnamento;
+    private Docente docente;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ems=EMS.getInstance();
+        docente = ems.getDocenteCorrente();
+        insegnamento=ems.getInsegnamentoSelezionato(); //BISOGNA FARE UNA GET INSEGNAMENTO SELEZIONATO, SE NON ESISTE VA CREATA
+        visualizzaAppelli();
+    }
 
     @FXML
     private ListView<String> appelliInsegnamentoListView;
@@ -38,21 +52,11 @@ public class VisualizzaAppelliInsegnamentoUI {
     @FXML
     private Button scegliAppelloButton;
 
-    private Insegnamento insegnamento;
-    private Docente docente;
-    private EMS ems;
 
-    public void setEMS(EMS ems) {
-        this.ems = ems;
-        docente = ems.getDocenteCorrente();
-    }
-
-    public void setInsegnamento(Insegnamento insegnamento) {
+   /* public void setInsegnamento(Insegnamento insegnamento) {
         this.insegnamento = insegnamento;
         visualizzaAppelli();
-    }
-
-
+    }*/
 
     private void visualizzaAppelli() {
         if (insegnamento != null) {
@@ -84,7 +88,7 @@ public class VisualizzaAppelliInsegnamentoUI {
             showAlert("Errore", "Appello non trovato.");
             return;
         }
-
+        ems.setAppelloSelezionato(appello);
         apriListaStudentiView(appello, insegnamento);
     }
 
@@ -93,22 +97,17 @@ public class VisualizzaAppelliInsegnamentoUI {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaStudentiPrenotatiView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        VisualizzaStudentiPrenotatiUI controller = fxmlLoader.getController();
-        controller.setEMS(ems);
-        controller.setAppello(appello);
-        controller.setInsegnamento(insegnamento); // Passa anche l'insegnamento
+
         primaryStage.setScene(scene);
         primaryStage.setTitle("Studenti prenotati all'appello " + appello.getID_appello());
     }
-
 
     @FXML
     public void IndietroInsegnamentiDocente() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaPrenotatiEsameView.fxml")); // Assicurati che il nome del file sia corretto
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
-        VisualizzaPrenotatiEsameUI controller = fxmlLoader.getController();
-        controller.setEMS(ems);
+
         stage.setTitle("Visualizza prenotati esame");
         stage.setScene(scene);
         stage.show();

@@ -15,10 +15,6 @@ public class UILogin {
 
     private EMS ems;
 
-    public void setEMS(EMS ems) {
-        this.ems = EMS.getInstance();
-    }
-
     @FXML
     private Button BottoneLoginStudente;
 
@@ -35,9 +31,6 @@ public class UILogin {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LoginStudenteView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
-        UILoginStudente controller = fxmlLoader.getController();
-        controller.setEMS(ems); // Passa l'istanza di EMS *prima* di mostrare la vista
-
         primaryStage.setScene(scene);
         primaryStage.setTitle("Login Studente");
     }
@@ -49,10 +42,6 @@ public class UILogin {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LoginDocenteView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
-        // Ottieni il controller *dopo* aver caricato il file
-        UILoginDocente controller = fxmlLoader.getController();
-        controller.setEMS(ems);
-
         primaryStage.setScene(scene);
         primaryStage.setTitle("Login Docente");
     }
@@ -63,8 +52,6 @@ public class UILogin {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Carica WelcomeView.fxml
         Scene scene = new Scene(fxmlLoader.load());
-        WelcomeController controller = fxmlLoader.getController();
-        controller.setEMS(ems);
         primaryStage.setScene(scene); // Imposta la scena di WelcomeView sullo Stage
         primaryStage.setTitle("EMS"); // Puoi anche reimpostare il titolo
     }

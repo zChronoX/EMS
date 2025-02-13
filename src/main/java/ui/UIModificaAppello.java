@@ -1,12 +1,23 @@
 package ui;
 
 import classi.EMS;
+import com.almasb.fxgl.ui.UI;
+import javafx.fxml.Initializable;
 
-public class UIModificaAppello {
-    public UIModificaAppello() {}
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class UIModificaAppello implements Initializable {
+
     private EMS ems;
 
-    public void setEMS(EMS ems) {
-        this.ems = EMS.getInstance();
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ems=EMS.getInstance();
     }
+
+    public UIModificaAppello() {}
+
+
+
 }
