@@ -286,6 +286,10 @@ public class EMS {
         }
         return null;
     }
+    public Map<String, Prenotazione> getReservation_list() {
+        return reservation_list;
+    }
+
 
     public HashMap<String, Studente> getStudenti() {
         return student_list;
@@ -564,6 +568,33 @@ public class EMS {
         System.out.println("Nessuna prenotazione trovata con ID: " + idPrenotazione);
 
 
+    }
+
+    public double calcolaMediaVoti(Studente studente) {
+        double sommaVoti = 0;
+        int numeroAppelli = 0;
+
+        for (Prenotazione prenotazione : ems.getReservation_list().values()) {
+            if (prenotazione.getStudente().equals(studente)) {
+                Esito_esame esito = prenotazione.getEsito();
+                if (esito != null && esito.getStato().equalsIgnoreCase("Approvato")) {
+                    try {
+                        int voto = Integer.parseInt(esito.getVoto()); // Converti il voto in intero
+                        sommaVoti += voto;
+                        numeroAppelli++;
+                    } catch (NumberFormatException e) {
+                        // Gestisci l'errore se il voto non è un numero valido
+                        System.err.println("Errore: voto non valido per l'appello " + prenotazione.getAppello().getID_appello());
+                    }
+                }
+            }
+        }
+
+        if (numeroAppelli > 0) {
+            return sommaVoti / numeroAppelli;
+        } else {
+            return 0; // Se non ci sono appelli approvati, la media è 0
+        }
     }
 }
 

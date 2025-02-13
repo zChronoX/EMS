@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.VisualizzaCarrieraUI">
+   <children>
+      <Label alignment="CENTER" text="Carriera Studente">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="matricolaLabel" text="Matricola:" />
+      <Label fx:id="nomeLabel" text="Nome:" />
+      <Label fx:id="cognomeLabel" text="Cognome:" />
+      <Label fx:id="dataNascitaLabel" text="Data di nascita:" />
+      <Label fx:id="codiceFiscaleLabel" text="Codice Fiscale:" />
+      <Label fx:id="residenzaLabel" text="Residenza:" />
+      <Label fx:id="emailLabel" text="Email:" />
+      <Label fx:id="telefonoLabel" text="Telefono:" />
+      <Label fx:id="categoriaLabel" text="Categoria:" />
+      <Label fx:id="annoCorsoLabel" text="Anno di Corso:" />
+      <Label fx:id="mediaLabel" text="Media Aritmetica:" />
+      <Button fx:id="BottoneIndietroVistaStudente" mnemonicParsing="false" onAction="#IndietroVistaStudente" text="Indietro" />
+      <ListView fx:id="appelliApprovatiListView" prefHeight="200.0" prefWidth="200.0" />
+   </children>
+</VBox>
