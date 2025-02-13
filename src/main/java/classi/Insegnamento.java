@@ -117,7 +117,7 @@ public class Insegnamento {
         return docenti;
     }
 
-    public Map<String, Appello_esame> getExam_list() {
+    public HashMap<String, Appello_esame> getExam_list() {
         return exam_list;
     }
 
