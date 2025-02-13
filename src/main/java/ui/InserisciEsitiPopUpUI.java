@@ -51,6 +51,7 @@ public class InserisciEsitiPopUpUI implements Initializable {
         String votoString = votoTextField.getText();
         String stato = statoTextField.getText();
 
+        // 1. Validazione input
         if (matricola == null || matricola.isEmpty() ||
                 votoString == null || votoString.isEmpty() ||
                 stato == null || stato.isEmpty()) {
@@ -59,54 +60,41 @@ public class InserisciEsitiPopUpUI implements Initializable {
         }
 
         try {
-            int voto = Integer.parseInt(votoString); // Converti in intero per la validazione
+            int voto = Integer.parseInt(votoString);
             if (voto < 0 || voto > 30) {
                 showAlert("Errore", "Voto non valido (0-30).");
                 return;
             }
-
-            Studente studente = ems.getStudente(matricola); // Usa la funzione esistente in EMS
-            if (studente == null) {
-                showAlert("Errore", "Studente non trovato.");
-                return;
-            }
-
-            if (!appello.isStudentePrenotato(studente)) { // Verifica la prenotazione
-                showAlert("Errore", "Lo studente non è prenotato a questo appello.");
-                return;
-            }
-
-            if (ems.getEsitoByStudente(studente, appello) != null) { // Usa EMS per verificare l'esito
-                showAlert("Errore", "Esito già presente per questo studente.");
-                return;
-            }
-
-            Prenotazione prenotazione = ems.getPrenotazioneByStudenteAndAppello(studente, appello);
-            if (prenotazione == null) {
-                showAlert("Errore", "Prenotazione non trovata.");
-                return;
-            }
-
-            // Controllo aggiuntivo: verifica se esiste già un esito per questa prenotazione
-            if (ems.getEsitoByPrenotazione(prenotazione) != null) {
-                showAlert("Errore", "Esito già presente per questa prenotazione.");
-                return; // Interrompi l'inserimento se l'esito è già presente
-            }
-
-            Esito_esame esito = new Esito_esame(votoString, stato, studente, appello);
-
-            try {
-                ems.inserisciEsito(prenotazione.getID_prenotazione(), esito);
-                showAlert("Successo", "Esito inserito con successo.");
-                Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                stage.close();
-            } catch (Exception e) {
-                showAlert("Errore", "Errore nell'inserimento dell'esito: " + e.getMessage());
-            }
-
-
         } catch (NumberFormatException e) {
             showAlert("Errore", "Voto non valido.");
+            return;
+        }
+
+        // 2. Recupero studente
+        Studente studente = ems.getStudente(matricola);
+        if (studente == null) {
+            showAlert("Errore", "Studente non trovato.");
+            return;
+        }
+
+        // 3. Recupero prenotazione
+        Prenotazione prenotazione = ems.getPrenotazioneByStudenteAndAppello(studente, appello);
+        if (prenotazione == null) {
+            showAlert("Errore", "Prenotazione non trovata.");
+            return;
+        }
+
+        // 4. Creazione Esito_esame
+        Esito_esame esito = new Esito_esame(votoString, stato, studente, appello);
+
+        // 5. Inserimento esito (con controllo esistenza)
+        try {
+            ems.inserisciEsito(prenotazione.getID_prenotazione(), esito); // Inserimento con gestione eccezioni
+            showAlert("Successo", "Esito inserito con successo.");
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            stage.close();
+        } catch (Exception e) {
+            showAlert("Errore", "Errore durante l'inserimento: " + e.getMessage()); // Gestione eccezioni
         }
     }
 

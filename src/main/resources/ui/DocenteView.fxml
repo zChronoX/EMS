@@ -9,8 +9,7 @@
       <Label fx:id="nomeLabel" text="Nome" />
       <Label fx:id="cognomeLabel" text="Cognome" />
       <Label fx:id="codiceDocenteLabel" text="Codice Docente" />
-      <Button fx:id="BottoneGestisciEsiti" mnemonicParsing="false" onAction="#ApriGestioneEsiti" text="Gestisci esito esame" />
-      <Button fx:id="BottoneVisualizzaListaPrenotati" mnemonicParsing="false" onAction="#ApriElencoPrenotati" text="Visualizza prenotati" />
+      <Button fx:id="BottoneVisualizzaListaPrenotati" mnemonicParsing="false" onAction="#ApriElencoPrenotati" text="Gestione esami" />
       <Button fx:id="BottoneVisualizzaFeedback" mnemonicParsing="false" onAction="#ApriListaFeedback" text="Visualizza feedback appello" />
       <Button fx:id="BottoneLogoutDocente" mnemonicParsing="false" onAction="#LogoutDocente" text="Logout" />
    </children>

@@ -38,16 +38,12 @@ public class UIDocente implements Initializable {
         if (docente != null) {
             nomeLabel.setText("Nome: " + docente.getNome());
             cognomeLabel.setText("Cognome: " + docente.getCognome());
-            codiceDocenteLabel.setText("Matricola: " + docente.getCodiceDocente());
+            codiceDocenteLabel.setText("Codice Docente: " + docente.getCodiceDocente());
 
         }
     }
     public UIDocente() {}
 
-
-
-    @FXML
-    private Button BottoneGestisciEsiti;
     @FXML
     private Button BottoneVisualizzaListaPrenotati;
     @FXML
@@ -90,19 +86,6 @@ public class UIDocente implements Initializable {
         Stage currentStage = (Stage) BottoneVisualizzaFeedback.getScene().getWindow();
         currentStage.close();
     }
-    @FXML
-    public void ApriGestioneEsiti() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GestisciEsitiView.fxml")); // Assicurati che il nome del file sia corretto
-        Scene scene = new Scene(fxmlLoader.load());
-        Stage stage = new Stage();
-       // GestisciEsitiUI controller = fxmlLoader.getController();
-        //controller.setEMS(ems);
-        stage.setTitle("Gestisci esiti esame");
-        stage.setScene(scene);
-        stage.show();
 
-        Stage currentStage = (Stage) BottoneGestisciEsiti.getScene().getWindow();
-        currentStage.close();
-    }
 
 }

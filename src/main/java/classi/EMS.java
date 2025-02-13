@@ -13,9 +13,9 @@ public class EMS {
     private Utente utenteCorrente;
     private Studente studenteCorrente;
     private Docente docenteCorrente;
-    private HashMap<String,Studente> student_list;
-    private HashMap<String,Docente> doc_list;
-    private HashMap<String,Insegnamento> teaching_list;
+    private HashMap<String, Studente> student_list;
+    private HashMap<String, Docente> doc_list;
+    private HashMap<String, Insegnamento> teaching_list;
     private UtenteFactory utenteFactory;
     public static final int POSTI_MAX = 500;
     //private HashMap<String,Appello_esame> exam_list;
@@ -40,7 +40,7 @@ public class EMS {
 
         // Carica i docenti statici
         HashMap<String, Docente> docentiStatici = utility.loadProfessors();
-        if(docentiStatici != null) { //controllo per evitare null pointer exception nel caso in cui non ci siano docenti statici
+        if (docentiStatici != null) { //controllo per evitare null pointer exception nel caso in cui non ci siano docenti statici
             this.doc_list.putAll(docentiStatici); // Aggiunge i docenti statici alla doc_list
         }
 
@@ -55,7 +55,7 @@ public class EMS {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println( teaching_list);
+            System.out.println(teaching_list);
         }
 
     }
@@ -101,26 +101,28 @@ public class EMS {
         }
     }
 
-    public void stampa_utenti(){
+    public void stampa_utenti() {
         stampa_studenti();
         stampa_docenti();
     }
 
     //Pattern Singleton
-    public static EMS getInstance(){
+    public static EMS getInstance() {
 
-        if(ems == null){
+        if (ems == null) {
             ems = new EMS();
             return ems;
-        }
-        else
+        } else
             return ems;
 
-    };
+    }
+
+    ;
+
     //come fa questa funzione a capire qual è l'utente corrente? penso ci voglia una get
-    public void AggiungiInfoStudente(String categoria, int anno_corso){
-        utenteCorrente=ems.getUtenteCorrente();
-        if(utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) {
+    public void AggiungiInfoStudente(String categoria, int anno_corso) {
+        utenteCorrente = ems.getUtenteCorrente();
+        if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) {
             studenteCorrente = (Studente) utenteCorrente;
             studenteCorrente.setCategoria(categoria);
             studenteCorrente.setAnnoCorso(anno_corso);
@@ -156,19 +158,19 @@ public class EMS {
 
     public boolean creaProfiloUtente(String nome, String cognome, Date data_nascita, String genere, String codice_fiscale, String residenza, String email, String telefono) {
 
-        utenteCorrente.inizializzaUtente(nome,cognome, data_nascita, genere,codice_fiscale,residenza,email, telefono);
+        utenteCorrente.inizializzaUtente(nome, cognome, data_nascita, genere, codice_fiscale, residenza, email, telefono);
         return true;
     }
-    public void generaCredenziali(){
-        if(utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) {
+
+    public void generaCredenziali() {
+        if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) {
             //PROVA:
-            utenteCorrente=ems.getUtenteCorrente();
+            utenteCorrente = ems.getUtenteCorrente();
 
             studenteCorrente = (Studente) utenteCorrente;
             studenteCorrente.assegnaIdentificativiStudente();
 
-        }
-        else if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Docente) {
+        } else if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Docente) {
             docenteCorrente = (Docente) utenteCorrente;
             docenteCorrente.assegnaIdentificativiDocente();
 
@@ -178,15 +180,15 @@ public class EMS {
     public void scegliTipoProfilo(Utente.TipoProfilo tipoProfilo) {
         utenteFactory = new UtenteFactory();
 
-        utenteCorrente= utenteFactory.newUser(tipoProfilo);
+        utenteCorrente = utenteFactory.newUser(tipoProfilo);
     }
 
-   public Studente getStudenteCorrente() {
+    public Studente getStudenteCorrente() {
         return studenteCorrente;
-   }
+    }
 
     public Docente getDocenteCorrente() {
-       return docenteCorrente;
+        return docenteCorrente;
     }
 
     public void setUtenteCorrente(Utente utente) {
@@ -198,20 +200,21 @@ public class EMS {
     }
 
 
-  public boolean loginStudente(String matricola, String password) throws Exception {
-      Studente studente = student_list.get(matricola);
+    public boolean loginStudente(String matricola, String password) throws Exception {
+        Studente studente = student_list.get(matricola);
 
-      if (studente == null) {
-          throw new Exception("Studente non presente nel registro.");
-      }
+        if (studente == null) {
+            throw new Exception("Studente non presente nel registro.");
+        }
 
-      if (!studente.getPassword().equals(password)) {
-          throw new Exception("Password errata.");
-      }
+        if (!studente.getPassword().equals(password)) {
+            throw new Exception("Password errata.");
+        }
 
-      studenteCorrente = studente;
-      return true;
-  }
+        studenteCorrente = studente;
+        return true;
+    }
+
     public boolean loginDocente(String codiceDocente, String password) throws Exception {
         Docente docente = doc_list.get(codiceDocente); // Assumi che tu abbia una mappa docenti_list
 
@@ -237,14 +240,14 @@ public class EMS {
         for (HashMap.Entry<String, Studente> entry : student_list.entrySet()) {
 
             //
-                String matricola = entry.getKey();
-                Studente studente = entry.getValue();
-               // System.out.println("Matricola: " + matricola + ", Studente: " + studente);
+            String matricola = entry.getKey();
+            Studente studente = entry.getValue();
+            // System.out.println("Matricola: " + matricola + ", Studente: " + studente);
             //
 
 
-           // String matricola = entry.getKey();
-          //  Studente studente = entry.getValue();
+            // String matricola = entry.getKey();
+            //  Studente studente = entry.getValue();
 
             sb.append("Matricola: ").append(matricola).append("\n"); // Includi la matricola
 
@@ -253,6 +256,7 @@ public class EMS {
         }
         return sb.toString();
     }
+
     public String stampa_docentiView() {
         if (doc_list == null || doc_list.isEmpty()) {
             return "Non ci sono docenti registrati.";
@@ -447,13 +451,13 @@ public class EMS {
         System.out.println("Prenotazione cancellata con successo per " + studente.getNome() + " all'appello " + appello.getID_appello());
     }
 
-    
+
     public void setInsegnamentoSelezionato(Insegnamento insegnamento) {
         this.insegnamentoSelezionato = insegnamento;
     }
 
     public Insegnamento getInsegnamentoSelezionato() {
-       return this.insegnamentoSelezionato;
+        return this.insegnamentoSelezionato;
     }
 
     public void setAppelloSelezionato(Appello_esame appello) {
@@ -538,24 +542,29 @@ public class EMS {
         return null;
     }
 
-    public void inserisciEsito(String idPrenotazione, Esito_esame esito) {
+    public void inserisciEsito(String idPrenotazione, Esito_esame esito) throws Exception {
         if (idPrenotazione == null || esito == null) {
             return; // Gestisci il caso di input nulli
         }
 
-        for (Prenotazione prenotazione : reservation_list.values()) {
-            if (prenotazione.getID_prenotazione().equals(idPrenotazione)) {
-                prenotazione.setEsito(esito); // Associa l'esito alla prenotazione
-                esito.setPrenotazione(prenotazione); //Associa la prenotazione all'esito
-                return; // Esci dalla funzione dopo aver trovato e aggiornato la prenotazione
+        if (reservation_list.containsKey(idPrenotazione)) { // Verifica se la mappa contiene la chiave
+            Prenotazione prenotazione = reservation_list.get(idPrenotazione); // Ottieni la prenotazione dalla mappa
+
+            // Verifica se la prenotazione ha già un esito
+            if (prenotazione.getEsito() != null) {
+                throw new Exception("Esito già presente per questa prenotazione."); // Lancia un'eccezione
             }
+
+            prenotazione.setEsito(esito); // Associa l'esito alla prenotazione
+            esito.setPrenotazione(prenotazione); // Associa la prenotazione all'esito
+            return; // Esci dalla funzione dopo aver trovato e aggiornato la prenotazione
         }
 
         // Gestisci il caso in cui non viene trovata alcuna prenotazione con l'ID specificato
         System.out.println("Nessuna prenotazione trovata con ID: " + idPrenotazione);
+
+
     }
-
-
 }
 
 
