@@ -131,6 +131,7 @@ public class UICreaAppello implements Initializable {
         return min + random.nextInt(max - min + 1);
     }
 
+    /*
     @FXML
     private void handleConferma(ActionEvent event) {
         try {
@@ -217,6 +218,104 @@ public class UICreaAppello implements Initializable {
         }
 
     }
+*/ @FXML
+    private void handleConferma(ActionEvent event) {
+        try {
+            if (insegnamento == null) {
+                mostraErrore("Nessun insegnamento selezionato", "Seleziona prima l'insegnamento.");
+                return;
+            }
+
+            LocalTime orario;
+            try {
+                orario = LocalTime.parse(orarioTextField.getText());
+            } catch (DateTimeParseException e) {
+                mostraErrore("Formato orario non valido", "Inserisci l'orario nel formato HH:MM.");
+                resetCampi();
+                return;
+            }
+
+            LocalDate data = dataDatePicker.getValue();
+            if (data == null) {
+                mostraErrore("Data non selezionata", "Seleziona una data per l'appello.");
+                resetCampi();
+                return;
+            }
+
+            String luogo = luogoTextField.getText();
+
+            int posti;
+            try {
+                posti = Integer.parseInt(postiTextField.getText());
+                if (posti <= 0) {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException e) {
+                mostraErrore("Posti non validi", "Inserisci un numero intero positivo per i posti.");
+                resetCampi();
+                return;
+            }
+
+            String tipologia = tipologiaTextField.getText();
+            String idAppello;
+            try {
+                // Creazione dell'appello
+                idAppello = ems.creazioneAppello(insegnamento.getID_insegnamento(), data, orario, luogo, posti, tipologia);
+            }catch (IllegalArgumentException e) {
+                // **Conflitto rilevato: Mostra errore
+                mostraErrore("Conflitto di Appello", e.getMessage());
+                resetCampi();
+                return;
+            }
+
+            // Se l'ID è null, significa che l'appello già esiste, quindi mostriamo un errore
+            if (idAppello == null) {
+                mostraErrore("Appello già esistente", "Esiste già un appello con gli stessi dati.");
+                resetCampi();
+                return;
+            }
+
+
+            idAppelloTextField.setText(idAppello);
+
+            Appello_esame appello = new Appello_esame(idAppello, data, orario, luogo, posti, tipologia,insegnamento);
+
+
+            ems.confermaAppello(idAppello,appello);
+
+
+            // Mostra un riepilogo
+            mostraMessaggio("Appello Confermato",
+                    "L'appello è stato confermato con successo.\n\n" +
+                            "ID: " + idAppello + "\n" +
+                            "Insegnamento: " + insegnamento.getNome() + "\n" +
+                            "Orario: " + orario + "\n" +
+                            "Data: " + data + "\n" +
+                            "Luogo: " + luogo + "\n" +
+                            "Posti: " + posti + "\n" +
+                            "Tipologia: " + tipologia
+            );
+
+            // Stampa gli appelli confermati
+            ems.stampa_tutti_gli_appelli();
+
+            // **SVUOTA I CAMPI DOPO LA CREAZIONE**
+            resetCampi();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostraErrore("Errore durante la conferma", e.getMessage());
+            resetCampi();
+        }
+    }
+    private void mostraMessaggio(String titolo, String messaggio) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titolo);
+        alert.setHeaderText(titolo);
+        alert.setContentText(messaggio);
+        alert.showAndWait();
+    }
+
 
     private void mostraErrore(String titolo, String messaggio) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -225,6 +324,16 @@ public class UICreaAppello implements Initializable {
         alert.setContentText(messaggio);
         alert.showAndWait();
     }
+    private void resetCampi() {
+        dataDatePicker.setValue(null);
+        orarioTextField.clear();
+        luogoTextField.clear();
+        postiTextField.clear();
+        tipologiaTextField.clear();
+        idAppelloTextField.clear();
+
+    }
+
 
     @FXML
     private void handleNuovaRicerca(ActionEvent event) {

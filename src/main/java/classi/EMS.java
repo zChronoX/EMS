@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.nio.file.Paths;
 import java.util.*;
 
+
 public class EMS {
     private static EMS ems; //CAMPO PER MEMORIZZARE L'UNICA ISTANZA
     private Utente utenteCorrente;
@@ -18,7 +19,7 @@ public class EMS {
     private HashMap<String, Insegnamento> teaching_list;
     private UtenteFactory utenteFactory;
     public static final int POSTI_MAX = 500;
-    //private HashMap<String,Appello_esame> exam_list;
+    private HashMap<String,Appello_esame> exam_list;
     private Insegnamento insegnamentoSelezionato;
     private Appello_esame appelloSelezionato;
     //private List<Prenotazione> prenotazioniList = new ArrayList<>();
@@ -31,6 +32,7 @@ public class EMS {
         this.doc_list = new HashMap<>();
         this.teaching_list = new HashMap<>(); //lista insegnamenti
         this.reservation_list = new HashMap<>(); //lista prenotazioni
+        this.exam_list = new HashMap<>(); //lista appelli
 
         Utility utility = new Utility(); // Crea un'istanza di Utility
 
@@ -347,7 +349,7 @@ public class EMS {
     private synchronized int generaProgressivo() {
         return prossimoProgressivo++;
     }
-
+/*
     public void prenotaAppello(Studente studente, Appello_esame appello) throws Exception {
         if (studente == null) {
             throw new Exception("Studente non loggato.");
@@ -402,6 +404,49 @@ public class EMS {
             }
         }
     }
+*/
+public boolean prenotaAppello(Studente studente, Appello_esame appello) throws Exception {
+    if (studente == null) {
+        throw new Exception("Studente non loggato.");
+    }
+
+    if (appello == null) {
+        throw new Exception("Appello non valido.");
+    }
+
+    if (this.isStudentePrenotato(studente, appello)) {
+        throw new Exception("Studente già prenotato a questo appello.");
+    }
+
+    if (appello.getPostiDisponibili() <= 0) {
+        return false; // Nessun posto disponibile
+    }
+
+    // Creazione della prenotazione
+    Prenotazione prenotazione = new Prenotazione();
+    prenotazione.setStudente(studente);
+    prenotazione.setAppello(appello);
+
+    // Generazione ID, data, ora e progressivo
+    String idPrenotazione = generaIdPrenotazione();
+    prenotazione.setID_prenotazione(idPrenotazione);
+    prenotazione.setData(LocalDate.now());
+    prenotazione.setOra(LocalTime.now());
+    prenotazione.setProgressivo(generaProgressivo());
+
+    // Salvataggio della prenotazione
+    reservation_list.put(idPrenotazione, prenotazione);
+
+    appello.addStudente(studente);
+    studente.addAppello(appello);
+
+    // Aggiornamento posti disponibili
+    appello.setPostiDisponibili(appello.getPostiDisponibili() - 1);
+
+    System.out.println("Prenotazione effettuata per " + studente.getNome() + " all'appello " + appello.getID_appello());
+    return true; // Prenotazione riuscita
+}
+
 
     public boolean isStudentePrenotato(Studente studente, Appello_esame appello) {
         if (studente == null || appello == null) {
@@ -565,6 +610,73 @@ public class EMS {
 
 
     }
+    public  String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime Orario, String Luogo,int postiDisponibili,String tipologia){
+        Insegnamento insegnamento = teaching_list.get(ID_insegnamento);
+        if (insegnamento == null) {
+            throw new IllegalArgumentException("Insegnamento non trovato.");
+        }
+        // Controllo se esiste già un appello con gli stessi dati
+        for (Appello_esame appelloEsistente : exam_list.values()) {
+            if (appelloEsistente.getData().equals(Data) &&
+                    appelloEsistente.getOrario().equals(Orario) &&
+                    appelloEsistente.getLuogo().equals(Luogo) &&
+                    appelloEsistente.getTipologia().equals(tipologia)) {
+
+                System.out.println("Errore: Esiste già un appello con gli stessi dati.");
+                return null;
+            }
+            else if  (appelloEsistente.getData().equals(Data) &&
+                    appelloEsistente.getOrario().equals(Orario) &&
+                    appelloEsistente.getLuogo().equals(Luogo)) {
+
+                throw new IllegalArgumentException("Esiste già un appello nello stesso luogo, alla stessa data e ora.");
+            }
+        }
+        String ID_appello = "APP-" + (System.currentTimeMillis() % 100000);
+        Appello_esame appello = new Appello_esame(ID_appello, Data, Orario, Luogo, postiDisponibili, tipologia,insegnamento);
+        insegnamento.aggiungiAppello(appello);
+        if (exam_list == null) {
+            exam_list = new HashMap<>();
+        }
+        return ID_appello;
+
+    }
+    public void confermaAppello(String ID_appello, Appello_esame appello) {
+        if (ID_appello == null || appello == null) {
+            throw new IllegalArgumentException("ID appello o appello nulli.");
+        }
+
+        if (exam_list == null) { // Inizializza se null
+            exam_list = new HashMap<>();
+        }
+
+        if (exam_list.containsKey(ID_appello)) {
+            System.out.println("L'appello con ID " + ID_appello + " è già stato confermato.");
+            return;
+        }
+
+        exam_list.put(ID_appello, appello);
+        System.out.println("Appello " + ID_appello + " confermato con successo.");
+    }
+
+    public HashMap<String, Insegnamento> visualizzaInsegnamenti() {
+        return teaching_list;
+    }
+
+    public HashMap<String, Appello_esame> visualizzaAppelliPerInsegnamento(String ID_insegnamento) {
+        HashMap<String, Appello_esame> appelliFiltrati = new HashMap<>();
+
+        for (Map.Entry<String, Appello_esame> entry : exam_list.entrySet()) {
+            if (entry.getValue().getInsegnamento().getID_insegnamento().equals(ID_insegnamento)) {
+                appelliFiltrati.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return appelliFiltrati;
+    }
+
+
+
+
 }
 
 

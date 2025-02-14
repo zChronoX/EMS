@@ -195,6 +195,45 @@ public class Utility {
     }
 
 */
+    /* Commento perché questo metodo è relativo all'estensione del caso d'uso 1 di CreazioneUtente evitabile in quanto la matricola viene creata in maniera randomica
+         e quindi la probabilità che vengano creati due utenti con la stessa matricola è bassissima.
+
+public static boolean verificaEAggiungiMatricola(String filePath, String nuovaMatricola) {
+    // Lista per memorizzare le matricole lette dal file
+    List<String> matricole = new ArrayList<>();
+
+    // Leggere le matricole esistenti dal file
+    try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            matricole.add(line.trim()); // Aggiunge ogni riga (senza spazi) alla lista
+        }
+    } catch (FileNotFoundException e) {
+        System.out.println("File non trovato. Verrà creato un nuovo file.");
+    } catch (IOException e) {
+        System.out.println("Errore durante la lettura del file: " + e.getMessage());
+    }
+
+    // Controlla se la nuova matricola esiste già
+    if (matricole.contains(nuovaMatricola)) {
+        System.out.println("La matricola esiste già.");
+        return false; // Restituisce false se la matricola è già presente
+    }
+
+    // Se non esiste, aggiungila al file
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+        writer.write(nuovaMatricola);
+        writer.newLine(); // Aggiunge una nuova riga
+    } catch (IOException e) {
+        System.out.println("Errore durante la scrittura nel file: " + e.getMessage());
+        return false; // Restituisce false in caso di errore
+    }
+
+    System.out.println("Matricola aggiunta con successo.");
+    return true; // Restituisce true se la matricola è stata aggiunta
+}
+*/
+
 
 }
 

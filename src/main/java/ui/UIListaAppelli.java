@@ -135,6 +135,7 @@ public class UIListaAppelli implements Initializable {
         alert.showAndWait();
     }
 
+    /*
     private void showRiepilogoAppello(Appello_esame appello) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Riepilogo Appello");
@@ -160,6 +161,46 @@ public class UIListaAppelli implements Initializable {
                     showAlert("Successo", "Prenotazione effettuata con successo.");
                     visualizzaAppelli();
 
+                } catch (Exception e) {
+                    showAlert("Errore", "Errore durante la prenotazione: " + e.getMessage());
+                }
+            }
+        });
+    }
+*/
+    private void showRiepilogoAppello(Appello_esame appello) {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Riepilogo Appello");
+
+        VBox vbox = new VBox();
+        vbox.getChildren().add(new Label("ID: " + appello.getID_appello()));
+
+        // Verifica se l'insegnamento non è null
+        Insegnamento insegnamento = appello.getInsegnamento();
+        if (insegnamento != null) {
+            vbox.getChildren().add(new Label("Insegnamento: " + insegnamento.getNome()));
+        } else {
+            vbox.getChildren().add(new Label("Insegnamento: Non disponibile"));
+        }
+
+        vbox.getChildren().add(new Label("Data: " + appello.getData()));
+        vbox.getChildren().add(new Label("Tipologia: " + appello.getTipologia()));
+        vbox.getChildren().add(new Label("Orario: " + appello.getOrario()));
+        vbox.getChildren().add(new Label("Luogo: " + appello.getLuogo()));
+
+        dialog.getDialogPane().setContent(vbox);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
+
+        dialog.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    boolean success = ems.prenotaAppello(studente, appello);
+                    if (success) {
+                        showAlert("Successo", "Prenotazione effettuata con successo.");
+                        visualizzaAppelli();
+                    } else {
+                        showAlert("Posti esauriti", "Non ci sono posti disponibili per questo appello.");
+                    }
                 } catch (Exception e) {
                     showAlert("Errore", "Errore durante la prenotazione: " + e.getMessage());
                 }

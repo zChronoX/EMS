@@ -22,10 +22,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class VisualizzaAppelliInsegnamentoUI implements Initializable {
     private EMS ems;
@@ -60,19 +57,20 @@ public class VisualizzaAppelliInsegnamentoUI implements Initializable {
 
     private void visualizzaAppelli() {
         if (insegnamento != null) {
-            List<Appello_esame> appelli = ems.getAppelliByInsegnamento(insegnamento); // Implementa questo metodo in EMS
+            HashMap<String, Appello_esame> exam_list = ems.visualizzaAppelliPerInsegnamento(insegnamento.getID_insegnamento());
 
-            if (appelli == null || appelli.isEmpty()) {
+            if (exam_list == null || exam_list.isEmpty()) {
                 appelliInsegnamentoListView.getItems().add("Non ci sono appelli per questo insegnamento.");
                 return;
             }
 
-            for (Appello_esame appello : appelli) {
-                appelliInsegnamentoListView.getItems().add(appello.toString()); // Assumi che Appello_esame abbia un metodo toString()
+            for (Map.Entry<String, Appello_esame> entry : exam_list.entrySet()) {
+                Appello_esame appello = entry.getValue();
+                String appelloString = appello.getID_appello() + " - " + appello.getData();
+                appelliInsegnamentoListView.getItems().add(appelloString);
             }
         }
     }
-
     @FXML
     private void visualizzaStudentiPrenotati(ActionEvent event) throws IOException {
         String idAppello = idAppelloTextField.getText();

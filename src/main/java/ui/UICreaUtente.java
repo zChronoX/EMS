@@ -182,23 +182,15 @@ public class UICreaUtente implements Initializable {
         residenza=CasellaResidenza.getText();
         email=CasellaEmail.getText();
         telefono=CasellaTelefono.getText();
+        if (ems.creaProfiloUtente(nome, cognome, data_nascita, genere, codice_fiscale, residenza, email, telefono))
+            System.out.println("Utente creato con successo");
         if(tipoProfilo==Utente.TipoProfilo.Studente){
             categoria=CasellaCategoria.getText();
             anno_corso=Integer.parseInt(CasellaAnnoCorso.getText());
-            }
+            ems.AggiungiInfoStudente(categoria, anno_corso);
+            System.out.println("Categoria e anno corso aggiunti");
 
-
-        if (ems.creaProfiloUtente(nome, cognome, data_nascita, genere, codice_fiscale, residenza, email, telefono))
-            System.out.println("Utente creato con successo");
-
-        //devo capire come memorizzare categoria e anno corso, credo ci sia un problema con l'utente corrente
-            //System.out.println("Categoria: " + categoria); //qui sono memorizzati correttamente
-            //System.out.println("Anno corso: " + anno_corso);
-        if(tipoProfilo==Utente.TipoProfilo.Studente){
-           ems.AggiungiInfoStudente(categoria, anno_corso);
-           System.out.println("Categoria e anno corso aggiunti");
         }
-
         //nascondo i campi dopo averli acquisiti
         ContenitoreInformazioni.setVisible(false);
 

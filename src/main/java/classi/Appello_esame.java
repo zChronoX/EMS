@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Appello_esame {
-    //private HashMap<String,Prenotazione> reservation_list;
+    private HashMap<String,Prenotazione> reservation_list;
     private String ID_appello;
     private LocalTime Orario;
     private LocalDate Data;
@@ -18,7 +18,7 @@ public class Appello_esame {
     private List<Studente> studenti = new ArrayList<>();
     private List<Esito_esame> result_list;
 
-    public Appello_esame(String ID_appello, LocalTime orario, LocalDate data, String luogo, int postiDisponibili,
+   /* public Appello_esame(String ID_appello, LocalTime orario, LocalDate data, String luogo, int postiDisponibili,
                          String tipologia, Insegnamento insegnamento) {
         this.ID_appello = ID_appello;
         Orario = orario;
@@ -28,6 +28,17 @@ public class Appello_esame {
         Tipologia = tipologia;
         this.insegnamento = insegnamento;
     }
+*/
+   public Appello_esame(String ID_appello, LocalDate Data, LocalTime Orario, String Luogo, int postiDisponibili, String Tipologia, Insegnamento insegnamento) {
+       this.ID_appello = ID_appello;
+       this.Data = Data;
+       this.Orario = Orario;
+       this.Luogo = Luogo;
+       this.postiDisponibili = postiDisponibili;
+       this.Tipologia = Tipologia;
+       this.insegnamento = insegnamento;
+
+   }
 
     public List<Studente> getStudenti() {
         return studenti;

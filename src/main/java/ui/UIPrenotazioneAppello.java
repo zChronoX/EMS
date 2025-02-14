@@ -41,7 +41,7 @@ public class UIPrenotazioneAppello implements Initializable {
         studente = ems.getStudenteCorrente();
         System.out.println("UIPrenotazioneAppello: Studente: " + studente.getNome() + " " + studente.getCognome() + " " + studente.getMatricola() + "\n\n" ); // Stampa l'oggetto Studente
     }
-
+/*
     private void visualizzaInsegnamenti() {
         if (ems != null) {
             HashMap<String, Insegnamento> insegnamenti = ems.getInsegnamenti();
@@ -52,6 +52,19 @@ public class UIPrenotazioneAppello implements Initializable {
             }
         }
     }
+*/
+@FXML
+private void visualizzaInsegnamenti() {
+    HashMap<String, Insegnamento> insegnamenti = ems.visualizzaInsegnamenti(); // Ottieni la mappa degli insegnamenti
+
+    if (insegnamenti != null) {
+        for (Map.Entry<String, Insegnamento> entry : insegnamenti.entrySet()) {
+            Insegnamento insegnamento = entry.getValue();
+            String insegnamentoString = insegnamento.getID_insegnamento() + " - " + insegnamento.getNome();
+            insegnamentiListView.getItems().add(insegnamentoString);
+        }
+    }
+}
 
     @FXML
     private void confermaCodiceInsegnamento(ActionEvent event) throws IOException {

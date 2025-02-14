@@ -2,6 +2,8 @@ package classi;
 
 import interfacce.GeneratoreCredenziali;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -111,6 +113,19 @@ public class Studente extends Utente implements GeneratoreCredenziali {
 
     @Override
     public String generaMatricola() {
+     /*  Commento perchè estensione del caso d'uso di CreazioneUtente evitabile in quanto la matricola viene creata in maniera randomica
+         e quindi la probabilità che vengano creati due utenti con la stessa matricola è bassissima.
+        String buffer= GeneratoreCredenziali.super.generaMatricola();
+        Path currentFilePath = Paths.get("").toAbsolutePath(); // Ottenere il path della directory corrente
+        Path filePath = currentFilePath.resolve("src/main/files/matricole.txt");
+
+        boolean result = Utility.verificaEAggiungiMatricola(String.valueOf(filePath),buffer);
+
+        while( result== false){
+            buffer = GeneratoreCredenziali.super.generaMatricola();
+            result = Utility.verificaEAggiungiMatricola(String.valueOf(filePath) ,buffer);
+        }
+        return buffer; */
         return GeneratoreCredenziali.super.generaMatricola();
     }
 
