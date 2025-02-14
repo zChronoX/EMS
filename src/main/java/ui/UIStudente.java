@@ -27,12 +27,10 @@ public class UIStudente implements Initializable {
     private Button BottonePrenotazioneStudente;
     @FXML
     private Button BottoneVisualizzaCarriera;
-    @FXML
-    private Button BottoneAnnullaPrenotazione;
+
     @FXML
     private Button BottoneVisualizzaInfoEsame;
-    @FXML
-    private Button BottoneRifiutaEsito;
+
     @FXML
     private Button BottoneInviaFeedback;
     @FXML
@@ -85,6 +83,21 @@ public class UIStudente implements Initializable {
         Stage currentStage = (Stage) BottoneVisualizzaInfoEsame.getScene().getWindow();
         currentStage.close();
     }
+
+    @FXML
+    public void ApriCarrieraStudente() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaCarrieraView.fxml")); // Assicurati che il nome del file sia corretto
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+
+        stage.setTitle("Carriera Studente");
+        stage.setScene(scene);
+        stage.show();
+
+        Stage currentStage = (Stage) BottoneVisualizzaCarriera.getScene().getWindow();
+        currentStage.close();
+    }
+
 
     @FXML
     public void LogoutStudente() throws IOException {

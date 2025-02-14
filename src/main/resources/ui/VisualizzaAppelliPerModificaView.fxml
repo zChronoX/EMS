@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.VisualizzaAppelliPerModificaUI">
+    <children>
+        <TextArea fx:id="appelliTextArea" prefHeight="200.0" prefWidth="600.0" editable="false" promptText="Elenco Appelli" />
+        <HBox>
+            <Label text="ID Appello:" />
+            <TextField fx:id="idAppelloTextField" promptText="ID Appello" />
+        </HBox>
+        <Button fx:id="selezionaAppelloButton" mnemonicParsing="false" onAction="#selezionaAppello" text="Modifica" />
+        <Button fx:id="indietroButton" mnemonicParsing="false" onAction="#Indietro" text="Indietro" />
+    </children>
+</VBox>

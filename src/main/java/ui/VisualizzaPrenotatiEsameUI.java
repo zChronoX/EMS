@@ -78,7 +78,8 @@ public class VisualizzaPrenotatiEsameUI implements Initializable {
             showAlert("Errore", "Insegnamento non trovato.");
             return;
         }
-
+        //SETTO L'INSEGNAMENTO
+        ems.setInsegnamentoSelezionato(insegnamento);
         apriListaAppelliView(insegnamento);
     }
 
