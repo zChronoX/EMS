@@ -22,6 +22,7 @@ public class UIDocente implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         ems = EMS.getInstance();
         docente=ems.getDocenteCorrente();
+        ems.setUtenteCorrente(docente);
         visualizzaInformazioniDocente();
     }
 
@@ -50,6 +51,8 @@ public class UIDocente implements Initializable {
     private Button BottoneVisualizzaFeedback;
     @FXML
     private Button BottoneLogoutDocente;
+    @FXML
+    private Button BottoneModificaProfilo;
 
     @FXML
     public void LogoutDocente() throws IOException {
@@ -84,6 +87,20 @@ public class UIDocente implements Initializable {
         stage.show();
 
         Stage currentStage = (Stage) BottoneVisualizzaFeedback.getScene().getWindow();
+        currentStage.close();
+    }
+
+    @FXML
+    public void ApriModificaProfilo() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ModificaProfiloView.fxml")); // Assicurati che il nome del file sia corretto
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+
+        stage.setTitle("Modifica profilo");
+        stage.setScene(scene);
+        stage.show();
+
+        Stage currentStage = (Stage) BottoneModificaProfilo.getScene().getWindow();
         currentStage.close();
     }
 

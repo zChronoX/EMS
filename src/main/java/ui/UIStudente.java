@@ -21,7 +21,13 @@ public class UIStudente implements Initializable {
     private EMS ems; // Istanza di EMS
     private Studente studente;
 
-
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ems = EMS.getInstance();
+        studente=ems.getStudenteCorrente();
+        ems.setUtenteCorrente(studente);
+        visualizzaInformazioniStudente();
+    }
 
     @FXML
     private Button BottonePrenotazioneStudente;
@@ -110,10 +116,19 @@ public class UIStudente implements Initializable {
         primaryStage.setTitle("EMS"); // Puoi anche reimpostare il titolo
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        ems = EMS.getInstance();
-        studente=ems.getStudenteCorrente();
-        visualizzaInformazioniStudente();
+    @FXML
+    public void ApriModificaProfilo() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ModificaProfiloView.fxml")); // Assicurati che il nome del file sia corretto
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+
+        stage.setTitle("Modifica Profilo");
+        stage.setScene(scene);
+        stage.show();
+
+        Stage currentStage = (Stage) BottoneModificaProfilo.getScene().getWindow();
+        currentStage.close();
     }
+
+
 }

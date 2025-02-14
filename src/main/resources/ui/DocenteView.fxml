@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.UIDocente">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.UIDocente">
    <children>
       <Label text="Pagina Docente" />
       <Label fx:id="nomeLabel" text="Nome" />
@@ -11,6 +12,7 @@
       <Label fx:id="codiceDocenteLabel" text="Codice Docente" />
       <Button fx:id="BottoneVisualizzaListaPrenotati" mnemonicParsing="false" onAction="#ApriElencoPrenotati" text="Gestione esami" />
       <Button fx:id="BottoneVisualizzaFeedback" mnemonicParsing="false" onAction="#ApriListaFeedback" text="Visualizza feedback appello" />
+      <Button fx:id="BottoneModificaProfilo" mnemonicParsing="false" onAction="#ApriModificaProfilo" text="Modifica profilo" />
       <Button fx:id="BottoneLogoutDocente" mnemonicParsing="false" onAction="#LogoutDocente" text="Logout" />
    </children>
 </VBox>

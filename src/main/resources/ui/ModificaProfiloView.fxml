@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="400" prefWidth="600" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.UIModificaProfilo">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <Label text="Modifica Profilo" alignment="CENTER">
+            <font>
+                <Font size="24.0" />
+            </font>
+            <VBox.margin>
+                <Insets bottom="10.0" />
+            </VBox.margin>
+        </Label>
+        <Label text="Riscrivi i campi da modificare" alignment="CENTER">
+            <VBox.margin>
+                <Insets bottom="20.0" />
+            </VBox.margin>
+        </Label>
+        <VBox spacing="10">
+            <children>
+                <HBox>
+                    <children>
+                        <Label text="Residenza:" prefWidth="100"/>
+                        <TextField fx:id="CasellaResidenza" />
+                    </children>
+                </HBox>
+                <HBox>
+                    <children>
+                        <Label text="Email:" prefWidth="100"/>
+                        <TextField fx:id="CasellaEmail" />
+                    </children>
+                </HBox>
+                <HBox>
+                    <children>
+                        <Label text="Telefono:" prefWidth="100"/>
+                        <TextField fx:id="CasellaTelefono" />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT">
+                    <children>
+                        <Button fx:id="BottoneIndietro" mnemonicParsing="false" onAction="#Indietro" text="Indietro">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Button fx:id="BottoneConferma" mnemonicParsing="false" onAction="#modificaProfilo" text="Conferma" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</VBox>
