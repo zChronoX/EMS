@@ -708,7 +708,17 @@ public boolean prenotaAppello(Studente studente, Appello_esame appello) throws E
         }
     }
 
+    public boolean controlloEsistenzaAppello(LocalDate data, LocalTime orario, String luogo) {
+        for (Appello_esame appelloEsistente : exam_list.values()) {
+            if (appelloEsistente.getData().equals(data) &&
+                    appelloEsistente.getOrario().equals(orario) &&
+                    appelloEsistente.getLuogo().equals(luogo)) {
 
+                return true; // Esiste già un appello con gli stessi dati
+            }
+        }
+        return false; // Non esiste alcun appello con gli stessi dati
+    }
 
 }
 

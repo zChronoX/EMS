@@ -80,6 +80,11 @@ public class ReinserisciDatiAppelloUI implements Initializable {
             alert.showAndWait();
             return;
         }
+        if (ems.controlloEsistenzaAppello(data, orario, luogo)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Esiste già un appello con gli stessi dati.");
+            alert.showAndWait();
+            return; // Interrompi la modifica se l'appello esiste già
+        }
 
 
         String IDAppello=appello.getID_appello();
