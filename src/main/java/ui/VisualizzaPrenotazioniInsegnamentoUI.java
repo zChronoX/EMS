@@ -65,6 +65,9 @@ public class VisualizzaPrenotazioniInsegnamentoUI implements Initializable {
         Insegnamento insegnamento = ems.getInsegnamento(codiceInsegnamento);
 
         if (insegnamento != null) {
+            //FORSE MANCAVA QUESTO SET --> FUNZIONA ADESSO
+            ems.setInsegnamentoSelezionato(insegnamento);
+
             apriListaAppelliView(insegnamento);
         } else {
             // Gestisci il caso in cui l'insegnamento non viene trovato
