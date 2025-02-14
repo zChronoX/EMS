@@ -105,6 +105,8 @@ public class VisualizzaCarrieraUI implements Initializable {
             }
         }
 
+
+
         // 2. Popola la ListView con i dati
         appelliApprovatiListView.getItems().clear(); // Pulisci la ListView prima di aggiungere nuovi elementi
         appelliApprovatiListView.getItems().addAll(appelli);
