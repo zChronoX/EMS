@@ -9,7 +9,7 @@
         <Label fx:id="codiceInsegnamentoLabel" text="Codice Insegnamento" />
         <TextField fx:id="idInsegnamentoTextField" text="Inserisci qui il codice da cercare" />
         <Button fx:id="cercaInsegnamentoButton" mnemonicParsing="false" onAction="#handleCercaInsegnamento" text="Cerca Insegnamento" />
-        <TextField fx:id="idAppelloTextField" editable="false" text="ID Appello" visible="false" />
+        <TextField fx:id="idAppelloTextField" editable="false" promptText="ID Appello" visible="false" />
         <TextField fx:id="orarioTextField" promptText="Orario (formato HH:MM)" visible="false" />
         <DatePicker fx:id="dataDatePicker" promptText="Data" visible="false" />
         <TextField fx:id="luogoTextField" promptText="Luogo" visible="false" />
