@@ -130,5 +130,19 @@ public class UIStudente implements Initializable {
         currentStage.close();
     }
 
+    @FXML
+    public void ApriInviaFeedback() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("InviaFeedbackView.fxml")); // Assicurati che il nome del file sia corretto
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+
+        stage.setTitle("Invia Feedback");
+        stage.setScene(scene);
+        stage.show();
+
+        Stage currentStage = (Stage) BottoneInviaFeedback.getScene().getWindow();
+        currentStage.close();
+    }
+
 
 }

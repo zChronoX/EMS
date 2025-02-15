@@ -16,7 +16,8 @@ public class Appello_esame {
     private String Tipologia;
     private Insegnamento insegnamento;
     private List<Studente> studenti = new ArrayList<>();
-    private List<Esito_esame> result_list;
+    private List<String> feedbacks = new ArrayList<>();
+    //private List<Esito_esame> result_list;
 
    /* public Appello_esame(String ID_appello, LocalTime orario, LocalDate data, String luogo, int postiDisponibili,
                          String tipologia, Insegnamento insegnamento) {
@@ -159,5 +160,14 @@ public class Appello_esame {
             throw new Exception("Studente già prenotato a questo appello.");
         }
         this.studenti.add(studente);
+    }
+
+    public  void addFeedback(String recensione){
+        if(recensione != null && !recensione.isEmpty()){
+            this.feedbacks.add(recensione);
+        }
+        else {
+            System.out.println("non hai scritto niente");
+        }
     }
 }

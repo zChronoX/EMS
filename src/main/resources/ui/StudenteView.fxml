@@ -14,7 +14,7 @@
       <Button fx:id="BottoneAnnullaPrenotazione" mnemonicParsing="false" text="Annulla prenotazione appello" />
       <Button fx:id="BottoneVisualizzaInfoEsame" mnemonicParsing="false" onAction="#ApriVisualizzaInfoEsame" text="Visualizza informazioni esame" />
       <Button fx:id="BottoneRifiutaEsito" mnemonicParsing="false" text="Rifiuta esito esame" />
-      <Button fx:id="BottoneInviaFeedback" mnemonicParsing="false" text="Invia feedback esame" onAction="#ApriModificaProfilo" />
+      <Button fx:id="BottoneInviaFeedback" mnemonicParsing="false" text="Invia feedback esame" onAction="#ApriInviaFeedback" />
       <Button fx:id="BottoneModificaProfilo" mnemonicParsing="false" onAction="#ApriModificaProfilo" text="Modifica profilo" />
       <Button fx:id="BottoneLogoutStudente" mnemonicParsing="false" onAction="#LogoutStudente" text="Logout" />
    </children>

@@ -234,6 +234,45 @@ public static boolean verificaEAggiungiMatricola(String filePath, String nuovaMa
 }
 */
 
+  /*  public HashMap<String, Appello_esame> loadaAppelli() {
+        HashMap<String, Appello_esame> exam_list = new HashMap<>();
+
+        // Creiamo un'istanza di Insegnamento (assicurati che la classe Insegnamento abbia un costruttore appropriato)
+        Docente docente = new Docente("ciccio","balordo", "female",
+                new Date(1920, 4, 15),
+                "fusaufausfb",
+                "casa di roberta",
+                "ciccio@gmail.com",
+                "1234567890",
+                Utente.TipoProfilo.Docente,
+                "ciccio",
+                "ciccio");
+        Insegnamento insegnamento = new Insegnamento("MAT001", "Algebra Lineare",6,"Corso di algebra lineare", 2023);
+        insegnamento.aggiungiDocente(docente);
+        // Creiamo un'istanza di Appello_esame con parametri di esempio:
+        // ID_appello: "APP001"
+        // Data: 15 aprile 2025
+        // Orario: 9:30
+        // Luogo: "Aula 101"
+        // postiDisponibili: 30
+        // Tipologia: "Scritto"
+        // insegnamento: l'istanza appena creata
+        Appello_esame a = new Appello_esame(
+                "APP001",
+                LocalDate.of(2025, 4, 15),
+                LocalTime.of(9, 30),
+                "Aula 101",
+                30,
+                "Scritto",
+                insegnamento
+        );
+
+        // Inseriamo l'appello nella mappa utilizzando l'ID come chiave
+        exam_list.put("APP001", a);
+
+        return exam_list;
+    }
+*/
 
 }
 

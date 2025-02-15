@@ -22,7 +22,7 @@ public class EMS {
     private HashMap<String,Appello_esame> exam_list;
     private Insegnamento insegnamentoSelezionato;
     private Appello_esame appelloSelezionato;
-    //private List<Prenotazione> prenotazioniList = new ArrayList<>();
+
     private HashMap<String, Prenotazione> reservation_list;
     private List<Esito_esame> result_list = new ArrayList<>();
 
@@ -59,6 +59,8 @@ public class EMS {
             }
             System.out.println(teaching_list);
         }
+
+        //utility.loadaAppelli();
 
     }
 
@@ -139,7 +141,7 @@ public class EMS {
 
             System.out.println("Elenco Studenti:");
             System.out.println("------------------------------------");
-            for (Map.Entry<String, Studente> entry : this.student_list.entrySet()) {
+            for (HashMap.Entry<String, Studente> entry : this.student_list.entrySet()) {
                 String chiave = entry.getKey();
                 Studente studente = entry.getValue();
                 System.out.println("Matricola: " + chiave + ", Studente: " + studente);
@@ -150,7 +152,7 @@ public class EMS {
 
             System.out.println("Elenco Docenti:");
             System.out.println("------------------------------------");
-            for (Map.Entry<String, Docente> entry : this.doc_list.entrySet()) {
+            for (HashMap.Entry<String, Docente> entry : this.doc_list.entrySet()) {
                 String chiave = entry.getKey();
                 Docente docente = entry.getValue();
                 System.out.println("Codice Docente: " + chiave + ", Docente: " + docente);
@@ -525,13 +527,13 @@ public boolean prenotaAppello(Studente studente, Appello_esame appello) throws E
         if (reservation_list.isEmpty()) {
             System.out.println("  La lista è vuota.");
         } else {
-            for (Map.Entry<String, Prenotazione> entry : reservation_list.entrySet()) { // Usa entrySet()
+            for (HashMap.Entry<String, Prenotazione> entry : reservation_list.entrySet()) { // Usa entrySet()
                 Prenotazione p = entry.getValue(); // Ottieni l'oggetto Prenotazione
                 System.out.println("  - " + p.getStudente().getMatricola() + " - " + p.getAppello().getID_appello());
             }
         }
 
-        for (Map.Entry<String, Prenotazione> entry : reservation_list.entrySet()) { // Usa entrySet() anche qui
+        for (HashMap.Entry<String, Prenotazione> entry : reservation_list.entrySet()) { // Usa entrySet() anche qui
             Prenotazione p = entry.getValue();
             System.out.println("Confronto con prenotazione: " + p.getStudente().getMatricola() + " - " + p.getAppello().getID_appello());
             if (p.getStudente().equals(studente) && p.getAppello().equals(appello)) {
@@ -666,7 +668,7 @@ public boolean prenotaAppello(Studente studente, Appello_esame appello) throws E
     public HashMap<String, Appello_esame> visualizzaAppelliPerInsegnamento(String ID_insegnamento) {
         HashMap<String, Appello_esame> appelliFiltrati = new HashMap<>();
 
-        for (Map.Entry<String, Appello_esame> entry : exam_list.entrySet()) {
+        for (HashMap.Entry<String, Appello_esame> entry : exam_list.entrySet()) {
             if (entry.getValue().getInsegnamento().getID_insegnamento().equals(ID_insegnamento)) {
                 appelliFiltrati.put(entry.getKey(), entry.getValue());
             }
@@ -674,7 +676,7 @@ public boolean prenotaAppello(Studente studente, Appello_esame appello) throws E
         return appelliFiltrati;
     }
 
-    public Map<String, Prenotazione> getReservation_list() {
+    public HashMap<String, Prenotazione> getReservation_list() {
         return reservation_list;
     }
 
