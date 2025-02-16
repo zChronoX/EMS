@@ -278,10 +278,8 @@ public class UICreaAppello implements Initializable {
 
             idAppelloTextField.setText(idAppello);
 
-            Appello_esame appello = new Appello_esame(idAppello, data, orario, luogo, posti, tipologia,insegnamento);
 
-
-            ems.confermaAppello(idAppello,appello);
+            ems.confermaAppello();
 
 
             // Mostra un riepilogo

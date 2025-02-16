@@ -14,6 +14,7 @@ public class EMS {
     private Utente utenteCorrente;
     private Studente studenteCorrente;
     private Docente docenteCorrente;
+    private Appello_esame appelloCorrente;
     private HashMap<String, Studente> student_list;
     private HashMap<String, Docente> doc_list;
     private HashMap<String, Insegnamento> teaching_list;
@@ -167,9 +168,10 @@ public class EMS {
     }
 
     public void generaCredenziali() {
+
+        utenteCorrente = ems.getUtenteCorrente();
         if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) {
-            //PROVA:
-            utenteCorrente = ems.getUtenteCorrente();
+
 
             studenteCorrente = (Studente) utenteCorrente;
             studenteCorrente.assegnaIdentificativiStudente();
@@ -635,30 +637,25 @@ public boolean prenotaAppello(Studente studente, Appello_esame appello) throws E
             }
         }
         String ID_appello = "APP-" + (System.currentTimeMillis() % 100000);
-        Appello_esame appello = new Appello_esame(ID_appello, Data, Orario, Luogo, postiDisponibili, tipologia,insegnamento);
-        insegnamento.aggiungiAppello(appello);
+        appelloCorrente = new Appello_esame(ID_appello, Data, Orario, Luogo, postiDisponibili, tipologia,insegnamento);
+        System.out.println("Appello corrente creato: " + appelloCorrente);
+        insegnamento.aggiungiAppello(appelloCorrente);
         if (exam_list == null) {
             exam_list = new HashMap<>();
         }
         return ID_appello;
 
     }
-    public void confermaAppello(String ID_appello, Appello_esame appello) {
-        if (ID_appello == null || appello == null) {
-            throw new IllegalArgumentException("ID appello o appello nulli.");
-        }
+    public void confermaAppello() {
 
-        if (exam_list == null) { // Inizializza se null
-            exam_list = new HashMap<>();
-        }
 
-        if (exam_list.containsKey(ID_appello)) {
-            System.out.println("L'appello con ID " + ID_appello + " è già stato confermato.");
+        if (exam_list.containsKey(appelloCorrente.getID_appello())) {
+            System.out.println("L'appello con ID " + appelloCorrente.getID_appello() + " è già stato confermato.");
             return;
         }
 
-        exam_list.put(ID_appello, appello);
-        System.out.println("Appello " + ID_appello + " confermato con successo.");
+        exam_list.put(appelloCorrente.getID_appello(), appelloCorrente);
+        System.out.println("Appello " + appelloCorrente.getID_appello() + " confermato con successo.");
     }
 
     public HashMap<String, Insegnamento> visualizzaInsegnamenti() {

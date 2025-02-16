@@ -21,27 +21,6 @@ public class Studente extends Utente implements GeneratoreCredenziali {
     }
 
 
-    /*public Studente(String nome, String cognome, String genere, Date data_nascita, String codice_fiscale, String residenza, String email, String telefono, TipoProfilo tipoProfilo, String matricola, String password, String categoria, int annoCorso) {
-        super(nome, cognome, genere, data_nascita, codice_fiscale, residenza, email, telefono, tipoProfilo);
-        this.Categoria = categoria;
-        this.AnnoCorso = annoCorso;
-    }*/
-   // public Studente(){};
-
-    //USARE
-   // public Studente(TipoProfilo tipoProfilo) {
-    //    this.tipoProfilo = tipoProfilo;
-    //}
-
-   /* // Costruttore per caricamento studenti statici (tutti i campi)
-    public Studente(String nome, String cognome, String genere, Date data_nascita, String codice_fiscale, String residenza, String email, String telefono, TipoProfilo tipoProfilo, String categoria, int annoCorso) {
-        super(nome, cognome, genere, data_nascita, codice_fiscale, residenza, email, telefono, tipoProfilo);
-        this.Categoria = categoria;
-        this.AnnoCorso = annoCorso;
-        this.Matricola = generaMatricola();
-        this.Password = generaPassword();
-    }*/
-
     // Costruttore per creazione utente da controller (solo tipoProfilo inizialmente)
     public Studente(TipoProfilo tipoProfilo) {
         super(tipoProfilo); // Chiama il costruttore di Utente che accetta solo tipoProfilo
@@ -104,7 +83,7 @@ public class Studente extends Utente implements GeneratoreCredenziali {
     }
 
     public void assegnaIdentificativiStudente() {
-        //a chi sto assegnando questi valori?? CHI E' THIS???
+
 
 
         this.setMatricola(generaMatricola());
@@ -112,21 +91,7 @@ public class Studente extends Utente implements GeneratoreCredenziali {
     }
 
     @Override
-    public String generaMatricola() {
-     /*  Commento perchè estensione del caso d'uso di CreazioneUtente evitabile in quanto la matricola viene creata in maniera randomica
-         e quindi la probabilità che vengano creati due utenti con la stessa matricola è bassissima.
-        String buffer= GeneratoreCredenziali.super.generaMatricola();
-        Path currentFilePath = Paths.get("").toAbsolutePath(); // Ottenere il path della directory corrente
-        Path filePath = currentFilePath.resolve("src/main/files/matricole.txt");
-
-        boolean result = Utility.verificaEAggiungiMatricola(String.valueOf(filePath),buffer);
-
-        while( result== false){
-            buffer = GeneratoreCredenziali.super.generaMatricola();
-            result = Utility.verificaEAggiungiMatricola(String.valueOf(filePath) ,buffer);
-        }
-        return buffer; */
-        return GeneratoreCredenziali.super.generaMatricola();
+    public String generaMatricola() { return GeneratoreCredenziali.super.generaMatricola();
     }
 
     @Override
