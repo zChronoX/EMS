@@ -53,16 +53,16 @@ public class UILoginStudente implements Initializable {
         try {
             if (ems.loginStudente(matricola, password)) {
                 System.out.println("Login avvenuto con successo!");
-                //mi sa che si deve settare studente corrente di ems
+
 
                 apriVistaDopoLoginStudente();
             } else {
                 System.out.println("Login fallito.");
-                // Puoi anche mostrare un messaggio di errore all'utente qui
+
             }
         } catch (Exception e) {
             System.err.println("Errore durante il login: " + e.getMessage());
-            // Gestisci l'eccezione, ad esempio mostrando un messaggio di errore all'utente
+
         }
     }
 

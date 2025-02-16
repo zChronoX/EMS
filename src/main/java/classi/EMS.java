@@ -353,64 +353,10 @@ public class EMS {
     private synchronized int generaProgressivo() {
         return prossimoProgressivo++;
     }
-/*
-    public void prenotaAppello(Studente studente, Appello_esame appello) throws Exception {
-        if (studente == null) {
-            throw new Exception("Studente non loggato.");
-        }
 
-        if (appello == null) {
-            throw new Exception("Appello non valido.");
-        }
+public boolean prenotaAppello(Appello_esame appello) throws Exception {
 
-        if (this.isStudentePrenotato(studente, appello)) {
-            throw new Exception("Studente già prenotato a questo appello.");
-        }
-
-        // Controllo posti disponibili
-        if (appello.getPostiDisponibili() <= 0) {
-            throw new Exception("Non ci sono posti disponibili per questo appello.");
-        }
-
-        // Crea la Prenotazione *PRIMA* di aggiungere appello e studente
-        Prenotazione prenotazione = new Prenotazione(); // Usa il costruttore senza parametri
-        prenotazione.setStudente(studente);
-        prenotazione.setAppello(appello);
-
-        // Genera e imposta ID, Data, Ora e Progressivo
-        String idPrenotazione = generaIdPrenotazione(); // Implementa questa funzione
-        prenotazione.setID_prenotazione(idPrenotazione);
-        prenotazione.setData(LocalDate.now()); // Imposta la data corrente
-        prenotazione.setOra(LocalTime.now()); // Imposta l'ora corrente
-        prenotazione.setProgressivo(generaProgressivo()); // Implementa questa funzione
-
-        // Aggiungi la prenotazione alla mappa in EMS
-        reservation_list.put(idPrenotazione, prenotazione); // Usa la mappa per memorizzare la prenotazione
-
-        appello.addStudente(studente);
-        studente.addAppello(appello);
-
-        // Decrementa i posti disponibili
-        appello.setPostiDisponibili(appello.getPostiDisponibili() - 1);
-
-        // Stampa a console per debug
-        System.out.println("Prenotazione effettuata con successo per " + studente.getNome() + " all'appello " + appello.getID_appello());
-        System.out.println("ID Prenotazione: " + prenotazione.getID_prenotazione());
-
-        // Stampa la mappa di prenotazioni *dopo* aver aggiunto la nuova prenotazione
-        System.out.println("Elenco prenotazioni dopo l'aggiunta:");
-        if (reservation_list.isEmpty()) {
-            System.out.println("  La mappa è vuota.");
-        } else {
-            for (Map.Entry<String, Prenotazione> entry : reservation_list.entrySet()) {
-                Prenotazione p = entry.getValue();
-                System.out.println("  - " + p.getStudente().getMatricola() + " - " + p.getAppello().getID_appello());
-            }
-        }
-    }
-*/
-public boolean prenotaAppello(Studente studente, Appello_esame appello) throws Exception {
-    if (studente == null) {
+    if (studenteCorrente == null) {
         throw new Exception("Studente non loggato.");
     }
 
@@ -418,7 +364,7 @@ public boolean prenotaAppello(Studente studente, Appello_esame appello) throws E
         throw new Exception("Appello non valido.");
     }
 
-    if (this.isStudentePrenotato(studente, appello)) {
+    if (this.isStudentePrenotato(studenteCorrente, appello)) {
         throw new Exception("Studente già prenotato a questo appello.");
     }
 
@@ -428,7 +374,7 @@ public boolean prenotaAppello(Studente studente, Appello_esame appello) throws E
 
     // Creazione della prenotazione
     Prenotazione prenotazione = new Prenotazione();
-    prenotazione.setStudente(studente);
+    prenotazione.setStudente(studenteCorrente);
     prenotazione.setAppello(appello);
 
     // Generazione ID, data, ora e progressivo
@@ -441,13 +387,13 @@ public boolean prenotaAppello(Studente studente, Appello_esame appello) throws E
     // Salvataggio della prenotazione
     reservation_list.put(idPrenotazione, prenotazione);
 
-    appello.addStudente(studente);
-    studente.addAppello(appello);
+    appello.addStudente(studenteCorrente);
+    studenteCorrente.addAppello(appello);
 
     // Aggiornamento posti disponibili
     appello.setPostiDisponibili(appello.getPostiDisponibili() - 1);
 
-    System.out.println("Prenotazione effettuata per " + studente.getNome() + " all'appello " + appello.getID_appello());
+    System.out.println("Prenotazione effettuata per " + studenteCorrente.getNome() + " all'appello " + appello.getID_appello());
     return true; // Prenotazione riuscita
 }
 
@@ -662,15 +608,15 @@ public boolean prenotaAppello(Studente studente, Appello_esame appello) throws E
         return teaching_list;
     }
 
-    public HashMap<String, Appello_esame> visualizzaAppelliPerInsegnamento(String ID_insegnamento) {
-        HashMap<String, Appello_esame> appelliFiltrati = new HashMap<>();
-
-        for (HashMap.Entry<String, Appello_esame> entry : exam_list.entrySet()) {
-            if (entry.getValue().getInsegnamento().getID_insegnamento().equals(ID_insegnamento)) {
-                appelliFiltrati.put(entry.getKey(), entry.getValue());
-            }
+    public HashMap<String, Appello_esame> visualizzaAppelliPerInsegnamento(String ID_insegnamento){
+        if (teaching_list.containsKey(ID_insegnamento)) {
+            Insegnamento insegnamento= teaching_list.get(ID_insegnamento);
+            return insegnamento.cercaAppelliDisponibili(studenteCorrente);
         }
-        return appelliFiltrati;
+        else {
+            System.out.println("Insegnamento non trovato.");
+            return null;
+        }
     }
 
     public HashMap<String, Prenotazione> getReservation_list() {

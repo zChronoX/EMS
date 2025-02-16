@@ -194,7 +194,7 @@ public class UIListaAppelli implements Initializable {
         dialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
-                    boolean success = ems.prenotaAppello(studente, appello);
+                    boolean success = ems.prenotaAppello(appello);
                     if (success) {
                         showAlert("Successo", "Prenotazione effettuata con successo.");
                         visualizzaAppelli();

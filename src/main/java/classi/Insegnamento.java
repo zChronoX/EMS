@@ -16,15 +16,6 @@ public class Insegnamento {
     private List<Docente> docenti = new ArrayList<>();
     private HashMap<String,Appello_esame> exam_list;
 
-  /*  public Insegnamento(String ID_insegnamento, String Nome, int CFU, String Descrizione, int Anno, Docente docente) {
-        this.ID_insegnamento = ID_insegnamento;
-        this.Nome = Nome;
-        this.CFU = CFU;
-        this.Descrizione = Descrizione;
-        this.Anno = Anno;
-        this.docenti = new ArrayList<>();
-        this.exam_list = new HashMap<>();
-    }*/
 
     public Insegnamento(String ID_insegnamento, String Nome, int CFU, String Descrizione, int Anno) {
         this.ID_insegnamento = ID_insegnamento;
@@ -119,6 +110,17 @@ public class Insegnamento {
 
     public HashMap<String, Appello_esame> getExam_list() {
         return exam_list;
+    }
+
+    public HashMap<String,Appello_esame> cercaAppelliDisponibili(Studente studente) {
+        HashMap<String, Appello_esame> temporary_list = new HashMap<>();
+        for (HashMap.Entry<String, Appello_esame> entry : exam_list.entrySet()) {
+            if(entry.getValue().verificaDisponibilitaAppello(studente)){
+                temporary_list.put(entry.getKey(), entry.getValue());
+            }
+
+        }
+        return temporary_list;
     }
 
     @Override

@@ -109,21 +109,12 @@ public class Appello_esame {
 
     public void setInsegnamento(Insegnamento insegnamento) { this.insegnamento = insegnamento; }
 
-  /*  public void aggiungiPrenotazione(Prenotazione prenotato) {
-
-        reservation_list.put(prenotato.getID_prenotazione(),prenotato);
-    }*/
-
-   /* public HashMap<String, Prenotazione> getPrenotazioniStudenti(String ID_appello){
-
-        if(ID_appello.equals(this.ID_appello)){
-
-            return reservation_list;
-        } else {
-
-            return new HashMap<>();
+    public boolean verificaDisponibilitaAppello(Studente studente) {
+        if(this.getTipologia().equals(studente.getCategoria())){
+            return true;
         }
-    }*/
+        return false;
+    }
 
     @Override
     public String toString() {

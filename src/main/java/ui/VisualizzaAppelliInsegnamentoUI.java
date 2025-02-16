@@ -50,11 +50,6 @@ public class VisualizzaAppelliInsegnamentoUI implements Initializable {
     private Button scegliAppelloButton;
 
 
-   /* public void setInsegnamento(Insegnamento insegnamento) {
-        this.insegnamento = insegnamento;
-        visualizzaAppelli();
-    }*/
-
     private void visualizzaAppelli() {
         if (insegnamento != null) {
             HashMap<String, Appello_esame> exam_list = ems.visualizzaAppelliPerInsegnamento(insegnamento.getID_insegnamento());
