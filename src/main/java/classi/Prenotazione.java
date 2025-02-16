@@ -13,6 +13,7 @@ public class Prenotazione {
     private Studente studente;
     private Appello_esame appello;
     private Esito_esame esito;
+    private boolean recensito;
 
     public Prenotazione(String ID_prenotazione, LocalDate data, LocalTime ora, int progressivo,
                         Studente studente, Appello_esame appello) {
@@ -22,6 +23,7 @@ public class Prenotazione {
         Progressivo = progressivo;
         this.studente = studente;
         this.appello = appello;
+        recensito = false;
     }
     public Prenotazione() {};
 
@@ -98,6 +100,14 @@ public class Prenotazione {
                 ", studente=" + studente +
                 ", appello=" + appello +
                 '}';
+    }
+
+    public boolean getRecensito() {
+        return recensito;
+    }
+
+    public void setRecensito(boolean recensito) {
+        this.recensito = recensito;
     }
 }
 

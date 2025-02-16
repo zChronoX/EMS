@@ -116,6 +116,10 @@ public class Appello_esame {
         return false;
     }
 
+    public List<String> getFeedbacks() {
+        return feedbacks;
+    }
+
     @Override
     public String toString() {
         String insegnamentoNome = (insegnamento != null) ? insegnamento.getNome() : "Sconosciuto";

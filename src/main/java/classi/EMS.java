@@ -665,6 +665,18 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
         return false; // Non esiste alcun appello con gli stessi dati
     }
 
+    public HashMap<String, Prenotazione> getPrenotazioniNonRecensiteByStudente(Studente studente) {
+    HashMap<String, Prenotazione> prenotazioniStudente = new HashMap<>();
+        for (HashMap.Entry<String, Prenotazione> entry : reservation_list.entrySet()) { // Usa entrySet() anche qui
+            Prenotazione p = entry.getValue();
+
+            if (p.getStudente().equals(studente) && !p.getRecensito() ) { //controllo attributo recensito=falso
+                prenotazioniStudente.put(p.getID_prenotazione(), p);
+            }
+        }
+        return prenotazioniStudente;
+    }
+
 }
 
 

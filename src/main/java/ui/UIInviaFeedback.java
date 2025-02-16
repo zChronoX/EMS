@@ -1,9 +1,6 @@
 package ui;
 
-import classi.Appello_esame;
-import classi.EMS;
-import classi.Esito_esame;
-import classi.Prenotazione;
+import classi.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,10 +19,11 @@ import java.util.ResourceBundle;
 
 public class UIInviaFeedback implements Initializable {
     private EMS ems;
-    private HashMap<String, Prenotazione> prenotazioni;
+    private HashMap<String, Prenotazione> prenotazioniSenzaRecensioni;
+    //private HashMap<String, Prenotazione> prenotazioniConRecensioni;
     private Esito_esame esito;
     private Prenotazione prenotazione;
-    //private Feedback feedback;
+    private Studente studente;
 
     @FXML
     private Button confermaButton;
@@ -39,7 +37,9 @@ public class UIInviaFeedback implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ems = EMS.getInstance();
-        prenotazioni = ems.getReservation_list();
+        studente=ems.getStudenteCorrente();
+        //prenotazioniSenzaRecensioni = ems.getReservation_list();
+        prenotazioniSenzaRecensioni=new HashMap<String, Prenotazione>(ems.getPrenotazioniNonRecensiteByStudente(studente));
         visualizzaPrenotazioni();
     }
 
@@ -47,7 +47,7 @@ public class UIInviaFeedback implements Initializable {
     private void visualizzaPrenotazioni() {
         sezionePrenotazioni.getItems().clear(); // Pulisci la ListView!
 
-        for (Prenotazione p : prenotazioni.values()) {
+        for (Prenotazione p : prenotazioniSenzaRecensioni.values()) {
             Esito_esame esito = p.getEsito();
             if (esito != null && esito.getStato().equals("Approvato")) {
                 prenotazione=p;
@@ -74,9 +74,9 @@ public class UIInviaFeedback implements Initializable {
         }
 
         //  Verifica se l'ID corrisponde a una prenotazione nella mappa
-        if (prenotazioni.containsKey(idPrenotazione)) {
+        if (prenotazioniSenzaRecensioni.containsKey(idPrenotazione)) {
             // L'ID esiste, puoi procedere con l'invio del feedback
-            Prenotazione prenotazione = prenotazioni.get(idPrenotazione);
+            Prenotazione prenotazione = prenotazioniSenzaRecensioni.get(idPrenotazione);
             System.out.println("Prenotazione trovata: " + prenotazione.getID_prenotazione());
 
 
@@ -107,18 +107,13 @@ public class UIInviaFeedback implements Initializable {
 
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
-            /*String descrizione=feedback.getDescrizione();
-             descrizione = result.get();*/
-            // Qui puoi gestire l'invio del feedback
-            //System.out.println("Feedback inviato: " + descrizione);
-
-            //devo recuperare l'appello relativo alla prenotazione???
-            //a chi va associato il feedback??
-
+            prenotazioniSenzaRecensioni.remove(prenotazione.getID_prenotazione());
             Appello_esame appello=prenotazione.getAppello();
            // List<String> recensioni=appello.getFeedbacks();
-            appello.addFeedback(result.get());
-
+            appello.addFeedback(result.get()); //aggiungi il feedback alla lista dei feedback dell'appello
+            prenotazione.setRecensito(true);
+            System.out.println("Appello: "+ appello.getID_appello() + "Feedback: " + appello.getFeedbacks());
+            visualizzaPrenotazioni();
         }
     }
 
