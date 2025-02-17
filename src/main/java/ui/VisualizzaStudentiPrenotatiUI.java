@@ -47,6 +47,7 @@ public class VisualizzaStudentiPrenotatiUI implements Initializable {
         docente = ems.getDocenteCorrente();
         insegnamento=ems.getInsegnamentoSelezionato();
         appello=ems.getAppelloSelezionato();
+        inserisciEsitiButton.setVisible(true);
         visualizzaStudenti();
 
     }
@@ -66,11 +67,13 @@ public class VisualizzaStudentiPrenotatiUI implements Initializable {
 
 
     private void visualizzaStudenti() {
+        studentiPrenotatiListView.getItems().clear();
         if (appello != null) {
             List<Studente> studenti = ems.getStudentiByAppello(appello);
 
             if (studenti == null || studenti.isEmpty()) {
                 studentiPrenotatiListView.getItems().add("Non ci sono studenti prenotati a questo appello.");
+                inserisciEsitiButton.setVisible(false);
                 return;
             }
 
