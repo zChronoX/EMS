@@ -60,12 +60,12 @@ public class UIDocente implements Initializable {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Carica WelcomeView.fxml
         Scene scene = new Scene(fxmlLoader.load());
-        primaryStage.setScene(scene); // Imposta la scena di WelcomeView sullo Stage
-        primaryStage.setTitle("EMS"); // Puoi anche reimpostare il titolo
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("EMS");
     }
     @FXML
     public void ApriElencoPrenotati() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaPrenotatiEsameView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaPrenotatiEsameView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 
@@ -78,7 +78,7 @@ public class UIDocente implements Initializable {
     }
     @FXML
     public void ApriListaFeedback() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaFeedbackEsameView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaFeedbackEsameView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 
@@ -92,7 +92,7 @@ public class UIDocente implements Initializable {
 
     @FXML
     public void ApriModificaProfilo() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ModificaProfiloView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ModificaProfiloView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 

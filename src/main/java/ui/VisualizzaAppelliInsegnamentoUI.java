@@ -33,7 +33,7 @@ public class VisualizzaAppelliInsegnamentoUI implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         ems=EMS.getInstance();
         docente = ems.getDocenteCorrente();
-        insegnamento=ems.getInsegnamentoSelezionato(); //BISOGNA FARE UNA GET INSEGNAMENTO SELEZIONATO, SE NON ESISTE VA CREATA
+        insegnamento=ems.getInsegnamentoSelezionato();
         visualizzaAppelli();
     }
 
@@ -67,15 +67,15 @@ public class VisualizzaAppelliInsegnamentoUI implements Initializable {
         }
     }
     @FXML
-    private void visualizzaStudentiPrenotati(ActionEvent event) throws IOException {
+    private void visualizzaStudentiPrenotati() throws IOException {
         String idAppello = idAppelloTextField.getText();
 
         if (idAppello == null || idAppello.isEmpty()) {
             showAlert("Errore", "Inserisci l'ID dell'appello.");
             return;
         }
-
-        Appello_esame appello = ems.getAppelloById(idAppello); // Implementa questo metodo in EMS, accetta una stringa
+//
+        Appello_esame appello = ems.getAppelloById(idAppello);
 
         if (appello == null) {
             showAlert("Errore", "Appello non trovato.");

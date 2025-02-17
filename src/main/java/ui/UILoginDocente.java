@@ -42,13 +42,14 @@ public class UILoginDocente implements Initializable {
 
     public void loginDocente() throws IOException {
 
-        String codiceDocente = codiceDocenteField.getText(); // Ottieni il codice docente dal campo di testo
-        String password = passwordDocenteField.getText(); // Ottieni la password dal campo di testo
+        String codiceDocente = codiceDocenteField.getText();
+        String password = passwordDocenteField.getText();
+
 
         try {
             if (ems.loginDocente(codiceDocente, password)) {
                 System.out.println("Login docente avvenuto con successo!");
-                apriVistaDopoLoginDocente(); // Apri la vista appropriata
+                apriVistaDopoLoginDocente();
             } else {
                 System.out.println("Login docente fallito.");
             }
@@ -69,11 +70,11 @@ public class UILoginDocente implements Initializable {
 
     @FXML
     public void Indietro() throws IOException {
-        Stage primaryStage = (Stage) Indietro.getScene().getWindow(); // Ottieni lo Stage
+        Stage primaryStage = (Stage) Indietro.getScene().getWindow();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Carica WelcomeView.fxml
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        primaryStage.setScene(scene); // Imposta la scena di WelcomeView sullo Stage
-        primaryStage.setTitle("EMS"); // Puoi anche reimpostare il titolo
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("EMS");
     }
 }

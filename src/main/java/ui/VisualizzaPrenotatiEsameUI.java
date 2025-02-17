@@ -44,8 +44,9 @@ public class VisualizzaPrenotatiEsameUI implements Initializable {
 
     private void visualizzaInsegnamentiDocente() {
         System.out.println("Docente: " + docente);
+        String codiceDocente = docente.getCodiceDocente();
         if (docente != null) {
-            List<Insegnamento> insegnamenti = ems.getInsegnamentiByDocente(docente); // Implementa questo metodo in EMS
+            List<Insegnamento> insegnamenti = ems.mostraInsegnamentiDocente(codiceDocente);
 
             if (insegnamenti == null || insegnamenti.isEmpty()) {
                 insegnamentiDocenteListView.getItems().add("Non hai insegnamenti assegnati.");
@@ -59,12 +60,14 @@ public class VisualizzaPrenotatiEsameUI implements Initializable {
     }
 
     public VisualizzaPrenotatiEsameUI() {}
-
+/*
     @FXML
     private Button BottoneIndietroPrenotatiEsame;
 
+ */
+
     @FXML
-    private void visualizzaAppelliInsegnamento(ActionEvent event) throws IOException { // Metodo mancante!
+    private void visualizzaAppelliInsegnamento() throws IOException { // Metodo mancante!
         String codiceInsegnamento = codiceInsegnamentoTextField.getText();
 
         if (codiceInsegnamento == null || codiceInsegnamento.isEmpty()) {
@@ -78,8 +81,12 @@ public class VisualizzaPrenotatiEsameUI implements Initializable {
             showAlert("Errore", "Insegnamento non trovato.");
             return;
         }
-        //SETTO L'INSEGNAMENTO
+
         ems.setInsegnamentoSelezionato(insegnamento);
+
+        // Pulisce il campo di testo dopo la selezione
+        codiceInsegnamentoTextField.clear();
+
         apriListaAppelliView(insegnamento);
     }
 

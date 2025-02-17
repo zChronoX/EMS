@@ -1,4 +1,4 @@
-package ui;
+/*package ui;
 
 import classi.EMS;
 import javafx.fxml.Initializable;
@@ -19,3 +19,4 @@ public class GestisciEsitiUI implements Initializable {
 
 
 }
+*/
