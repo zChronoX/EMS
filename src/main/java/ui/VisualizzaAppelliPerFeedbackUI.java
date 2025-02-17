@@ -79,14 +79,18 @@ public class VisualizzaAppelliPerFeedbackUI implements Initializable {
             return;
         }
 
-        if(feedbackListView.getItems() != null && !feedbackListView.getItems().isEmpty()){
+        if(feedbackListView.getItems() != null || !feedbackListView.getItems().isEmpty()){
             feedbackListView.getItems().clear();
         }
 
+        feedbacks=appello.getFeedbacks();
+        if (feedbacks.isEmpty()) {
+            feedbackListView.getItems().add("Non ci sono feedback per questo appello");
+        } else {
 
-        feedbacks = appello.getFeedbacks();
-        for (String feedback : feedbacks) {
-            feedbackListView.getItems().add(feedback);
+            for (String feedback : feedbacks) {
+                feedbackListView.getItems().add(feedback);
+            }
         }
     }
 

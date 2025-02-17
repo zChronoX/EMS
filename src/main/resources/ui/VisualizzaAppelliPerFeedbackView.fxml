@@ -8,6 +8,7 @@
         <ListView fx:id="appelliInsegnamentoListView" prefHeight="200.0" prefWidth="200.0" />
         <TextField fx:id="idAppelloTextField" promptText="ID Appello" />
         <Button fx:id="scegliAppelloButton" mnemonicParsing="false" onAction="#visualizzaFeedback" text="Scegli Appello" />
+        <ListView fx:id="feedbackListView" prefHeight="200.0" prefWidth="200.0" />
         <Button fx:id="BottoneIndietroInsegnamentiDocente" mnemonicParsing="false" onAction="#IndietroInsegnamentiDocente" text="Indietro" />
     </children>
 </VBox>
