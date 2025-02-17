@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 //FARE IN MODO CHE UNO STUDENTE NON POSSA RIMETTERE IL FEEDBACK
-// PER LO STESSO ESAME MANTENENDO L'ANONIMO
+// PER LO STESSO ESAME MANTENENDO L'ANONIMO --> FATTO
 
 public class UIInviaFeedback implements Initializable {
     private EMS ems;

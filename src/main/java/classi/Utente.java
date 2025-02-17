@@ -1,5 +1,6 @@
 package classi;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -26,6 +27,13 @@ public class Utente {
         Nome = nome;
         Cognome = cognome;
         Genere = genere;
+        // Formatta la data nel formato "giorno mese anno"
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy");
+        String dataFormattata = formatter.format(data_nascita);
+
+        // Memorizza la data formattata
+        this.Data_nascita = data_nascita;
+
         Data_nascita = data_nascita;
         Codice_fiscale = codice_fiscale;
         Residenza = residenza;

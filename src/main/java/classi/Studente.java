@@ -4,6 +4,9 @@ import interfacce.GeneratoreCredenziali;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -101,6 +104,13 @@ public class Studente extends Utente implements GeneratoreCredenziali {
 
     @Override
     public String toString() {
+        String dataNascitaString = ""; // Inizializza con una stringa vuota
+
+        if (Data_nascita != null) { // Verifica che Data_nascita non sia null
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // Formato "giorno mese anno"
+            dataNascitaString = formatter.format(Data_nascita);
+        }
+
         return "Studente{" +
                 "Matricola='" + Matricola + '\'' +
                 ", Password='" + Password + '\'' +
@@ -109,7 +119,7 @@ public class Studente extends Utente implements GeneratoreCredenziali {
                 ", Nome='" + Nome + '\'' +
                 ", Cognome='" + Cognome + '\'' +
                 ", Genere='" + Genere + '\'' +
-                ", Data_nascita=" + Data_nascita +
+                ", Data_nascita=" + dataNascitaString + // Usa la stringa formattata
                 ", Codice_fiscale='" + Codice_fiscale + '\'' +
                 ", Residenza='" + Residenza + '\'' +
                 ", Email='" + Email + '\'' +

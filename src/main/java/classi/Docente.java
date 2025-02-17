@@ -2,6 +2,7 @@ package classi;
 
 import interfacce.GeneratoreCredenziali;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -62,15 +63,23 @@ public class Docente extends Utente implements GeneratoreCredenziali {
     public String generaPassword() {
         return GeneratoreCredenziali.super.generaPassword();
     }
+
     @Override
     public String toString() {
+        String dataNascitaString = ""; // Inizializza con una stringa vuota
+
+        if (Data_nascita != null) { // Verifica che Data_nascita non sia null
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // Formato "giorno mese anno"
+            dataNascitaString = formatter.format(Data_nascita);
+        }
+
         return "Docente{" +
                 "codiceDocente='" + codiceDocente + '\'' +
                 ", Password='" + Password + '\'' +
                 ", Nome='" + Nome + '\'' +
                 ", Cognome='" + Cognome + '\'' +
                 ", Genere='" + Genere + '\'' +
-                ", Data_nascita=" + Data_nascita +
+                ", Data_nascita=" + dataNascitaString + // Usa la stringa formattata
                 ", Codice_fiscale='" + Codice_fiscale + '\'' +
                 ", Residenza='" + Residenza + '\'' +
                 ", Email='" + Email + '\'' +
