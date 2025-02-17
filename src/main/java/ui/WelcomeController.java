@@ -4,8 +4,10 @@ import classi.EMS;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,9 +31,15 @@ public class WelcomeController {
     private Button BottoneVisualizzaDocenti;
     @FXML
     private Button BottoneCancellaStudente;
+    @FXML
+    private Button logoutButton;
 
     @FXML
     private TextArea studentListTextArea;
+    @FXML
+    private TextField adminCodeField;
+    @FXML
+    private Button verifyAdminButton;
 
     @FXML
     public void ApriVisualizzaStudenti() throws IOException {
@@ -127,5 +135,53 @@ public class WelcomeController {
 
         Stage currentStage = (Stage) BottoneCancellaStudente.getScene().getWindow();
         currentStage.close();
+    }
+
+    @FXML
+    public void verificaCodice(){
+        String codice = adminCodeField.getText();
+        adminCodeField.clear();
+        if(codice.equals("1234")){
+            BottoneVisualizzaStudenti.setVisible(true);
+            BottoneCreaUtente.setVisible(true);
+            BottoneModificaAppello.setVisible(true);
+            BottoneVisualizzaDocenti.setVisible(true);
+            BottoneCreaUtente.setVisible(true);
+            BottoneCancellaStudente.setVisible(true);
+            BottoneCreaAppello.setVisible(true);
+            logoutButton.setVisible(true);
+
+            adminCodeField.setVisible(false);
+            verifyAdminButton.setVisible(false);
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Errore");
+            alert.setHeaderText("Codice non valido");
+            alert.setContentText("Non sei l'amministratore.");
+            alert.showAndWait();
+            BottoneVisualizzaStudenti.setVisible(false);
+            BottoneCreaUtente.setVisible(false);
+            BottoneModificaAppello.setVisible(false);
+            BottoneVisualizzaDocenti.setVisible(false);
+            BottoneCreaUtente.setVisible(false);
+            BottoneCancellaStudente.setVisible(false);
+            BottoneCreaAppello.setVisible(false);
+        }
+    }
+
+    @FXML
+    public void logoutAmministratore(){
+        logoutButton.setVisible(false);
+        adminCodeField.setVisible(true);
+        verifyAdminButton.setVisible(true);
+
+        BottoneVisualizzaStudenti.setVisible(false);
+        BottoneCreaUtente.setVisible(false);
+        BottoneModificaAppello.setVisible(false);
+        BottoneVisualizzaDocenti.setVisible(false);
+        BottoneCreaUtente.setVisible(false);
+        BottoneCancellaStudente.setVisible(false);
+        BottoneCreaAppello.setVisible(false);
+
     }
 }
