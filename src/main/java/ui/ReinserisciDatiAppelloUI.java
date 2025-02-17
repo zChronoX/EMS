@@ -90,6 +90,7 @@ public class ReinserisciDatiAppelloUI implements Initializable {
         String IDAppello=appello.getID_appello();
         for(int i=0; i<appelli.size(); i++){
             if(IDAppello.equals(appelli.get(i).getID_appello())){
+
                 appelli.get(i).setData(data);
                 appelli.get(i).setOrario(orario);
                 appelli.get(i).setLuogo(luogo);

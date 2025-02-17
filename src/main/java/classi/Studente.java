@@ -23,7 +23,7 @@ public class Studente extends Utente implements GeneratoreCredenziali {
         this.Password = generaPassword();
     }
 
-
+public Studente() {}
     // Costruttore per creazione utente da controller (solo tipoProfilo inizialmente)
     public Studente(TipoProfilo tipoProfilo) {
         super(tipoProfilo); // Chiama il costruttore di Utente che accetta solo tipoProfilo

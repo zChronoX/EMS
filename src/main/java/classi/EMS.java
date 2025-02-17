@@ -728,6 +728,22 @@ public void inserisciEsito(String matricola, String voto, String stato) throws E
         }
         return prenotazioniStudente;
     }
+    public Map<String, Insegnamento> getTeaching_list() {
+        return teaching_list;
+    }
+
+    public Map<String, Appello_esame> getExam_list() {
+        return exam_list;
+    }
+
+    public void setAppelloCorrente(Appello_esame appelloCorrente) {
+        this.appelloCorrente = appelloCorrente;
+    }
+
+    public Appello_esame getAppelloCorrente() {
+        return appelloCorrente;
+    }
+
 
 }
 
