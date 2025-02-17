@@ -11,14 +11,14 @@
       <!-- Label centrale in grande con il nome dell'applicazione -->
       <Label style="-fx-font-size: 36px; -fx-font-weight: bold;" text="EMS" />
 
+      <!-- Bottone "Login" allineato a destra -->
+      <HBox alignment="CENTER" prefWidth="600.0">
+         <Button fx:id="BottoneLogin" mnemonicParsing="false" onAction="#ApriLogin" prefWidth="200.0" text="Login Utenti" />
+      </HBox>
+
       <!-- Bottone "Crea Utente" centrato -->
       <HBox alignment="CENTER">
          <Button fx:id="BottoneCreaUtente" mnemonicParsing="false" onAction="#ApriCreaUtente" prefWidth="200.0" text="Crea Utente" visible="false" />
-      </HBox>
-
-      <!-- Bottone "Login" allineato a destra -->
-      <HBox alignment="CENTER" prefWidth="600.0">
-         <Button fx:id="BottoneLogin" mnemonicParsing="false" onAction="#ApriLogin" prefWidth="200.0" text="Login" />
       </HBox>
 
       <!-- Bottone "Crea Appello" centrato -->

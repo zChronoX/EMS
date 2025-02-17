@@ -1,86 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="400" prefWidth="600" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.UICreaUtente">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
+<VBox alignment="CENTER" prefHeight="400" prefWidth="600" spacing="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.UICreaUtente">
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
    <children>
-      <Button fx:id="BottoneDocente" mnemonicParsing="false" onAction="#onBottoneDocente" text="Docente" visible="false" />
-      <Button fx:id="BottoneCreaUtente" mnemonicParsing="false" onAction="#onBottoneCreaUtente" text="Crea Nuovo Profilo" />
-      <Button fx:id="BottoneStudente" mnemonicParsing="false" onAction="#onBottoneStudente" text="Studente" visible="false" />
-      <Button fx:id="BottoneIndietroWelcomeView" mnemonicParsing="false" onAction="#tornaAllaWelcomeView" text="Indietro" />
-      <VBox fx:id="ContenitoreInformazioni" prefHeight="289.0" prefWidth="308.0" visible="false">
+      <Button fx:id="BottoneDocente" mnemonicParsing="false" onAction="#onBottoneDocente" prefWidth="200" text="Docente" visible="false" />
+      <Button fx:id="BottoneCreaUtente" mnemonicParsing="false" onAction="#onBottoneCreaUtente" prefWidth="200" text="Crea Nuovo Profilo" />
+      <Button fx:id="BottoneStudente" mnemonicParsing="false" onAction="#onBottoneStudente" prefWidth="200" text="Studente" visible="false" />
+
+
+      <VBox fx:id="ContenitoreInformazioni" prefHeight="289.0" prefWidth="308.0" spacing="10" visible="false">
          <children>
-            <HBox prefHeight="27.0" prefWidth="312.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="312.0" spacing="10">
                <children>
-                  <Label fx:id="EtichettaNome" text="Nome:" />
-                  <TextField fx:id="CasellaNome" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="138.0" />
+                  <Label fx:id="EtichettaNome" prefWidth="120" text="Nome:" />
+                  <TextField fx:id="CasellaNome" prefHeight="18.0" prefWidth="200" />
                </children>
             </HBox>
-            <HBox prefHeight="23.0" prefWidth="312.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="23.0" prefWidth="312.0" spacing="10">
                <children>
-                  <Label text="Cognome:" />
-                  <TextField fx:id="CasellaCognome" prefHeight="15.0" prefWidth="149.0" />
+                  <Label prefWidth="120" text="Cognome:" />
+                  <TextField fx:id="CasellaCognome" prefHeight="15.0" prefWidth="200" />
                </children>
             </HBox>
-            <HBox prefHeight="27.0" prefWidth="435.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="435.0" spacing="10">
                <children>
-                  <Label text="Data Di Nascita:" />
-                  <DatePicker fx:id="CasellaDataNascita" prefHeight="17.0" prefWidth="175.0" />
+                  <Label prefWidth="120" text="Data Di Nascita:" />
+                  <DatePicker fx:id="CasellaDataNascita" prefHeight="17.0" prefWidth="200" />
                </children>
             </HBox>
-            <HBox prefHeight="25.0" prefWidth="312.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="312.0" spacing="10">
                <children>
-                  <Label text="Genere:" />
-                  <TextField fx:id="CasellaGenere" prefHeight="18.0" prefWidth="149.0" />
+                  <Label prefWidth="120" text="Genere:" />
+                  <TextField fx:id="CasellaGenere" prefHeight="18.0" prefWidth="200" />
                </children>
             </HBox>
-            <HBox prefHeight="27.0" prefWidth="383.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="383.0" spacing="10">
                <children>
-                  <Label text="Codice Fiscale:" />
-                  <TextField fx:id="CasellaCodiceFiscale" prefHeight="25.0" prefWidth="149.0" />
+                  <Label prefWidth="120" text="Codice Fiscale:" />
+                  <TextField fx:id="CasellaCodiceFiscale" prefHeight="25.0" prefWidth="200" />
                </children>
             </HBox>
-            <HBox prefHeight="27.0" prefWidth="383.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="383.0" spacing="10">
                <children>
-                  <Label text="Residenza:" />
-                  <TextField fx:id="CasellaResidenza" prefHeight="27.0" prefWidth="149.0" />
+                  <Label prefWidth="120" text="Residenza:" />
+                  <TextField fx:id="CasellaResidenza" prefHeight="27.0" prefWidth="200" />
                </children>
             </HBox>
-            <HBox prefHeight="29.0" prefWidth="435.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="435.0" spacing="10">
                <children>
-                  <Label text="Email:" />
-                  <TextField fx:id="CasellaEmail" />
+                  <Label prefWidth="120" text="Email:" />
+                  <TextField fx:id="CasellaEmail" prefWidth="200" />
                </children>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10">
                <children>
-                  <Label text="Telefono:" />
-                  <TextField fx:id="CasellaTelefono" onAction="#onBottoneConferma" />
+                  <Label prefWidth="120" text="Telefono:" />
+                  <TextField fx:id="CasellaTelefono" onAction="#onBottoneConferma" prefWidth="200" />
                </children>
             </HBox>
-            <HBox fx:id="SezioneCategoria" prefHeight="100.0" prefWidth="200.0">
+            <HBox fx:id="SezioneCategoria" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10">
                <children>
-                  <Label text="Categoria:" />
-                  <TextField fx:id="CasellaCategoria" />
+                  <Label prefWidth="120" text="Categoria:" />
+                  <TextField fx:id="CasellaCategoria" prefWidth="200" />
                </children>
             </HBox>
-            <HBox fx:id="SezioneAnnoCorso" prefHeight="100.0" prefWidth="200.0">
+            <HBox fx:id="SezioneAnnoCorso" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10">
                <children>
-                  <Label text="Anno Corso:" />
-                  <TextField fx:id="CasellaAnnoCorso" />
+                  <Label prefWidth="120" text="Anno Corso:" />
+                  <TextField fx:id="CasellaAnnoCorso" prefWidth="200" />
                </children>
             </HBox>
-            <Button fx:id="BottoneConferma" mnemonicParsing="false" onAction="#onBottoneConferma" text="Conferma" />
+            <Button fx:id="BottoneConferma" mnemonicParsing="false" onAction="#onBottoneConferma" prefWidth="200" text="Conferma" />
          </children>
       </VBox>
+
+      <!-- Nuovo pulsante Indietro in basso a destra -->
+      <HBox alignment="CENTER_RIGHT" prefWidth="600">
+         <children>
+            <Button fx:id="BottoneIndietroWelcomeView" onAction="#tornaAllaWelcomeView" prefWidth="200" text="Indietro" />
+         </children>
+      </HBox>
    </children>
-
-    <!-- <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/> -->
-
 </VBox>

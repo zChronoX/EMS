@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.UILoginStudente">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      alignment="CENTER" spacing="15" prefHeight="400.0" prefWidth="600.0"
+      xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ui.UILoginStudente">
    <children>
       <Label text="Matricola" />
-      <TextField fx:id="matricolaField" />
+      <TextField fx:id="matricolaField" prefWidth="200" prefHeight="30" maxWidth="200"/>
       <Label text="Password" />
-      <TextField fx:id="passwordField" />
-      <Button fx:id="BottoneConfermaLoginStudente" mnemonicParsing="false" onAction="#loginStudente" text="Login" />
-      <Button fx:id="Indietro" mnemonicParsing="false" onAction="#Indietro" text="Indietro" />
+      <TextField fx:id="passwordField" prefWidth="200" prefHeight="30" maxWidth="200"/>
+      <Button fx:id="BottoneConfermaLoginStudente" mnemonicParsing="false" onAction="#loginStudente" text="Login" prefWidth="200" prefHeight="30"/>
+      <Button fx:id="Indietro" mnemonicParsing="false" onAction="#Indietro" text="Indietro" prefWidth="200" prefHeight="30"/>
    </children>
 </VBox>

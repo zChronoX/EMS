@@ -153,12 +153,14 @@ public class WelcomeController {
 
             adminCodeField.setVisible(false);
             verifyAdminButton.setVisible(false);
+            BottoneLogin.setVisible(false);
         }else{
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Errore");
             alert.setHeaderText("Codice non valido");
             alert.setContentText("Non sei l'amministratore.");
             alert.showAndWait();
+            BottoneLogin.setVisible(true);
             BottoneVisualizzaStudenti.setVisible(false);
             BottoneCreaUtente.setVisible(false);
             BottoneModificaAppello.setVisible(false);
@@ -174,6 +176,7 @@ public class WelcomeController {
         logoutButton.setVisible(false);
         adminCodeField.setVisible(true);
         verifyAdminButton.setVisible(true);
+        BottoneLogin.setVisible(true);
 
         BottoneVisualizzaStudenti.setVisible(false);
         BottoneCreaUtente.setVisible(false);
