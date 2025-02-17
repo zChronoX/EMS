@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -173,9 +174,22 @@ public class UICreaUtente implements Initializable {
 
         // Converti LocalDate in Date
         // Date dataNascitaDate = java.util.Date.from(dataNascitaLocalDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+        //LocalDate dataNascitaLocalDate = CasellaDataNascita.getValue();
+        //data_nascita = java.util.Date.from(dataNascitaLocalDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
         LocalDate dataNascitaLocalDate = CasellaDataNascita.getValue();
-        data_nascita = java.util.Date.from(dataNascitaLocalDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
 
+        if (dataNascitaLocalDate != null) {
+            // Formatta la data nel formato "giorno mese anno"
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
+            String dataNascitaString = dataNascitaLocalDate.format(formatter);
+
+            // Converte la stringa formattata in un oggetto Date
+            data_nascita = Date.from(dataNascitaLocalDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+
+
+        } else {
+            System.err.println("Nessuna data di nascita selezionata.");
+        }
 
         genere=CasellaGenere.getText();
         codice_fiscale=CasellaCodiceFiscale.getText();
@@ -210,8 +224,8 @@ public class UICreaUtente implements Initializable {
 
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            // L'utente ha detto OK, fai qualcosa --> richiama funzione conferma??
-            //ems.student
+            // L'utente ha detto OK, fai qualcosa --> richiama funzione conferma
+
             ems.confermaUtente(); //QUI è dove si deve gestire l'hashmap
 
             BottoneCreaUtente.setVisible(true); //setto visibile BottoneCreaUtente
