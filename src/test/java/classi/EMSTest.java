@@ -105,7 +105,7 @@ class EMSTest {
         } catch (Exception e) {
             fail("Unexpected exception: " + e.getMessage());}
     }
-
+//cancellarlo
     @Test
     void testCreaProfiloUtente_UtenteNonCorrente() {
         try {
@@ -165,7 +165,7 @@ class EMSTest {
             fail("Unexpected exception: " + e.getMessage());
         }
     }
-
+//cancellarlo
     @Test
     void testGeneraCredenziali_UtenteNonCorrente() {
         try {
@@ -275,7 +275,7 @@ class EMSTest {
             fail("Unexpected exception: " + e.getMessage());
         }
     }
-
+//cancellarlo
     @Test
     void testConfermaUtente_UtenteNonCorrente() {
         try {
@@ -317,7 +317,7 @@ class EMSTest {
 
             // 2. Esecuzione: Tenta il login e verifica che venga lanciata l'eccezione
             assertThrows(Exception.class, () -> {
-                ems.loginStudente("12345", "password123");
+                ems.loginStudente("2345", "password123");
             });
         } catch (Exception e) {
             fail("Unexpected exception: " + e.getMessage());
@@ -449,7 +449,7 @@ class EMSTest {
 
             // 2. Esecuzione: Chiama la funzione da testare e verifica che venga lanciata l'eccezione
             assertThrows(IllegalArgumentException.class, () -> {
-                ems.creazioneAppello("INF-01", data, orario, luogo, postiDisponibili, tipologia);
+                ems.creazioneAppello("INF-03", data, orario, luogo, postiDisponibili, tipologia);
             });
         } catch (Exception e) {
             fail("Unexpected exception: " + e.getMessage());
@@ -540,7 +540,7 @@ class EMSTest {
             fail("Unexpected exception: " + e.getMessage());
         }
     }
-
+//cancellarlo
     @Test
     void testConfermaAppello_AppelloGiaConfermato() {
         try {
