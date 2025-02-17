@@ -222,7 +222,7 @@ public class EMS {
     }
 
     public boolean loginDocente(String codiceDocente, String password) throws Exception {
-        Docente docente = doc_list.get(codiceDocente); // Assumi che tu abbia una mappa docenti_list
+        Docente docente = doc_list.get(codiceDocente);
 
         if (docente == null) {
             throw new Exception("Docente non presente nel registro.");
@@ -342,6 +342,8 @@ public class EMS {
         return null; // Nessun appello trovato con questo ID
     }
 
+
+
     private String generaIdPrenotazione() {
         Random random = new Random();
         int idPrenotazione = 100000 + random.nextInt(900000); // Numero casuale tra 100000 e 999999
@@ -405,26 +407,29 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
         return appello.getStudenti().contains(studente);
     }
 
-    public List<Insegnamento> getInsegnamentiByDocente(Docente docente) {
+    public List<Insegnamento> mostraInsegnamentiDocente(String codiceDocente) {
         List<Insegnamento> insegnamentiDocente = new ArrayList<>();
 
+        if (codiceDocente == null || codiceDocente.isEmpty()) {
+            return insegnamentiDocente; // Restituisce una lista vuota se il codice è nullo o vuoto
+        }
+        Docente docente = doc_list.get(codiceDocente);
         if (docente == null) {
-            return insegnamentiDocente;
+            return insegnamentiDocente; // Restituisce lista vuota se il docente non esiste
         }
 
         for (Insegnamento insegnamento : this.teaching_list.values()) {
-            List<Docente> docentiInsegnamento = insegnamento.getDocenti(); // Ottieni la lista dei docenti
+            List<Docente> docentiInsegnamento = insegnamento.getDocenti(); // Si ottiene la lista dei docenti
 
-            if (docentiInsegnamento != null) { // Gestisci il caso di lista docenti nulla
+            if (docentiInsegnamento != null) { // caso di lista docenti nulla
                 for (Docente docenteInsegnamento : docentiInsegnamento) {
-                    if (docenteInsegnamento.equals(docente)) { // Confronta direttamente gli oggetti Docente
+                    if (docenteInsegnamento.equals(docente)) { // Confronto direttamente gli oggetti Docente
                         insegnamentiDocente.add(insegnamento);
-                        break; // Esci dal ciclo interno se il docente è stato trovato
+                        break;
                     }
                 }
             }
         }
-
         return insegnamentiDocente;
     }
 
@@ -607,7 +612,17 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
     public HashMap<String, Insegnamento> visualizzaInsegnamenti() {
         return teaching_list;
     }
+    public HashMap<String, Appello_esame> visualizzaAppelliPerInsegnamento(String ID_insegnamento) {
+        HashMap<String, Appello_esame> appelliFiltrati = new HashMap<>();
 
+        for (Map.Entry<String, Appello_esame> entry : exam_list.entrySet()) {
+            if (entry.getValue().getInsegnamento().getID_insegnamento().equals(ID_insegnamento)) {
+                appelliFiltrati.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return appelliFiltrati;
+    }
+    /*
     public HashMap<String, Appello_esame> visualizzaAppelliPerInsegnamento(String ID_insegnamento){
         if (teaching_list.containsKey(ID_insegnamento)) {
             Insegnamento insegnamento= teaching_list.get(ID_insegnamento);
@@ -619,6 +634,8 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
         }
     }
 
+
+     */
     public HashMap<String, Prenotazione> getReservation_list() {
         return reservation_list;
     }
