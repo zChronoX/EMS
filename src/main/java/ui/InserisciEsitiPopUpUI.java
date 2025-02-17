@@ -45,56 +45,63 @@ public class InserisciEsitiPopUpUI implements Initializable {
     @FXML
     private Button annullaButton;
 
+
     @FXML
     private void confermaInserimento(ActionEvent event) {
         String matricola = matricolaTextField.getText();
-        String votoString = votoTextField.getText();
+        String voto = votoTextField.getText(); // Manteniamo voto come String
         String stato = statoTextField.getText();
 
         // 1. Validazione input
         if (matricola == null || matricola.isEmpty() ||
-                votoString == null || votoString.isEmpty() ||
+                voto == null || voto.isEmpty() ||
                 stato == null || stato.isEmpty()) {
             showAlert("Errore", "Compila tutti i campi.");
             return;
         }
 
+        // 2. Controllo che voto sia un numero tra 0 e 30
         try {
-            int voto = Integer.parseInt(votoString);
-            if (voto < 0 || voto > 30) {
-                showAlert("Errore", "Voto non valido (0-30).");
+            int votoNum = Integer.parseInt(voto); // Conversione temporanea
+            if (votoNum < 0 || votoNum > 30) {
+                showAlert("Errore", "Il voto deve essere compreso tra 0 e 30.");
                 return;
             }
         } catch (NumberFormatException e) {
-            showAlert("Errore", "Voto non valido.");
+            showAlert("Errore", "Il voto deve essere un numero valido.");
             return;
         }
 
-        // 2. Recupero studente
+        // 3. Recupero studente
         Studente studente = ems.getStudente(matricola);
         if (studente == null) {
             showAlert("Errore", "Studente non trovato.");
             return;
         }
 
-        // 3. Recupero prenotazione
-        Prenotazione prenotazione = ems.getPrenotazioneByStudenteAndAppello(studente, appello);
-        if (prenotazione == null) {
-            showAlert("Errore", "Prenotazione non trovata.");
+        // 4. Controllo che l'appello sia stato selezionato
+        if (appello == null) {
+            showAlert("Errore", "Nessun appello selezionato.");
             return;
         }
 
-        // 4. Creazione Esito_esame
-        Esito_esame esito = new Esito_esame(votoString, stato, studente, appello);
+        // 5. Recupero prenotazione
+        Prenotazione prenotazione = ems.getPrenotazioneByStudenteAndAppello(studente, appello);
+        if (prenotazione == null) {
+            showAlert("Errore", "Lo studente non è prenotato a questo appello.");
+            return;
+        }
 
-        // 5. Inserimento esito (con controllo esistenza)
+        // 6. Inserimento esito
         try {
-            ems.inserisciEsito(prenotazione.getID_prenotazione(), esito); // Inserimento con gestione eccezioni
+            ems.inserisciEsito(matricola, voto, stato); // Passiamo voto come String
             showAlert("Successo", "Esito inserito con successo.");
+
+            // Chiudi la finestra solo se tutto è andato bene
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             stage.close();
         } catch (Exception e) {
-            showAlert("Errore", "Errore durante l'inserimento: " + e.getMessage()); // Gestione eccezioni
+            showAlert("Errore", "Errore durante l'inserimento: " + e.getMessage());
         }
     }
 

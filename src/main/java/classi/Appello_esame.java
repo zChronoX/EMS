@@ -165,4 +165,11 @@ public class Appello_esame {
             System.out.println("non hai scritto niente");
         }
     }
+    public boolean puòGestireEsiti(Docente docenteCorrente) {
+        // Verifica se il docente è nella lista dei docenti dell'insegnamento
+        if (insegnamento != null && insegnamento.getDocenti() != null) {
+            return insegnamento.getDocenti().contains(docenteCorrente);
+        }
+        return false; // Se l'insegnamento o la lista dei docenti è nulla, il docente non può gestire
+    }
 }

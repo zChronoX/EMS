@@ -507,6 +507,9 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
     }
 
     public List<Studente> getStudentiByAppello(Appello_esame appello) {
+        if (appello == null) {
+            return new ArrayList<>();
+        }
         return appello.getStudenti();
     }
 
@@ -542,29 +545,61 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
         return null;
     }
 
-    public void inserisciEsito(String idPrenotazione, Esito_esame esito) throws Exception {
-        if (idPrenotazione == null || esito == null) {
-            return; // Gestisci il caso di input nulli
-        }
-
-        if (reservation_list.containsKey(idPrenotazione)) { // Verifica se la mappa contiene la chiave
-            Prenotazione prenotazione = reservation_list.get(idPrenotazione); // Ottieni la prenotazione dalla mappa
-
-            // Verifica se la prenotazione ha già un esito
-            if (prenotazione.getEsito() != null) {
-                throw new Exception("Esito già presente per questa prenotazione."); // Lancia un'eccezione
-            }
-
-            prenotazione.setEsito(esito); // Associa l'esito alla prenotazione
-            esito.setPrenotazione(prenotazione); // Associa la prenotazione all'esito
-            return; // Esci dalla funzione dopo aver trovato e aggiornato la prenotazione
-        }
-
-        // Gestisci il caso in cui non viene trovata alcuna prenotazione con l'ID specificato
-        System.out.println("Nessuna prenotazione trovata con ID: " + idPrenotazione);
-
-
+public void inserisciEsito(String matricola, String voto, String stato) throws Exception {
+    // 1. Verifica che il docente possa gestire gli esiti per questo appello
+    if (!appelloCorrente.puòGestireEsiti(docenteCorrente)) {
+        throw new Exception("Errore: Non hai i permessi per inserire esiti in questo appello.");
     }
+
+    // 2. Controllo input nulli
+    if (matricola == null || matricola.isEmpty() || voto == null || voto.isEmpty() || stato == null || stato.isEmpty()) {
+        throw new Exception("Errore: Tutti i campi devono essere compilati.");
+    }
+
+    // 3. Recupero studente
+    Studente studente = this.getStudente(matricola);
+    if (studente == null) {
+        throw new Exception("Errore: Studente non trovato.");
+    }
+
+    // 4. Recupero prenotazione
+    Prenotazione prenotazione = this.getPrenotazioneByStudenteAndAppello(studente, appelloCorrente);
+    if (prenotazione == null) {
+        throw new Exception("Errore: Lo studente non è prenotato a questo appello.");
+    }
+
+    // 5. Controllo che l'esito non sia già stato inserito
+    if (prenotazione.getEsito() != null) {
+        throw new Exception("Errore: Esito già registrato per questo studente.");
+    }
+
+    // 6. Se lo stato è "Approvato", controlliamo la validità del voto
+    if (stato.equalsIgnoreCase("Approvato")) {
+        try {
+            int votoInt = Integer.parseInt(voto);
+            if (votoInt < 0 || votoInt > 30) {
+                throw new Exception("Errore: Il voto deve essere tra 0 e 30.");
+            }
+        } catch (NumberFormatException e) {
+            throw new Exception("Errore: Il voto deve essere un numero valido.");
+        }
+    }
+
+    // 7. Creazione dell'esito
+    Esito_esame esito = new Esito_esame(voto, stato, studente, appelloCorrente);
+
+    // 8. Associa l'esito alla prenotazione
+    prenotazione.setEsito(esito);
+
+    // 9. Mostra conferma
+    System.out.println("Esito inserito correttamente per lo studente " + matricola);
+
+    // 10. Se tutto è andato bene, l'esito è stato inserito con successo
+}
+
+
+
+
     public  String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime Orario, String Luogo,int postiDisponibili,String tipologia){
         Insegnamento insegnamento = teaching_list.get(ID_insegnamento);
         if (insegnamento == null) {
