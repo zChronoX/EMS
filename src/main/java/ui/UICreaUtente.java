@@ -172,72 +172,115 @@ public class UICreaUtente implements Initializable {
     //prelevo i valori dai campi
     @FXML
     protected void onBottoneConferma() {
-        nome=CasellaNome.getText();
-        cognome=CasellaCognome.getText();
-
-        // Converti LocalDate in Date
-        // Date dataNascitaDate = java.util.Date.from(dataNascitaLocalDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
-        //LocalDate dataNascitaLocalDate = CasellaDataNascita.getValue();
-        //data_nascita = java.util.Date.from(dataNascitaLocalDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+        nome = CasellaNome.getText();
+        cognome = CasellaCognome.getText();
+        genere = CasellaGenere.getText();
+        codice_fiscale = CasellaCodiceFiscale.getText();
+        residenza = CasellaResidenza.getText();
+        email = CasellaEmail.getText();
+        telefono = CasellaTelefono.getText();
         LocalDate dataNascitaLocalDate = CasellaDataNascita.getValue();
 
-        if (dataNascitaLocalDate != null) {
-            // Formatta la data nel formato "giorno mese anno"
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
-            String dataNascitaString = dataNascitaLocalDate.format(formatter);
 
-            // Converte la stringa formattata in un oggetto Date
-            data_nascita = Date.from(dataNascitaLocalDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+        if (nome.isEmpty() || cognome.isEmpty() || genere.isEmpty() || codice_fiscale.isEmpty() ||
+                residenza.isEmpty() || email.isEmpty() || telefono.isEmpty() || dataNascitaLocalDate == null) {
 
-
-        } else {
-            System.err.println("Nessuna data di nascita selezionata.");
+            mostraMessaggioErrore("Errore: Tutti i campi devono essere compilati.");
+            return; // **Blocca l'esecuzione se un campo è vuoto**
         }
 
-        genere=CasellaGenere.getText();
-        codice_fiscale=CasellaCodiceFiscale.getText();
-        residenza=CasellaResidenza.getText();
-        email=CasellaEmail.getText();
-        telefono=CasellaTelefono.getText();
-        if (ems.creaProfiloUtente(nome, cognome, data_nascita, genere, codice_fiscale, residenza, email, telefono))
+        // **Conversione data**
+        data_nascita = Date.from(dataNascitaLocalDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+
+
+        if (ems.verificaCodiceFiscaleEsistente(codice_fiscale)) {
+            mostraMessaggioErrore("Errore: Il codice fiscale è già registrato.");
+            return; // **Blocca la creazione dell'utente**
+        }
+        if (tipoProfilo == Utente.TipoProfilo.Studente) {
+            String matricola = studente.getMatricola();
+            if (ems.verificaMatricolaEsistente(matricola)) {
+                mostraMessaggioErrore("Errore: La matricola " + matricola + " è già associata a un altro studente.");
+                return; // **Blocca la creazione dello studente**
+            }
+        } else if (tipoProfilo == Utente.TipoProfilo.Docente) {
+            String codiceDocente = docente.getCodiceDocente();
+            if (ems.verificaCodiceDocenteEsistente(codiceDocente)) {
+                mostraMessaggioErrore("Errore: Il codice docente " + codiceDocente + " è già associato a un altro docente.");
+                return; // **Blocca la creazione del docente**
+            }
+        }
+        // **Creazione utente**
+        if (ems.creaProfiloUtente(nome, cognome, data_nascita, genere, codice_fiscale, residenza, email, telefono)) {
             System.out.println("Utente creato con successo");
-        if(tipoProfilo==Utente.TipoProfilo.Studente){
-            categoria=CasellaCategoria.getText();
-            anno_corso=Integer.parseInt(CasellaAnnoCorso.getText());
-            ems.AggiungiInfoStudente(categoria, anno_corso);
-            System.out.println("Categoria e anno corso aggiunti");
 
+            if (tipoProfilo == Utente.TipoProfilo.Studente) {
+                categoria = CasellaCategoria.getText();
+
+
+                if (categoria.isEmpty() || CasellaAnnoCorso.getText().isEmpty()) {
+                    mostraMessaggioErrore("Errore: Categoria e Anno Corso sono obbligatori.");
+                    return;
+                }
+
+                try {
+                    anno_corso = Integer.parseInt(CasellaAnnoCorso.getText());
+                    ems.AggiungiInfoStudente(categoria, anno_corso);
+                    System.out.println("Categoria e anno corso aggiunti");
+                } catch (NumberFormatException e) {
+                    mostraMessaggioErrore("Errore: L'anno di corso deve essere un numero.");
+                    return;
+                }
+            }
+
+
+            ContenitoreInformazioni.setVisible(false);
+
+            // **Genera credenziali**
+            ems.generaCredenziali();
+
+            // **Mostra riepilogo informazioni**
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("Riepilogo Informazioni");
+
+            if (tipoProfilo == Utente.TipoProfilo.Studente) {
+                String dati = "Nome: " + studente.getNome() + "\nCognome: " + studente.getCognome() +
+                        "\nData nascita: " + studente.getData_nascita() + "\nGenere: " + studente.getGenere() +
+                        "\nCodice fiscale: " + studente.getCodice_fiscale() + "\nResidenza: " + studente.getResidenza() +
+                        "\nEmail: " + studente.getEmail() + "\nTelefono: " + studente.getTelefono() +
+                        "\nCategoria: " + studente.getCategoria() + "\nAnno corso: " + studente.getAnnoCorso() +
+                        "\nMatricola: " + studente.getMatricola() + "\nPassword: " + studente.getPassword();
+                dialog.setContentText(dati);
+            } else {
+                String dati = "Nome: " + docente.getNome() + "\nCognome: " + docente.getCognome() +
+                        "\nData nascita: " + docente.getData_nascita() + "\nGenere: " + docente.getGenere() +
+                        "\nCodice fiscale: " + docente.getCodice_fiscale() + "\nResidenza: " + docente.getResidenza() +
+                        "\nEmail: " + docente.getEmail() + "\nTelefono: " + docente.getTelefono() +
+                        "\nCodice Docente: " + docente.getCodiceDocente() + "\nPassword: " + docente.getPassword();
+                dialog.setContentText(dati);
+            }
+
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
+
+            Optional<ButtonType> result = dialog.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                // **Conferma e aggiunta utente alla mappa**
+                ems.confermaUtente();
+                BottoneCreaUtente.setVisible(true);
+            }
         }
-        //nascondo i campi dopo averli acquisiti
-        ContenitoreInformazioni.setVisible(false);
-
-        ems.generaCredenziali();
-
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("Riepilogo Informazioni");
-        if(tipoProfilo==Utente.TipoProfilo.Studente){
-            String dati = "Nome: " + studente.getNome() + "\nCognome: " + studente.getCognome() + "\nData nascita: " + studente.getData_nascita() + "\nGenere: " + studente.getGenere() + "\nCodice fiscale: " + studente.getCodice_fiscale() + "\nResidenza: " + studente.getResidenza() + "\nEmail: " + studente.getEmail() + "\nTelefono: " + studente.getTelefono() + "\nCategoria: " + studente.getCategoria() + "\nAnno corso: " + studente.getAnnoCorso() + "\nMatricola: " + studente.getMatricola() + "\nPassword: " + studente.getPassword();
-            dialog.setContentText(dati);
-        }else{
-            String dati = "Nome: " + docente.getNome() + "\nCognome: " + docente.getCognome() + "\nData nascita: " + docente.getData_nascita() + "\nGenere: " + docente.getGenere() + "\nCodice fiscale: " + docente.getCodice_fiscale() + "\nResidenza: " + docente.getResidenza() + "\nEmail: " + docente.getEmail() + "\nTelefono: " + docente.getTelefono() + "\nCodice Docente: " + docente.getCodiceDocente() + "\nPassword: " + docente.getPassword();
-            dialog.setContentText(dati);
-        }
-
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
-
-        Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            // L'utente ha detto OK, fai qualcosa --> richiama funzione conferma
-
-            ems.confermaUtente(); //QUI è dove si deve gestire l'hashmap
-
-            BottoneCreaUtente.setVisible(true); //setto visibile BottoneCreaUtente
-            //BottoneIndietroWelcomeView.setVisible(true);
-
-        }
-
-
     }
+
+
+    private void mostraMessaggioErrore(String messaggio) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Errore");
+        alert.setHeaderText("Errore di compilazione");
+        alert.setContentText(messaggio);
+        alert.showAndWait();
+    }
+
+
 
     /*@FXML
     public void Indietro() throws IOException {

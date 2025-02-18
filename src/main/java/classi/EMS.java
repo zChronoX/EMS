@@ -122,8 +122,6 @@ public class EMS {
 
     }
 
-    ;
-
     //come fa questa funzione a capire qual è l'utente corrente? penso ci voglia una get
     public void AggiungiInfoStudente(String categoria, int anno_corso) {
         utenteCorrente = ems.getUtenteCorrente();
@@ -136,8 +134,17 @@ public class EMS {
 
     public void confermaUtente() {
         utenteCorrente = ems.getUtenteCorrente();
+
         if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) {
             studenteCorrente = (Studente) utenteCorrente;
+
+            // Verifica se la matricola esiste già nella mappa degli studenti
+            if (verificaMatricolaEsistente(studenteCorrente.getMatricola())) {
+                System.err.println("Errore: La matricola " + studenteCorrente.getMatricola() + " è già associata a uno studente.");
+                return; // Impedisce di aggiungere lo studente
+            }
+
+            // Aggiungi lo studente nella mappa
             student_list.put(studenteCorrente.getMatricola(), studenteCorrente);
 
             System.out.println("Elenco Studenti:");
@@ -147,8 +154,17 @@ public class EMS {
                 Studente studente = entry.getValue();
                 System.out.println("Matricola: " + chiave + ", Studente: " + studente);
             }
+
         } else if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Docente) {
             docenteCorrente = (Docente) utenteCorrente;
+
+            // Verifica se il codice docente esiste già nella mappa dei docenti
+            if (verificaCodiceDocenteEsistente(docenteCorrente.getCodiceDocente())) {
+                System.err.println("Errore: Il codice docente " + docenteCorrente.getCodiceDocente() + " è già associato a un docente.");
+                return; // Impedisce di aggiungere il docente
+            }
+
+            // Aggiungi il docente nella mappa
             doc_list.put(docenteCorrente.getCodiceDocente(), docenteCorrente);
 
             System.out.println("Elenco Docenti:");
@@ -161,33 +177,64 @@ public class EMS {
         }
     }
 
-    public boolean creaProfiloUtente(String nome, String cognome, Date data_nascita, String genere, String codice_fiscale, String residenza, String email, String telefono) {
+    public boolean verificaMatricolaEsistente(String matricola) {
+        return student_list.containsKey(matricola);
+    }
+    public boolean verificaCodiceDocenteEsistente(String codiceDocente) {
+        return doc_list.containsKey(codiceDocente);
+    }
+    // Metodo per verificare se il codice fiscale è già registrato nelle mappe
+    public boolean verificaCodiceFiscaleEsistente(String codice_fiscale) {
+        // Controllo nei docenti
+        for (Docente docente : doc_list.values()) {
+            if (docente.getCodice_fiscale().equalsIgnoreCase(codice_fiscale)) {
+                return true; // Codice fiscale già registrato per un docente
+            }
+        }
 
+        // Controllo negli studenti
+        for (Studente studente : student_list.values()) {
+            if (studente.getCodice_fiscale().equalsIgnoreCase(codice_fiscale)) {
+                return true; // Codice fiscale già registrato per uno studente
+            }
+        }
+
+        return false; // Codice fiscale non trovato, può essere usato
+    }
+    // Metodo per creare un nuovo profilo utente con controllo del codice fiscale
+    public boolean creaProfiloUtente(String nome, String cognome, Date data_nascita, String genere,
+                                     String codice_fiscale, String residenza, String email, String telefono) {
+
+        // Controllo se il codice fiscale è già presente nelle mappe
+        if (verificaCodiceFiscaleEsistente(codice_fiscale)) {
+            System.err.println("Errore: Il codice fiscale è già associato a un utente esistente.");
+            return false; // Blocca la creazione dell'utente
+        }
+
+        // Creazione dell'utente
         utenteCorrente.inizializzaUtente(nome, cognome, data_nascita, genere, codice_fiscale, residenza, email, telefono);
         return true;
     }
 
+    // Metodo per generare le credenziali utente
     public void generaCredenziali() {
-
         utenteCorrente = ems.getUtenteCorrente();
+
         if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) {
-
-
             studenteCorrente = (Studente) utenteCorrente;
             studenteCorrente.assegnaIdentificativiStudente();
-
         } else if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Docente) {
             docenteCorrente = (Docente) utenteCorrente;
             docenteCorrente.assegnaIdentificativiDocente();
-
         }
     }
 
+    // Metodo per scegliere il tipo di profilo e creare un nuovo utente
     public void scegliTipoProfilo(Utente.TipoProfilo tipoProfilo) {
         utenteFactory = new UtenteFactory();
-
         utenteCorrente = utenteFactory.newUser(tipoProfilo);
     }
+
 
     public Studente getStudenteCorrente() {
         return studenteCorrente;
