@@ -397,6 +397,10 @@ public class EMS {
         return String.valueOf(idPrenotazione);
     }
 
+    public String returnGeneraIdPrenotazione() {
+        return generaIdPrenotazione();
+    }
+
     private int prossimoProgressivo = 1; // Inizializza il contatore
 
     private synchronized int generaProgressivo() {
