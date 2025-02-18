@@ -800,6 +800,32 @@ public void inserisciEsito(String matricola, String voto, String stato) throws E
         return appelloCorrente;
     }
 
+    public List<String> getAppelliApprovati(Studente studente) {
+        List<String> appelli = new ArrayList<>();
+
+        for (Prenotazione prenotazione : reservation_list.values()) {
+            if (prenotazione.getStudente().equals(studente) &&
+                    prenotazione.getEsito() != null &&
+                    prenotazione.getEsito().getStato().equalsIgnoreCase("Approvato")) {
+
+                Appello_esame appelloEsame = prenotazione.getAppello();
+                Insegnamento insegnamento = appelloEsame.getInsegnamento();
+
+                String appelloString = String.format(
+                        "ID Appello: (%s) Nome Insegnamento: %s - Voto: %s Esito: %s",
+                        appelloEsame.getID_appello(),
+                        insegnamento.getNome(),
+                        prenotazione.getEsito().getVoto(), // Formatta il voto come stringa (%s)
+                        prenotazione.getEsito().getStato()
+                );
+                appelli.add(appelloString);
+            }
+        }
+        return appelli;
+    }
+
+
+
 
 }
 
