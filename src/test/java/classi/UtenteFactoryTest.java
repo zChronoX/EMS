@@ -16,22 +16,34 @@ class UtenteFactoryTest {
 
     @Test
     void testNewUser_Studente() {
-        Utente utente = utenteFactory.newUser(Utente.TipoProfilo.Studente);
-        assertNotNull(utente);
-        assertTrue(utente instanceof Studente);
+        try {
+            Utente utente = utenteFactory.newUser(Utente.TipoProfilo.Studente);
+            assertNotNull(utente);
+            assertTrue(utente instanceof Studente);
+        } catch (Exception e) {
+            fail("Unexpected exception: " + e.getMessage());
+        }
     }
 
     @Test
     void testNewUser_Docente() {
-        Utente utente = utenteFactory.newUser(Utente.TipoProfilo.Docente);
-        assertNotNull(utente);
-        assertTrue(utente instanceof Docente);
+        try {
+            Utente utente = utenteFactory.newUser(Utente.TipoProfilo.Docente);
+            assertNotNull(utente);
+            assertTrue(utente instanceof Docente);
+        } catch (Exception e) {
+            fail("Unexpected exception: " + e.getMessage());
+        }
     }
 
     @Test
     void testNewUser_TipoNonValido() {
-        Utente utente = utenteFactory.newUser(null); // Tipo non valido
-        assertNull(utente);
+        try {
+            Utente utente = utenteFactory.newUser(null); // Tipo non valido
+            assertNull(utente);
+        } catch (Exception e) {
+            fail("Unexpected exception: " + e.getMessage());
+        }
     }
 
 }

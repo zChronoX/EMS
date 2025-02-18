@@ -11,11 +11,6 @@ public class Utility {
 
     GeneratoreCredenziali generatore = new GeneratoreCredenziali(){};
 
-    //private HashMap<String, Studente> studenti;
-  //  public Utility() {
-    //    this.studenti = new HashMap<>(); // Inizializzazione nel costruttore
-    //}
-
     public HashMap<String, Studente> loadStudents() {
         HashMap<String, Studente> student_list = new HashMap<>();
 
@@ -189,90 +184,7 @@ public class Utility {
         }
         return null; // Restituisci null se il docente non viene trovato
     }
-/*
-    public void loadResults(){
-        //todo
-    }
 
-*/
-    /* Commento perché questo metodo è relativo all'estensione del caso d'uso 1 di CreazioneUtente evitabile in quanto la matricola viene creata in maniera randomica
-         e quindi la probabilità che vengano creati due utenti con la stessa matricola è bassissima.
-
-public static boolean verificaEAggiungiMatricola(String filePath, String nuovaMatricola) {
-    // Lista per memorizzare le matricole lette dal file
-    List<String> matricole = new ArrayList<>();
-
-    // Leggere le matricole esistenti dal file
-    try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-        String line;
-        while ((line = reader.readLine()) != null) {
-            matricole.add(line.trim()); // Aggiunge ogni riga (senza spazi) alla lista
-        }
-    } catch (FileNotFoundException e) {
-        System.out.println("File non trovato. Verrà creato un nuovo file.");
-    } catch (IOException e) {
-        System.out.println("Errore durante la lettura del file: " + e.getMessage());
-    }
-
-    // Controlla se la nuova matricola esiste già
-    if (matricole.contains(nuovaMatricola)) {
-        System.out.println("La matricola esiste già.");
-        return false; // Restituisce false se la matricola è già presente
-    }
-
-    // Se non esiste, aggiungila al file
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
-        writer.write(nuovaMatricola);
-        writer.newLine(); // Aggiunge una nuova riga
-    } catch (IOException e) {
-        System.out.println("Errore durante la scrittura nel file: " + e.getMessage());
-        return false; // Restituisce false in caso di errore
-    }
-
-    System.out.println("Matricola aggiunta con successo.");
-    return true; // Restituisce true se la matricola è stata aggiunta
-}
-*/
-
-  /*  public HashMap<String, Appello_esame> loadaAppelli() {
-        HashMap<String, Appello_esame> exam_list = new HashMap<>();
-
-        // Creiamo un'istanza di Insegnamento (assicurati che la classe Insegnamento abbia un costruttore appropriato)
-        Docente docente = new Docente("ciccio","balordo", "female",
-                new Date(1920, 4, 15),
-                "fusaufausfb",
-                "casa di roberta",
-                "ciccio@gmail.com",
-                "1234567890",
-                Utente.TipoProfilo.Docente,
-                "ciccio",
-                "ciccio");
-        Insegnamento insegnamento = new Insegnamento("MAT001", "Algebra Lineare",6,"Corso di algebra lineare", 2023);
-        insegnamento.aggiungiDocente(docente);
-        // Creiamo un'istanza di Appello_esame con parametri di esempio:
-        // ID_appello: "APP001"
-        // Data: 15 aprile 2025
-        // Orario: 9:30
-        // Luogo: "Aula 101"
-        // postiDisponibili: 30
-        // Tipologia: "Scritto"
-        // insegnamento: l'istanza appena creata
-        Appello_esame a = new Appello_esame(
-                "APP001",
-                LocalDate.of(2025, 4, 15),
-                LocalTime.of(9, 30),
-                "Aula 101",
-                30,
-                "Scritto",
-                insegnamento
-        );
-
-        // Inseriamo l'appello nella mappa utilizzando l'ID come chiave
-        exam_list.put("APP001", a);
-
-        return exam_list;
-    }
-*/
 
 }
 
