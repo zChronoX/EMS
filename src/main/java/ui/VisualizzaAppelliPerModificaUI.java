@@ -98,7 +98,7 @@ public class VisualizzaAppelliPerModificaUI implements Initializable {
                     System.out.println("Appello trovato: " + appello.getID_appello());
 
                     //voglio modificare l'appello trovato
-                    ems.setAppelloSelezionato(appello);
+                    ems.setAppelloCorrente(appello);
 
                     try {
                         reinserisciDatiAppello();

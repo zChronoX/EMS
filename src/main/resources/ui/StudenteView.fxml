@@ -35,9 +35,6 @@
                  onAction="#ApriVisualizzaInfoEsame" text="Visualizza informazioni esame"
                  prefWidth="250" prefHeight="35"/>
 
-         <Button fx:id="BottoneRifiutaEsito" mnemonicParsing="false"
-                 text="Rifiuta esito esame" prefWidth="250" prefHeight="35"/>
-
          <Button fx:id="BottoneInviaFeedback" mnemonicParsing="false"
                  text="Invia feedback esame" onAction="#ApriInviaFeedback"
                  prefWidth="250" prefHeight="35"/>

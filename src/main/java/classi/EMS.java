@@ -22,7 +22,7 @@ public class EMS {
     public static final int POSTI_MAX = 500;
     private HashMap<String,Appello_esame> exam_list;
     private Insegnamento insegnamentoSelezionato;
-    private Appello_esame appelloSelezionato;
+    //private Appello_esame appelloSelezionato;
 
     private HashMap<String, Prenotazione> reservation_list;
     private List<Esito_esame> result_list = new ArrayList<>();
@@ -513,13 +513,13 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
         return this.insegnamentoSelezionato;
     }
 
-    public void setAppelloSelezionato(Appello_esame appello) {
+    /*public void setAppelloSelezionato(Appello_esame appello) {
         this.appelloSelezionato = appello;
     }
 
     public Appello_esame getAppelloSelezionato() {
         return this.appelloSelezionato;
-    }
+    }*/
 
     public Prenotazione getPrenotazioneByStudenteAndAppello(Studente studente, Appello_esame appello) {
         System.out.println("getPrenotazioneByStudenteAndAppello() chiamata per studente: " + studente.getMatricola() + " e appello: " + appello.getID_appello());
@@ -603,29 +603,30 @@ public void inserisciEsito(String matricola, String voto, String stato) throws E
     if (!appelloCorrente.puòGestireEsiti(docenteCorrente)) {
         throw new Exception("Errore: Non hai i permessi per inserire esiti in questo appello.");
     }
-
+    System.out.println("1 fatto");
     // 2. Controllo input nulli
     if (matricola == null || matricola.isEmpty() || voto == null || voto.isEmpty() || stato == null || stato.isEmpty()) {
         throw new Exception("Errore: Tutti i campi devono essere compilati.");
     }
-
+    System.out.println("2 fatto");
     // 3. Recupero studente
     Studente studente = this.getStudente(matricola);
     if (studente == null) {
         throw new Exception("Errore: Studente non trovato.");
     }
-
+    System.out.println("3 fatto");
     // 4. Recupero prenotazione
+    System.out.println("APPELLO " + appelloCorrente.getID_appello());
     Prenotazione prenotazione = this.getPrenotazioneByStudenteAndAppello(studente, appelloCorrente);
     if (prenotazione == null) {
         throw new Exception("Errore: Lo studente non è prenotato a questo appello.");
     }
-
+    System.out.println("4 fatto");
     // 5. Controllo che l'esito non sia già stato inserito
     if (prenotazione.getEsito() != null) {
         throw new Exception("Errore: Esito già registrato per questo studente.");
     }
-
+    System.out.println("5 fatto");
     // 6. Se lo stato è "Approvato", controlliamo la validità del voto
     if (stato.equalsIgnoreCase("Approvato")) {
         try {
@@ -637,13 +638,13 @@ public void inserisciEsito(String matricola, String voto, String stato) throws E
             throw new Exception("Errore: Il voto deve essere un numero valido.");
         }
     }
-
+    System.out.println("6 fatto");
     // 7. Creazione dell'esito
     Esito_esame esito = new Esito_esame(voto, stato, studente, appelloCorrente);
-
+    System.out.println("7 fatto");
     // 8. Associa l'esito alla prenotazione
     prenotazione.setEsito(esito);
-
+    System.out.println("8 fatto");
     // 9. Mostra conferma
     System.out.println("Esito inserito correttamente per lo studente " + matricola);
 
@@ -678,7 +679,7 @@ public void inserisciEsito(String matricola, String voto, String stato) throws E
         String ID_appello = "APP-" + (System.currentTimeMillis() % 100000);
         appelloCorrente = new Appello_esame(ID_appello, Data, Orario, Luogo, postiDisponibili, tipologia,insegnamento);
         System.out.println("Appello corrente creato: " + appelloCorrente);
-      //  insegnamento.aggiungiAppello(appelloCorrente);
+        insegnamento.aggiungiAppello(appelloCorrente); //aggiunge l'appello corrente alla mappa degli appelli relativi ad un insegnamento
        /*if (exam_list == null) {
             exam_list = new HashMap<>();
         }*/

@@ -25,7 +25,7 @@ public class InserisciEsitiPopUpUI implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         ems=EMS.getInstance();
         //recuperare appello d'esame
-        appello=ems.getAppelloSelezionato();
+        appello=ems.getAppelloCorrente();
     }
 
     public InserisciEsitiPopUpUI() {}

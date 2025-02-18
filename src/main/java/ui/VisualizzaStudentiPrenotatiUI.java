@@ -46,7 +46,7 @@ public class VisualizzaStudentiPrenotatiUI implements Initializable {
         ems=EMS.getInstance();
         docente = ems.getDocenteCorrente();
         insegnamento=ems.getInsegnamentoSelezionato();
-        appello=ems.getAppelloSelezionato();
+        appello=ems.getAppelloCorrente();
         inserisciEsitiButton.setVisible(true);
         visualizzaStudenti();
 

@@ -81,7 +81,9 @@ public class VisualizzaAppelliInsegnamentoUI implements Initializable {
             showAlert("Errore", "Appello non trovato.");
             return;
         }
-        ems.setAppelloSelezionato(appello);
+        ems.setAppelloCorrente(appello);
+        System.out.println(" APPELLO CORRENTE: " + idAppello);
+        System.out.println("AGGIORNAMENTO APPELLO CORRENTE: " + appello.getID_appello());
         apriListaStudentiView(appello, insegnamento);
     }
 
