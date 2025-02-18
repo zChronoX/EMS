@@ -75,14 +75,16 @@ public class EMS {
 
         for (Insegnamento insegnamento : teaching_list.values()) {
             System.out.println("\nInsegnamento: " + insegnamento.getNome());
-
-            if (insegnamento.getExam_list() == null || insegnamento.getExam_list().isEmpty()) {
-                System.out.println("  Non ci sono appelli per questo insegnamento.");
-            } else {
-                for (Appello_esame appello : insegnamento.getExam_list().values()) {
+            for (Appello_esame appello : exam_list.values()) {
+                if(insegnamento.getID_insegnamento().equals(appello.getInsegnamento().getID_insegnamento())) {
                     System.out.println("  - " + appello); // Stampa l'oggetto Appello_esame (richiede toString())
                 }
+                else{
+                    System.out.println("  Non ci sono appelli per questo insegnamento.");
+                    break;
+                }
             }
+
         }
     }
 
@@ -651,7 +653,7 @@ public void inserisciEsito(String matricola, String voto, String stato) throws E
 
 
 
-    public  String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime Orario, String Luogo,int postiDisponibili,String tipologia){
+    public String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime Orario, String Luogo,int postiDisponibili,String tipologia){
         Insegnamento insegnamento = teaching_list.get(ID_insegnamento);
         if (insegnamento == null) {
             throw new IllegalArgumentException("Insegnamento non trovato.");
@@ -677,16 +679,20 @@ public void inserisciEsito(String matricola, String voto, String stato) throws E
         appelloCorrente = new Appello_esame(ID_appello, Data, Orario, Luogo, postiDisponibili, tipologia,insegnamento);
         System.out.println("Appello corrente creato: " + appelloCorrente);
       //  insegnamento.aggiungiAppello(appelloCorrente);
-       if (exam_list == null) {
+       /*if (exam_list == null) {
             exam_list = new HashMap<>();
-        }
+        }*/
         return ID_appello;
 
     }
     public void confermaAppello() {
 
-        if (exam_list.containsKey(appelloCorrente.getID_appello())) {
+       /* if (exam_list.containsKey(appelloCorrente.getID_appello())) {
             System.out.println("L'appello con ID " + appelloCorrente.getID_appello() + " è già stato confermato.");
+            return;
+        }*/
+        if(appelloCorrente == null) {
+            System.out.println("Errore: Appello non trovato.");
             return;
         }
 

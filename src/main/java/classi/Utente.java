@@ -137,7 +137,7 @@ public class Utente {
                 ", Codice_fiscale='" + Codice_fiscale + '\'' +
                 ", Residenza='" + Residenza + '\'' +
                 ", Email='" + Email + '\'' +
-              //  ", Telefono='" + Telefono + '\'' +
+                ", Telefono='" + Telefono + '\'' +
                 ", tipoProfilo=" + tipoProfilo +
                 '}';
     }
