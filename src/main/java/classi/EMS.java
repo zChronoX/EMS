@@ -676,15 +676,14 @@ public void inserisciEsito(String matricola, String voto, String stato) throws E
         String ID_appello = "APP-" + (System.currentTimeMillis() % 100000);
         appelloCorrente = new Appello_esame(ID_appello, Data, Orario, Luogo, postiDisponibili, tipologia,insegnamento);
         System.out.println("Appello corrente creato: " + appelloCorrente);
-        insegnamento.aggiungiAppello(appelloCorrente);
-        if (exam_list == null) {
+      //  insegnamento.aggiungiAppello(appelloCorrente);
+       if (exam_list == null) {
             exam_list = new HashMap<>();
         }
         return ID_appello;
 
     }
     public void confermaAppello() {
-
 
         if (exam_list.containsKey(appelloCorrente.getID_appello())) {
             System.out.println("L'appello con ID " + appelloCorrente.getID_appello() + " è già stato confermato.");
