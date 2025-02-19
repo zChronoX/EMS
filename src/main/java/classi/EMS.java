@@ -20,7 +20,7 @@ public class EMS {
     private HashMap<String, Insegnamento> teaching_list;
     private UtenteFactory utenteFactory;
     public static final int POSTI_MAX = 500;
-    private HashMap<String,Appello_esame> exam_list;
+    //private HashMap<String,Appello_esame> exam_list;
     private Insegnamento insegnamentoSelezionato;
     //private Appello_esame appelloSelezionato;
 
@@ -33,7 +33,7 @@ public class EMS {
         this.doc_list = new HashMap<>();
         this.teaching_list = new HashMap<>(); //lista insegnamenti
         this.reservation_list = new HashMap<>(); //lista prenotazioni
-        this.exam_list = new HashMap<>(); //lista appelli
+        //this.exam_list = new HashMap<>(); //lista appelli
 
         Utility utility = new Utility(); // Crea un'istanza di Utility
 
@@ -655,38 +655,95 @@ public void inserisciEsito(String matricola, String voto, String stato) throws E
 
 
 
-    public String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime Orario, String Luogo,int postiDisponibili,String tipologia){
-        Insegnamento insegnamento = teaching_list.get(ID_insegnamento);
-        if (insegnamento == null) {
-            throw new IllegalArgumentException("Insegnamento non trovato.");
-        }
-        // Controllo se esiste già un appello con gli stessi dati
-        for (Appello_esame appelloEsistente : exam_list.values()) {
-            if (appelloEsistente.getData().equals(Data) &&
-                    appelloEsistente.getOrario().equals(Orario) &&
-                    appelloEsistente.getLuogo().equals(Luogo) &&
-                    appelloEsistente.getTipologia().equals(tipologia)) {
-
-                System.out.println("Errore: Esiste già un appello con gli stessi dati.");
-                return null;
-            }
-            else if  (appelloEsistente.getData().equals(Data) &&
-                    appelloEsistente.getOrario().equals(Orario) &&
-                    appelloEsistente.getLuogo().equals(Luogo)) {
-
-                throw new IllegalArgumentException("Esiste già un appello nello stesso luogo, alla stessa data e ora.");
-            }
-        }
-        String ID_appello = "APP-" + (System.currentTimeMillis() % 100000);
-        appelloCorrente = new Appello_esame(ID_appello, Data, Orario, Luogo, postiDisponibili, tipologia,insegnamento);
-        System.out.println("Appello corrente creato: " + appelloCorrente);
-        insegnamento.aggiungiAppello(appelloCorrente); //aggiunge l'appello corrente alla mappa degli appelli relativi ad un insegnamento
-       /*if (exam_list == null) {
-            exam_list = new HashMap<>();
-        }*/
-        return ID_appello;
-
+//    public String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime Orario, String Luogo,int postiDisponibili,String tipologia){
+//        Insegnamento insegnamento = teaching_list.get(ID_insegnamento);
+//        if (insegnamento == null) {
+//            throw new IllegalArgumentException("Insegnamento non trovato.");
+//        }
+//        // Controllo se esiste già un appello con gli stessi dati
+//        for (Appello_esame appelloEsistente : exam_list.values()) {
+//            if (appelloEsistente.getData().equals(Data) &&
+//                    appelloEsistente.getOrario().equals(Orario) &&
+//                    appelloEsistente.getLuogo().equals(Luogo) &&
+//                    appelloEsistente.getTipologia().equals(tipologia)) {
+//
+//                System.out.println("Errore: Esiste già un appello con gli stessi dati.");
+//                return null;
+//            }
+//            else if  (appelloEsistente.getData().equals(Data) &&
+//                    appelloEsistente.getOrario().equals(Orario) &&
+//                    appelloEsistente.getLuogo().equals(Luogo)) {
+//
+//                throw new IllegalArgumentException("Esiste già un appello nello stesso luogo, alla stessa data e ora.");
+//            }
+//        }
+//        String ID_appello = "APP-" + (System.currentTimeMillis() % 100000);
+//        appelloCorrente = new Appello_esame(ID_appello, Data, Orario, Luogo, postiDisponibili, tipologia,insegnamento);
+//        System.out.println("Appello corrente creato: " + appelloCorrente);
+//        //insegnamento.aggiungiAppello(appelloCorrente); //aggiunge l'appello corrente alla mappa degli appelli relativi ad un insegnamento
+//       /*if (exam_list == null) {
+//            exam_list = new HashMap<>();
+//        }*/
+//        return ID_appello;
+//
+//    }
+public String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime Orario, String Luogo, int postiDisponibili, String tipologia) {
+    Insegnamento insegnamento = teaching_list.get(ID_insegnamento);
+    if (insegnamento == null) {
+        throw new IllegalArgumentException("Insegnamento non trovato.");
     }
+
+    // Iterate through ALL teachings
+    for (Insegnamento currentInsegnamento : teaching_list.values()) {
+        // Get the exam list for the CURRENT teaching
+        Map<String, Appello_esame> exam_list = currentInsegnamento.getExam_list();
+
+        // Check for duplicate appeals within the CURRENT teaching's exam list
+        if (exam_list != null) { // Check if the exam_list is not null
+            for (Appello_esame appelloEsistente : exam_list.values()) {
+                if (appelloEsistente.getData().equals(Data) &&
+                        appelloEsistente.getOrario().equals(Orario) &&
+                        appelloEsistente.getLuogo().equals(Luogo) &&
+                        appelloEsistente.getTipologia().equals(tipologia)) {
+
+                    System.out.println("Errore: Esiste già un appello con gli stessi dati per l'insegnamento: " + currentInsegnamento.getNome());
+                    return null;
+                } else if (appelloEsistente.getData().equals(Data) &&
+                        appelloEsistente.getOrario().equals(Orario) &&
+                        appelloEsistente.getLuogo().equals(Luogo)) {
+
+                    throw new IllegalArgumentException("Esiste già un appello nello stesso luogo, alla stessa data e ora per l'insegnamento: " + currentInsegnamento.getNome());
+                }
+            }
+        }
+    }
+
+    String ID_appello = "APP-" + (System.currentTimeMillis() % 100000);
+    appelloCorrente = new Appello_esame(ID_appello, Data, Orario, Luogo, postiDisponibili, tipologia, insegnamento);
+    System.out.println("Appello corrente creato: " + appelloCorrente);
+    return ID_appello;
+}
+
+    public void confermaAppello() {
+        if (appelloCorrente == null) {
+            System.out.println("Errore: Appello non trovato.");
+            return;
+        }
+
+        // 1. Get the teaching associated with the current appeal
+        Insegnamento insegnamento = appelloCorrente.getInsegnamento();
+
+        if (insegnamento == null) {
+            System.out.println("Errore: Insegnamento non trovato.");
+            return;
+        }
+
+        // 2. Use the insegnamento's aggiungiAppello method
+        insegnamento.aggiungiAppello(appelloCorrente);
+
+        System.out.println("Appello " + appelloCorrente.getID_appello() + " confermato con successo per l'insegnamento " + insegnamento.getNome() + ".");
+    }
+
 //    public void confermaAppello() {
 //
 //       /* if (exam_list.containsKey(appelloCorrente.getID_appello())) {
@@ -705,16 +762,40 @@ public void inserisciEsito(String matricola, String voto, String stato) throws E
     public HashMap<String, Insegnamento> visualizzaInsegnamenti() {
         return teaching_list;
     }
+//    public HashMap<String, Appello_esame> visualizzaAppelliPerInsegnamento(String ID_insegnamento) {
+//        HashMap<String, Appello_esame> appelliFiltrati = new HashMap<>();
+//
+//        for (Map.Entry<String, Appello_esame> entry : exam_list.entrySet()) {
+//            if (entry.getValue().getInsegnamento().getID_insegnamento().equals(ID_insegnamento)) {
+//                appelliFiltrati.put(entry.getKey(), entry.getValue());
+//            }
+//        }
+//        return appelliFiltrati;
+//    }
+
     public HashMap<String, Appello_esame> visualizzaAppelliPerInsegnamento(String ID_insegnamento) {
         HashMap<String, Appello_esame> appelliFiltrati = new HashMap<>();
 
-        for (Map.Entry<String, Appello_esame> entry : exam_list.entrySet()) {
-            if (entry.getValue().getInsegnamento().getID_insegnamento().equals(ID_insegnamento)) {
-                appelliFiltrati.put(entry.getKey(), entry.getValue());
+        // Scorro tutti gli insegnamenti
+        for (Insegnamento insegnamento : teaching_list.values()) {
+            // Se l'ID dell'insegnamento corrente corrisponde all'ID passato come parametro
+            if (insegnamento.getID_insegnamento().equals(ID_insegnamento)) {
+                // Recupero la mappa degli appelli relativa a questo insegnamento
+                Map<String, Appello_esame> exam_list = insegnamento.getExam_list();
+
+                // Aggiungo tutti gli appelli di questo insegnamento alla mappa filtrata
+                if (exam_list != null) { // Controllo se la mappa è null
+                    appelliFiltrati.putAll(exam_list);
+                }
+                break; // Esco dal ciclo una volta trovato l'insegnamento corretto
             }
         }
+
         return appelliFiltrati;
     }
+
+
+
 
 //    public HashMap<String, Appello_esame> visualizzaAppelliPerInsegnamento(String ID_insegnamento){
 //        if (teaching_list.containsKey(ID_insegnamento)) {
@@ -763,16 +844,37 @@ public void inserisciEsito(String matricola, String voto, String stato) throws E
         }
     }
 
-    public boolean controlloEsistenzaAppello(LocalDate data, LocalTime orario, String luogo) {
-        for (Appello_esame appelloEsistente : exam_list.values()) {
-            if (appelloEsistente.getData().equals(data) &&
-                    appelloEsistente.getOrario().equals(orario) &&
-                    appelloEsistente.getLuogo().equals(luogo)) {
+//    public boolean controlloEsistenzaAppello(LocalDate data, LocalTime orario, String luogo) {
+//        for (Appello_esame appelloEsistente : exam_list.values()) {
+//            if (appelloEsistente.getData().equals(data) &&
+//                    appelloEsistente.getOrario().equals(orario) &&
+//                    appelloEsistente.getLuogo().equals(luogo)) {
+//
+//                return true; // Esiste già un appello con gli stessi dati
+//            }
+//        }
+//        return false; // Non esiste alcun appello con gli stessi dati
+//    }
 
-                return true; // Esiste già un appello con gli stessi dati
+    public boolean controlloEsistenzaAppello(LocalDate data, LocalTime orario, String luogo) {
+        // Itera su tutti gli insegnamenti
+        for (Insegnamento insegnamento : teaching_list.values()) {
+            // Ottieni la mappa degli appelli per l'insegnamento corrente
+            Map<String, Appello_esame> exam_list = insegnamento.getExam_list();
+
+            // Se la mappa esiste, itera sugli appelli
+            if (exam_list != null) {
+                for (Appello_esame appelloEsistente : exam_list.values()) {
+                    if (appelloEsistente.getData().equals(data) &&
+                            appelloEsistente.getOrario().equals(orario) &&
+                            appelloEsistente.getLuogo().equals(luogo)) {
+
+                        return true; // Esiste già un appello con gli stessi dati
+                    }
+                }
             }
         }
-        return false; // Non esiste alcun appello con gli stessi dati
+        return false; // Non esiste alcun appello con gli stessi dati in nessun insegnamento
     }
 
     public HashMap<String, Prenotazione> getPrenotazioniNonRecensiteByStudente(Studente studente) {
@@ -790,9 +892,9 @@ public void inserisciEsito(String matricola, String voto, String stato) throws E
         return teaching_list;
     }
 
-    public Map<String, Appello_esame> getExam_list() {
-        return exam_list;
-    }
+//    public Map<String, Appello_esame> getExam_list() {
+//        return exam_list;
+//    }
 
     public void setAppelloCorrente(Appello_esame appelloCorrente) {
         this.appelloCorrente = appelloCorrente;
