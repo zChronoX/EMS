@@ -279,7 +279,7 @@ public class UICreaAppello implements Initializable {
             idAppelloTextField.setText(idAppello);
 
 
-            ems.confermaAppello();
+            //ems.confermaAppello();
 
 
             // Mostra un riepilogo

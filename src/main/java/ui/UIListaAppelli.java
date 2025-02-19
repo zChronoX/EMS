@@ -109,6 +109,7 @@ public class UIListaAppelli implements Initializable {
         }
     }
 
+
     @FXML
     private void handleConfermaPrenotazione(ActionEvent event) {
         String idAppello = idAppelloTextField.getText();

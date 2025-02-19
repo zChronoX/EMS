@@ -92,22 +92,28 @@ public class VisualizzaCarrieraUI implements Initializable {
 
     private void caricaAppelliApprovati() {
         // 1. Recupera la lista di appelli approvati dallo studente
-        List<String> appelli = new ArrayList<>();
-        for (Prenotazione prenotazione : ems.getReservation_list().values()) { // Itera sui valori della mappa
-            if (prenotazione.getStudente().equals(studente)) {
-                Esito_esame esito = prenotazione.getEsito();
-                if (esito != null && esito.getStato().equalsIgnoreCase("Approvato")) {
-                    Appello_esame appelloEsame = prenotazione.getAppello();
-                    Insegnamento insegnamento = appelloEsame.getInsegnamento();
-                    String appelloString = "ID Appello: (" + appelloEsame.getID_appello() + ")" + " Nome Insegnamento :" + insegnamento.getNome() + " - Voto: " + esito.getVoto() + " Esito: " + esito.getStato(); // Formatta l'appello come stringa
-                    appelli.add(appelloString);
-                }
-            }
-        }
+//        List<String> appelli = new ArrayList<>();
+//        for (Prenotazione prenotazione : ems.getReservation_list().values()) { // Itera sui valori della mappa
+//            if (prenotazione.getStudente().equals(studente)) {
+//                Esito_esame esito = prenotazione.getEsito();
+//                if (esito != null && esito.getStato().equalsIgnoreCase("Approvato")) {
+//                    Appello_esame appelloEsame = prenotazione.getAppello();
+//                    Insegnamento insegnamento = appelloEsame.getInsegnamento();
+//                    String appelloString = "ID Appello: (" + appelloEsame.getID_appello() + ")" + " Nome Insegnamento :" + insegnamento.getNome() + " - Voto: " + esito.getVoto() + " Esito: " + esito.getStato(); // Formatta l'appello come stringa
+//                    appelli.add(appelloString);
+//                }
+//            }
+//        }
+//
+//
+//
+//        // 2. Popola la ListView con i dati
+//        appelliApprovatiListView.getItems().clear(); // Pulisci la ListView prima di aggiungere nuovi elementi
+//        appelliApprovatiListView.getItems().addAll(appelli);
 
+        List<String> appelli = ems.getAppelliApprovati(studente);
 
-
-        // 2. Popola la ListView con i dati
+// 2. Popola la ListView con i dati
         appelliApprovatiListView.getItems().clear(); // Pulisci la ListView prima di aggiungere nuovi elementi
         appelliApprovatiListView.getItems().addAll(appelli);
     }

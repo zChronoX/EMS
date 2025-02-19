@@ -75,7 +75,8 @@ public class EMS {
 
         for (Insegnamento insegnamento : teaching_list.values()) {
             System.out.println("\nInsegnamento: " + insegnamento.getNome());
-            for (Appello_esame appello : exam_list.values()) {
+            Map <String, Appello_esame> appelli = insegnamento.getExam_list();
+            for (Appello_esame appello : appelli.values()) {
                 if(insegnamento.getID_insegnamento().equals(appello.getInsegnamento().getID_insegnamento())) {
                     System.out.println("  - " + appello); // Stampa l'oggetto Appello_esame (richiede toString())
                 }
@@ -686,20 +687,20 @@ public void inserisciEsito(String matricola, String voto, String stato) throws E
         return ID_appello;
 
     }
-    public void confermaAppello() {
-
-       /* if (exam_list.containsKey(appelloCorrente.getID_appello())) {
-            System.out.println("L'appello con ID " + appelloCorrente.getID_appello() + " è già stato confermato.");
-            return;
-        }*/
-        if(appelloCorrente == null) {
-            System.out.println("Errore: Appello non trovato.");
-            return;
-        }
-
-        exam_list.put(appelloCorrente.getID_appello(), appelloCorrente);
-        System.out.println("Appello " + appelloCorrente.getID_appello() + " confermato con successo.");
-    }
+//    public void confermaAppello() {
+//
+//       /* if (exam_list.containsKey(appelloCorrente.getID_appello())) {
+//            System.out.println("L'appello con ID " + appelloCorrente.getID_appello() + " è già stato confermato.");
+//            return;
+//        }*/
+//        if(appelloCorrente == null) {
+//            System.out.println("Errore: Appello non trovato.");
+//            return;
+//        }
+//
+//        exam_list.put(appelloCorrente.getID_appello(), appelloCorrente);
+//        System.out.println("Appello " + appelloCorrente.getID_appello() + " confermato con successo.");
+//    }
 
     public HashMap<String, Insegnamento> visualizzaInsegnamenti() {
         return teaching_list;
@@ -714,20 +715,20 @@ public void inserisciEsito(String matricola, String voto, String stato) throws E
         }
         return appelliFiltrati;
     }
-    /*
-    public HashMap<String, Appello_esame> visualizzaAppelliPerInsegnamento(String ID_insegnamento){
-        if (teaching_list.containsKey(ID_insegnamento)) {
-            Insegnamento insegnamento= teaching_list.get(ID_insegnamento);
-            return insegnamento.cercaAppelliDisponibili(studenteCorrente);
-        }
-        else {
-            System.out.println("Insegnamento non trovato.");
-            return null;
-        }
-    }
+
+//    public HashMap<String, Appello_esame> visualizzaAppelliPerInsegnamento(String ID_insegnamento){
+//        if (teaching_list.containsKey(ID_insegnamento)) {
+//            Insegnamento insegnamento= teaching_list.get(ID_insegnamento);
+//            return insegnamento.cercaAppelliDisponibili(studenteCorrente);
+//        }
+//        else {
+//            System.out.println("Insegnamento non trovato.");
+//            return null;
+//        }
+//    }
 
 
-     */
+
     public HashMap<String, Prenotazione> getReservation_list() {
         return reservation_list;
     }
