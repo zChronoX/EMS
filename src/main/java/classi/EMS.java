@@ -936,6 +936,8 @@ public String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime
         appelloCorrente.setOrario(orario);
         appelloCorrente.setLuogo(luogo);
     }
+
+
 }
 
 
