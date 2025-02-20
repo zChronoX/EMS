@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Appello_esame {
-    private HashMap<String,Prenotazione> reservation_list;
+    //private HashMap<String,Prenotazione> reservation_list;
     private String ID_appello;
     private LocalTime Orario;
     private LocalDate Data;
@@ -109,12 +109,12 @@ public class Appello_esame {
 
     public void setInsegnamento(Insegnamento insegnamento) { this.insegnamento = insegnamento; }
 
-    public boolean verificaDisponibilitaAppello(Studente studente) {
-        if(this.getTipologia().equals(studente.getCategoria())){
-            return true;
-        }
-        return false;
-    }
+//    public boolean verificaDisponibilitaAppello(Studente studente) {
+//        if(this.getTipologia().equals(studente.getCategoria())){
+//            return true;
+//        }
+//        return false;
+//    }
 
     public List<String> getFeedbacks() {
         return feedbacks;

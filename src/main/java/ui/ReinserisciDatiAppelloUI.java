@@ -34,7 +34,7 @@ public class ReinserisciDatiAppelloUI implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ems=EMS.getInstance();
-        appello=ems.getAppelloCorrente();
+        //appello=ems.getAppelloCorrente();
         insegnamento=ems.getInsegnamentoSelezionato();
         //lista vecchia
         appelli = ems.getAppelliByInsegnamento(insegnamento);
@@ -86,17 +86,17 @@ public class ReinserisciDatiAppelloUI implements Initializable {
             return; // Interrompi la modifica se l'appello esiste già
         }
 
-
-        String IDAppello=appello.getID_appello();
-        for(int i=0; i<appelli.size(); i++){
-            if(IDAppello.equals(appelli.get(i).getID_appello())){
-
-                appelli.get(i).setData(data);
-                appelli.get(i).setOrario(orario);
-                appelli.get(i).setLuogo(luogo);
-                break;
-            }
-        }
+        ems.reinserisciDatiAppello(data, orario, luogo);
+       // String IDAppello=appello.getID_appello();
+//        for(int i=0; i<appelli.size(); i++){
+//            if(IDAppello.equals(appelli.get(i).getID_appello())){
+//
+//                appelli.get(i).setData(data);
+//                appelli.get(i).setOrario(orario);
+//                appelli.get(i).setLuogo(luogo);
+//                break;
+//            }
+//        }
         visualizzaLista();
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Appello modificato con successo.");
         alert.showAndWait();

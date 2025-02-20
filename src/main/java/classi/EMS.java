@@ -25,7 +25,7 @@ public class EMS {
     //private Appello_esame appelloSelezionato;
 
     private HashMap<String, Prenotazione> reservation_list;
-    private List<Esito_esame> result_list = new ArrayList<>();
+   // private List<Esito_esame> result_list = new ArrayList<>();
 
     public EMS() {
 
@@ -576,28 +576,28 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
         return null;
     }
 
-    public Esito_esame getEsitoByStudente(Studente studente, Appello_esame appello) {
-        if (studente == null || appello == null) {
-            return null; // Gestisci il caso di input nulli
-        }
+//    public Esito_esame getEsitoByStudente(Studente studente, Appello_esame appello) {
+//        if (studente == null || appello == null) {
+//            return null; // Gestisci il caso di input nulli
+//        }
+//
+//        for (Esito_esame esito : this.result_list) { // Itera sulla lista di esiti in EMS
+//            if (esito.getStudente().equals(studente) && esito.getAppello().equals(appello)) {
+//                return esito;
+//            }
+//        }
+//
+//        return null; // Esito non trovato
+//    }
 
-        for (Esito_esame esito : this.result_list) { // Itera sulla lista di esiti in EMS
-            if (esito.getStudente().equals(studente) && esito.getAppello().equals(appello)) {
-                return esito;
-            }
-        }
-
-        return null; // Esito non trovato
-    }
-
-    public Esito_esame getEsitoByPrenotazione(Prenotazione prenotazione) {
-        for (Esito_esame esito : result_list) {
-            if (esito.getPrenotazione().equals(prenotazione)) {
-                return esito;
-            }
-        }
-        return null;
-    }
+//    public Esito_esame getEsitoByPrenotazione(Prenotazione prenotazione) {
+//        for (Esito_esame esito : result_list) {
+//            if (esito.getPrenotazione().equals(prenotazione)) {
+//                return esito;
+//            }
+//        }
+//        return null;
+//    }
 
 public void inserisciEsito(String matricola, String voto, String stato) throws Exception {
     // 1. Verifica che il docente possa gestire gli esiti per questo appello
@@ -858,6 +858,7 @@ public String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime
 
     public boolean controlloEsistenzaAppello(LocalDate data, LocalTime orario, String luogo) {
         // Itera su tutti gli insegnamenti
+        boolean flag;
         for (Insegnamento insegnamento : teaching_list.values()) {
             // Ottieni la mappa degli appelli per l'insegnamento corrente
             Map<String, Appello_esame> exam_list = insegnamento.getExam_list();
@@ -868,13 +869,14 @@ public String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime
                     if (appelloEsistente.getData().equals(data) &&
                             appelloEsistente.getOrario().equals(orario) &&
                             appelloEsistente.getLuogo().equals(luogo)) {
-
-                        return true; // Esiste già un appello con gli stessi dati
+                            flag=true;
+                        return flag; // Esiste già un appello con gli stessi dati
                     }
                 }
             }
         }
-        return false; // Non esiste alcun appello con gli stessi dati in nessun insegnamento
+        flag=false;
+        return flag; // Non esiste alcun appello con gli stessi dati in nessun insegnamento
     }
 
     public HashMap<String, Prenotazione> getPrenotazioniNonRecensiteByStudente(Studente studente) {
@@ -929,8 +931,11 @@ public String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime
     }
 
 
-
-
+    public void reinserisciDatiAppello(LocalDate data, LocalTime orario, String luogo) {
+        appelloCorrente.setData(data);
+        appelloCorrente.setOrario(orario);
+        appelloCorrente.setLuogo(luogo);
+    }
 }
 
 

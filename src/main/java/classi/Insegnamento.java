@@ -112,16 +112,7 @@ public class Insegnamento {
         return exam_list;
     }
 
-    public HashMap<String,Appello_esame> cercaAppelliDisponibili(Studente studente) {
-        HashMap<String, Appello_esame> temporary_list = new HashMap<>();
-        for (HashMap.Entry<String, Appello_esame> entry : exam_list.entrySet()) {
-            if(entry.getValue().verificaDisponibilitaAppello(studente)){
-                temporary_list.put(entry.getKey(), entry.getValue());
-            }
 
-        }
-        return temporary_list;
-    }
 
     @Override
     public String toString() {
