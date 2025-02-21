@@ -255,7 +255,6 @@ public class EMS {
         return utenteCorrente;
     }
 
-
     public boolean loginStudente(String matricola, String password) throws Exception {
         Studente studente = student_list.get(matricola);
 
@@ -295,15 +294,8 @@ public class EMS {
         StringBuilder sb = new StringBuilder();
         for (HashMap.Entry<String, Studente> entry : student_list.entrySet()) {
 
-            //
             String matricola = entry.getKey();
             Studente studente = entry.getValue();
-            // System.out.println("Matricola: " + matricola + ", Studente: " + studente);
-            //
-
-
-            // String matricola = entry.getKey();
-            //  Studente studente = entry.getValue();
 
             sb.append("Matricola: ").append(matricola).append("\n"); // Includi la matricola
 
@@ -336,9 +328,9 @@ public class EMS {
         return teaching_list;
     }
 
-    public Insegnamento getInsegnamento(String codice) {
+    public Insegnamento getInsegnamento(String codiceInsegnamento) {
         if (this.teaching_list != null) {
-            return this.teaching_list.get(codice);
+            return this.teaching_list.get(codiceInsegnamento);
         }
         return null;
     }
@@ -362,11 +354,11 @@ public class EMS {
         return true;
     }
 
-    public List<Appello_esame> getAppelliByInsegnamento(Insegnamento insegnamento) {
+    public List<Appello_esame> getAppelliByInsegnamento() {
         List<Appello_esame> appelliFiltrati = new ArrayList<>();
 
-        if (insegnamento != null) {
-            Map<String, Appello_esame> appelli = insegnamento.getExam_list();
+        if (insegnamentoSelezionato != null) {
+            Map<String, Appello_esame> appelli = insegnamentoSelezionato.getExam_list();
             if (appelli != null) {
                 for (Appello_esame appello : appelli.values()) {
                     appelliFiltrati.add(appello);
@@ -379,7 +371,7 @@ public class EMS {
 
     public Appello_esame getAppelloById(String idAppello) {
         for (Insegnamento insegnamento : this.teaching_list.values()) { // Itera sugli insegnamenti
-            List<Appello_esame> appelli = this.getAppelliByInsegnamento(insegnamento); // Recupera gli appelli per l'insegnamento
+            List<Appello_esame> appelli = this.getAppelliByInsegnamento(); // Recupera gli appelli per l'insegnamento
 
             if (appelli != null) {
                 for (Appello_esame appello : appelli) {
@@ -461,13 +453,13 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
         return appello.getStudenti().contains(studente);
     }
 
-    public List<Insegnamento> mostraInsegnamentiDocente(String codiceDocente) {
+    public List<Insegnamento> mostraInsegnamentiDocente() {
         List<Insegnamento> insegnamentiDocente = new ArrayList<>();
 
-        if (codiceDocente == null || codiceDocente.isEmpty()) {
+        if (docenteCorrente.getCodiceDocente() == null || docenteCorrente.getCodiceDocente().isEmpty()) {
             return insegnamentiDocente; // Restituisce una lista vuota se il codice è nullo o vuoto
         }
-        Docente docente = doc_list.get(codiceDocente);
+        Docente docente = doc_list.get(docenteCorrente.getCodiceDocente());
         if (docente == null) {
             return insegnamentiDocente; // Restituisce lista vuota se il docente non esiste
         }
@@ -514,18 +506,11 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
         return this.insegnamentoSelezionato;
     }
 
-    /*public void setAppelloSelezionato(Appello_esame appello) {
-        this.appelloSelezionato = appello;
-    }
+    public Prenotazione getPrenotazioneByStudenteAndAppello() {
+        //penso non sia necessario passare parametri a questa funzione perché studente e appello corrente li abbiamo qua
+        System.out.println("getPrenotazioneByStudenteAndAppello() chiamata per studente: " + studenteCorrente.getMatricola() + " e appello: " + appelloCorrente.getID_appello());
 
-    public Appello_esame getAppelloSelezionato() {
-        return this.appelloSelezionato;
-    }*/
-
-    public Prenotazione getPrenotazioneByStudenteAndAppello(Studente studente, Appello_esame appello) {
-        System.out.println("getPrenotazioneByStudenteAndAppello() chiamata per studente: " + studente.getMatricola() + " e appello: " + appello.getID_appello());
-
-        if (studente == null || appello == null) {
+        if (studenteCorrente == null || appelloCorrente == null) {
             System.out.println("Studente o appello null");
             return null;
         }
@@ -543,13 +528,13 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
         for (HashMap.Entry<String, Prenotazione> entry : reservation_list.entrySet()) { // Usa entrySet() anche qui
             Prenotazione p = entry.getValue();
             System.out.println("Confronto con prenotazione: " + p.getStudente().getMatricola() + " - " + p.getAppello().getID_appello());
-            if (p.getStudente().equals(studente) && p.getAppello().equals(appello)) {
+            if (p.getStudente().equals(studenteCorrente) && p.getAppello().equals(appelloCorrente)) {
                 System.out.println("Prenotazione trovata!");
                 return p;
             }
         }
 
-        System.out.println("Prenotazione non trovata per studente: " + studente.getMatricola() + " e appello: " + appello.getID_appello());
+        System.out.println("Prenotazione non trovata per studente: " + studenteCorrente.getMatricola() + " e appello: " + appelloCorrente.getID_appello());
         return null;
     }
 
@@ -560,11 +545,11 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
         }
     }
 
-    public List<Studente> getStudentiByAppello(Appello_esame appello) {
-        if (appello == null) {
+    public List<Studente> getStudentiByAppello() {
+        if (appelloCorrente == null) {
             return new ArrayList<>();
         }
-        return appello.getStudenti();
+        return appelloCorrente.getStudenti();
     }
 
     public Studente getStudente(String matricola) {
@@ -576,119 +561,61 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
         return null;
     }
 
-//    public Esito_esame getEsitoByStudente(Studente studente, Appello_esame appello) {
-//        if (studente == null || appello == null) {
-//            return null; // Gestisci il caso di input nulli
-//        }
-//
-//        for (Esito_esame esito : this.result_list) { // Itera sulla lista di esiti in EMS
-//            if (esito.getStudente().equals(studente) && esito.getAppello().equals(appello)) {
-//                return esito;
-//            }
-//        }
-//
-//        return null; // Esito non trovato
-//    }
-
-//    public Esito_esame getEsitoByPrenotazione(Prenotazione prenotazione) {
-//        for (Esito_esame esito : result_list) {
-//            if (esito.getPrenotazione().equals(prenotazione)) {
-//                return esito;
-//            }
-//        }
-//        return null;
-//    }
-
-public void inserisciEsito(String matricola, String voto, String stato) throws Exception {
-    // 1. Verifica che il docente possa gestire gli esiti per questo appello
-    if (!appelloCorrente.puòGestireEsiti(docenteCorrente)) {
-        throw new Exception("Errore: Non hai i permessi per inserire esiti in questo appello.");
-    }
-    System.out.println("1 fatto");
-    // 2. Controllo input nulli
-    if (matricola == null || matricola.isEmpty() || voto == null || voto.isEmpty() || stato == null || stato.isEmpty()) {
-        throw new Exception("Errore: Tutti i campi devono essere compilati.");
-    }
-    System.out.println("2 fatto");
-    // 3. Recupero studente
-    Studente studente = this.getStudente(matricola);
-    if (studente == null) {
-        throw new Exception("Errore: Studente non trovato.");
-    }
-    System.out.println("3 fatto");
-    // 4. Recupero prenotazione
-    System.out.println("APPELLO " + appelloCorrente.getID_appello());
-    Prenotazione prenotazione = this.getPrenotazioneByStudenteAndAppello(studente, appelloCorrente);
-    if (prenotazione == null) {
-        throw new Exception("Errore: Lo studente non è prenotato a questo appello.");
-    }
-    System.out.println("4 fatto");
-    // 5. Controllo che l'esito non sia già stato inserito
-    if (prenotazione.getEsito() != null) {
-        throw new Exception("Errore: Esito già registrato per questo studente.");
-    }
-    System.out.println("5 fatto");
-    // 6. Se lo stato è "Approvato", controlliamo la validità del voto
-    if (stato.equalsIgnoreCase("Approvato")) {
-        try {
-            int votoInt = Integer.parseInt(voto);
-            if (votoInt < 0 || votoInt > 30) {
-                throw new Exception("Errore: Il voto deve essere tra 0 e 30.");
-            }
-        } catch (NumberFormatException e) {
-            throw new Exception("Errore: Il voto deve essere un numero valido.");
+    public void inserisciEsito(String matricola, String voto, String stato) throws Exception {
+        // 1. Verifica che il docente possa gestire gli esiti per questo appello
+        if (!appelloCorrente.puòGestireEsiti(docenteCorrente)) {
+            throw new Exception("Errore: Non hai i permessi per inserire esiti in questo appello.");
         }
+        System.out.println("1 fatto");
+        // 2. Controllo input nulli
+        if (matricola == null || matricola.isEmpty() || voto == null || voto.isEmpty() || stato == null || stato.isEmpty()) {
+            throw new Exception("Errore: Tutti i campi devono essere compilati.");
+        }
+        System.out.println("2 fatto");
+        // 3. Recupero studente
+        Studente studente = this.getStudente(matricola);
+        if (studente == null) {
+            throw new Exception("Errore: Studente non trovato.");
+        }
+        System.out.println("3 fatto");
+        // 4. Recupero prenotazione
+        System.out.println("APPELLO " + appelloCorrente.getID_appello());
+        Prenotazione prenotazione = this.getPrenotazioneByStudenteAndAppello();
+        if (prenotazione == null) {
+            throw new Exception("Errore: Lo studente non è prenotato a questo appello.");
+        }
+        System.out.println("4 fatto");
+        // 5. Controllo che l'esito non sia già stato inserito
+        if (prenotazione.getEsito() != null) {
+            throw new Exception("Errore: Esito già registrato per questo studente.");
+        }
+        System.out.println("5 fatto");
+        // 6. Se lo stato è "Approvato", controlliamo la validità del voto
+        if (stato.equalsIgnoreCase("Approvato")) {
+            try {
+                int votoInt = Integer.parseInt(voto);
+                if (votoInt < 0 || votoInt > 30) {
+                    throw new Exception("Errore: Il voto deve essere tra 0 e 30.");
+                }
+            } catch (NumberFormatException e) {
+                throw new Exception("Errore: Il voto deve essere un numero valido.");
+            }
+        }
+        System.out.println("6 fatto");
+        // 7. Creazione dell'esito
+        Esito_esame esito = new Esito_esame(voto, stato, studente, appelloCorrente);
+        System.out.println("7 fatto");
+        // 8. Associa l'esito alla prenotazione
+        prenotazione.setEsito(esito);
+        System.out.println("8 fatto");
+        // 9. Mostra conferma
+        System.out.println("Esito inserito correttamente per lo studente " + matricola);
+
+        // 10. Se tutto è andato bene, l'esito è stato inserito con successo
     }
-    System.out.println("6 fatto");
-    // 7. Creazione dell'esito
-    Esito_esame esito = new Esito_esame(voto, stato, studente, appelloCorrente);
-    System.out.println("7 fatto");
-    // 8. Associa l'esito alla prenotazione
-    prenotazione.setEsito(esito);
-    System.out.println("8 fatto");
-    // 9. Mostra conferma
-    System.out.println("Esito inserito correttamente per lo studente " + matricola);
 
-    // 10. Se tutto è andato bene, l'esito è stato inserito con successo
-}
-
-
-
-
-//    public String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime Orario, String Luogo,int postiDisponibili,String tipologia){
-//        Insegnamento insegnamento = teaching_list.get(ID_insegnamento);
-//        if (insegnamento == null) {
-//            throw new IllegalArgumentException("Insegnamento non trovato.");
-//        }
-//        // Controllo se esiste già un appello con gli stessi dati
-//        for (Appello_esame appelloEsistente : exam_list.values()) {
-//            if (appelloEsistente.getData().equals(Data) &&
-//                    appelloEsistente.getOrario().equals(Orario) &&
-//                    appelloEsistente.getLuogo().equals(Luogo) &&
-//                    appelloEsistente.getTipologia().equals(tipologia)) {
-//
-//                System.out.println("Errore: Esiste già un appello con gli stessi dati.");
-//                return null;
-//            }
-//            else if  (appelloEsistente.getData().equals(Data) &&
-//                    appelloEsistente.getOrario().equals(Orario) &&
-//                    appelloEsistente.getLuogo().equals(Luogo)) {
-//
-//                throw new IllegalArgumentException("Esiste già un appello nello stesso luogo, alla stessa data e ora.");
-//            }
-//        }
-//        String ID_appello = "APP-" + (System.currentTimeMillis() % 100000);
-//        appelloCorrente = new Appello_esame(ID_appello, Data, Orario, Luogo, postiDisponibili, tipologia,insegnamento);
-//        System.out.println("Appello corrente creato: " + appelloCorrente);
-//        //insegnamento.aggiungiAppello(appelloCorrente); //aggiunge l'appello corrente alla mappa degli appelli relativi ad un insegnamento
-//       /*if (exam_list == null) {
-//            exam_list = new HashMap<>();
-//        }*/
-//        return ID_appello;
-//
-//    }
-public String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime Orario, String Luogo, int postiDisponibili, String tipologia) {
-    Insegnamento insegnamento = teaching_list.get(ID_insegnamento);
+public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, int postiDisponibili, String tipologia) {
+    Insegnamento insegnamento = teaching_list.get(insegnamentoSelezionato.getID_insegnamento());
     if (insegnamento == null) {
         throw new IllegalArgumentException("Insegnamento non trovato.");
     }
@@ -744,78 +671,15 @@ public String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime
         System.out.println("Appello " + appelloCorrente.getID_appello() + " confermato con successo per l'insegnamento " + insegnamento.getNome() + ".");
     }
 
-//    public void confermaAppello() {
-//
-//       /* if (exam_list.containsKey(appelloCorrente.getID_appello())) {
-//            System.out.println("L'appello con ID " + appelloCorrente.getID_appello() + " è già stato confermato.");
-//            return;
-//        }*/
-//        if(appelloCorrente == null) {
-//            System.out.println("Errore: Appello non trovato.");
-//            return;
-//        }
-//
-//        exam_list.put(appelloCorrente.getID_appello(), appelloCorrente);
-//        System.out.println("Appello " + appelloCorrente.getID_appello() + " confermato con successo.");
-//    }
-
-    public HashMap<String, Insegnamento> visualizzaInsegnamenti() {
-        return teaching_list;
+    public List<Appello_esame> getAppelli(){
+        List<Appello_esame> appelliPrenotati;
+        appelliPrenotati=studenteCorrente.getAppelli();
+        return appelliPrenotati;
     }
-//    public HashMap<String, Appello_esame> visualizzaAppelliPerInsegnamento(String ID_insegnamento) {
-//        HashMap<String, Appello_esame> appelliFiltrati = new HashMap<>();
-//
-//        for (Map.Entry<String, Appello_esame> entry : exam_list.entrySet()) {
-//            if (entry.getValue().getInsegnamento().getID_insegnamento().equals(ID_insegnamento)) {
-//                appelliFiltrati.put(entry.getKey(), entry.getValue());
-//            }
-//        }
-//        return appelliFiltrati;
-//    }
-
-    public HashMap<String, Appello_esame> visualizzaAppelliPerInsegnamento(String ID_insegnamento) {
-        HashMap<String, Appello_esame> appelliFiltrati = new HashMap<>();
-
-        // Scorro tutti gli insegnamenti
-        for (Insegnamento insegnamento : teaching_list.values()) {
-            // Se l'ID dell'insegnamento corrente corrisponde all'ID passato come parametro
-            if (insegnamento.getID_insegnamento().equals(ID_insegnamento)) {
-                // Recupero la mappa degli appelli relativa a questo insegnamento
-                Map<String, Appello_esame> exam_list = insegnamento.getExam_list();
-
-                // Aggiungo tutti gli appelli di questo insegnamento alla mappa filtrata
-                if (exam_list != null) { // Controllo se la mappa è null
-                    appelliFiltrati.putAll(exam_list);
-                }
-                break; // Esco dal ciclo una volta trovato l'insegnamento corretto
-            }
-        }
-
-        return appelliFiltrati;
-    }
-
-
-
-
-//    public HashMap<String, Appello_esame> visualizzaAppelliPerInsegnamento(String ID_insegnamento){
-//        if (teaching_list.containsKey(ID_insegnamento)) {
-//            Insegnamento insegnamento= teaching_list.get(ID_insegnamento);
-//            return insegnamento.cercaAppelliDisponibili(studenteCorrente);
-//        }
-//        else {
-//            System.out.println("Insegnamento non trovato.");
-//            return null;
-//        }
-//    }
-
-
 
     public HashMap<String, Prenotazione> getReservation_list() {
         return reservation_list;
     }
-
-
-
 
     public double calcolaMediaVoti(Studente studente) {
         double sommaVoti = 0;
@@ -843,18 +707,6 @@ public String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime
             return 0; // Se non ci sono appelli approvati, la media è 0
         }
     }
-
-//    public boolean controlloEsistenzaAppello(LocalDate data, LocalTime orario, String luogo) {
-//        for (Appello_esame appelloEsistente : exam_list.values()) {
-//            if (appelloEsistente.getData().equals(data) &&
-//                    appelloEsistente.getOrario().equals(orario) &&
-//                    appelloEsistente.getLuogo().equals(luogo)) {
-//
-//                return true; // Esiste già un appello con gli stessi dati
-//            }
-//        }
-//        return false; // Non esiste alcun appello con gli stessi dati
-//    }
 
     public boolean controlloEsistenzaAppello(LocalDate data, LocalTime orario, String luogo) {
         // Itera su tutti gli insegnamenti
@@ -894,10 +746,6 @@ public String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime
         return teaching_list;
     }
 
-//    public Map<String, Appello_esame> getExam_list() {
-//        return exam_list;
-//    }
-
     public void setAppelloCorrente(Appello_esame appelloCorrente) {
         this.appelloCorrente = appelloCorrente;
     }
@@ -906,11 +754,11 @@ public String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime
         return appelloCorrente;
     }
 
-    public List<String> getAppelliApprovati(Studente studente) {
+    public List<String> getAppelliApprovati() {
         List<String> appelli = new ArrayList<>();
 
         for (Prenotazione prenotazione : reservation_list.values()) {
-            if (prenotazione.getStudente().equals(studente) &&
+            if (prenotazione.getStudente().equals(studenteCorrente) &&
                     prenotazione.getEsito() != null &&
                     prenotazione.getEsito().getStato().equalsIgnoreCase("Approvato")) {
 
@@ -936,11 +784,4 @@ public String creazioneAppello(String ID_insegnamento, LocalDate Data, LocalTime
         appelloCorrente.setOrario(orario);
         appelloCorrente.setLuogo(luogo);
     }
-
-
 }
-
-
-
-
-

@@ -16,7 +16,7 @@ public class Studente extends Utente implements GeneratoreCredenziali {
     private String Password;
     private String Categoria;
     private int AnnoCorso;
-    private List<Appello_esame> appelli = new ArrayList<>();
+    private List<Appello_esame> appelli = new ArrayList<>(); //lista degli appelli con una prenotazione dello studente
 
     {
         this.Matricola = generaMatricola();

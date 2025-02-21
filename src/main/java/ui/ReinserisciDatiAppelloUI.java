@@ -35,9 +35,9 @@ public class ReinserisciDatiAppelloUI implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         ems=EMS.getInstance();
         //appello=ems.getAppelloCorrente();
-        insegnamento=ems.getInsegnamentoSelezionato();
+        //insegnamento=ems.getInsegnamentoSelezionato();
         //lista vecchia
-        appelli = ems.getAppelliByInsegnamento(insegnamento);
+        appelli = ems.getAppelliByInsegnamento();
 
     }
 
@@ -87,16 +87,7 @@ public class ReinserisciDatiAppelloUI implements Initializable {
         }
 
         ems.reinserisciDatiAppello(data, orario, luogo);
-       // String IDAppello=appello.getID_appello();
-//        for(int i=0; i<appelli.size(); i++){
-//            if(IDAppello.equals(appelli.get(i).getID_appello())){
-//
-//                appelli.get(i).setData(data);
-//                appelli.get(i).setOrario(orario);
-//                appelli.get(i).setLuogo(luogo);
-//                break;
-//            }
-//        }
+
         visualizzaLista();
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Appello modificato con successo.");
         alert.showAndWait();
@@ -108,8 +99,7 @@ public class ReinserisciDatiAppelloUI implements Initializable {
         for(int i=0; i<appelli.size(); i++){
             System.out.println(appelli.get(i).toString());
         }
-        VERIFICA=ems.getAppelliByInsegnamento(insegnamento);
-        System.out.println("\n\nLista da EMS: " + VERIFICA.toString());
+
     }
 
     @FXML
@@ -122,19 +112,7 @@ public class ReinserisciDatiAppelloUI implements Initializable {
         stage.setScene(new Scene(root)); // Imposta la scena con la radice caricata
         stage.show();
 
-        // Opzionale: Chiudi la finestra corrente (se lo desideri)
         Stage currentStage = (Stage) bottoneConfermaModifiche.getScene().getWindow();
         currentStage.close();
-
-
-        /*
-        Stage primaryStage = (Stage) indietroButton.getScene().getWindow(); // Ottieni lo Stage
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaAppelliPerModificaUI.fxml")); //
-        Scene scene = new Scene(fxmlLoader.load());
-        primaryStage.setScene(scene); //
-        primaryStage.setTitle("Lista Appelli dell'Insegnamento"); //
-        Stage currentStage = (Stage) bottoneConfermaModifiche.getScene().getWindow();
-        currentStage.close();*/
     }
 }

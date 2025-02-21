@@ -46,21 +46,6 @@ public class VisualizzaPrenotazioniAppelloUI implements Initializable {
         visualizzaAppelliPrenotati();
     }
 
-    //CAPIRE A COSA SERVIVA QUESTO DATO CHE IN TEORIA LO STUDENTE CORRENTE è GIà STATO RECUPERATO
-    /*public void setStudente(Studente studente) {
-        this.studente = studente;
-
-    }*/
-
-
-    //FORSE PURE QUA STESSO DISCORSO DEL SETTARE INSEGNAMENTO CORRENTE?? VA FATTO IN INITIALIZE
-   /* public void setInsegnamento(Insegnamento insegnamento) {
-        this.insegnamento = insegnamento;
-        System.out.println("UIListaAppelli: Insegnamento (set): " + insegnamento);
-        visualizzaInformazioniInsegnamento();
-        visualizzaAppelliPrenotati();
-    }*/
-
     @FXML
     private Label nomeInsegnamentoLabel;
 
@@ -92,8 +77,9 @@ public class VisualizzaPrenotazioniAppelloUI implements Initializable {
 
     private void visualizzaAppelliPrenotati() {
         if (studente != null && insegnamento != null) {
-            List<Appello_esame> appelliPrenotati = studente.getAppelli(); // Ottieni tutti gli appelli prenotati dallo studente
-
+            //provare a spostare getAppelli in ems
+            //List<Appello_esame> appelliPrenotati = studente.getAppelli(); // Ottieni tutti gli appelli prenotati dallo studente
+            List<Appello_esame> appelliPrenotati = ems.getAppelli();
             appelliPrenotatiListView.getItems().clear(); // Pulisci la lista
 
             if (appelliPrenotati == null || appelliPrenotati.isEmpty()) {
@@ -104,7 +90,7 @@ public class VisualizzaPrenotazioniAppelloUI implements Initializable {
 
             for (Appello_esame appello : appelliPrenotati) {
                 if (appello.getInsegnamento().equals(insegnamento)) {
-                    Prenotazione prenotazione = ems.getPrenotazioneByStudenteAndAppello(studente, appello);
+                    Prenotazione prenotazione = ems.getPrenotazioneByStudenteAndAppello();
 
                     System.out.println("Appello: " + appello.getID_appello());
                     System.out.println("  Prenotazione recuperata: " + prenotazione); // Stampa l'oggetto Prenotazione
@@ -153,7 +139,7 @@ public class VisualizzaPrenotazioniAppelloUI implements Initializable {
                 return;
             }
 
-            Prenotazione prenotazione = ems.getPrenotazioneByStudenteAndAppello(studente, appello);
+            Prenotazione prenotazione = ems.getPrenotazioneByStudenteAndAppello();
             if (prenotazione == null) {
                 showAlert("Errore", "Nessuna prenotazione trovata per questo appello.");
                 return;

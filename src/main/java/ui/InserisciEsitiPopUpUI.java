@@ -86,7 +86,7 @@ public class InserisciEsitiPopUpUI implements Initializable {
         }
 
         // 5. Recupero prenotazione
-        Prenotazione prenotazione = ems.getPrenotazioneByStudenteAndAppello(studente, appello);
+        Prenotazione prenotazione = ems.getPrenotazioneByStudenteAndAppello();
         if (prenotazione == null) {
             showAlert("Errore", "Lo studente non è prenotato a questo appello.");
             return;

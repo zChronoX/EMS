@@ -69,7 +69,7 @@ public class VisualizzaStudentiPrenotatiUI implements Initializable {
     private void visualizzaStudenti() {
         studentiPrenotatiListView.getItems().clear();
         if (appello != null) {
-            List<Studente> studenti = ems.getStudentiByAppello(appello);
+            List<Studente> studenti = ems.getStudentiByAppello();
 
             if (studenti == null || studenti.isEmpty()) {
                 studentiPrenotatiListView.getItems().add("Non ci sono studenti prenotati a questo appello.");

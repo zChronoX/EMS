@@ -76,7 +76,7 @@ public class UICreaAppello implements Initializable {
 
         if (insegnamenti != null && insegnamenti.containsKey(codice)) {
              insegnamento = insegnamenti.get(codice);
-
+            ems.setInsegnamentoSelezionato(insegnamento);
             //docentiListView.getItems().clear(); capire se serve
             idInsegnamentoTextField.clear(); //capire se serve
             List<Docente> docenti = insegnamento.getDocenti();
@@ -131,94 +131,7 @@ public class UICreaAppello implements Initializable {
         return min + random.nextInt(max - min + 1);
     }
 
-    /*
-    @FXML
-    private void handleConferma(ActionEvent event) {
-        try {
-            if (insegnamento == null) {
-                mostraErrore("Nessun insegnamento selezionato", "Seleziona prima l'insegnamento.");
-                return;
-            }
-
-            int idAppello = generateRandomInt(10);
-            idAppelloTextField.setText(String.valueOf(idAppello));
-
-            LocalTime orario = null;
-            try {
-                orario = LocalTime.parse(orarioTextField.getText());
-            } catch (DateTimeParseException e) {
-                mostraErrore("Formato orario non valido", "Inserisci l'orario nel formato HH:MM.");
-                return;
-            }
-
-            LocalDate data = dataDatePicker.getValue();
-            if (data == null) {
-                mostraErrore("Data non selezionata", "Seleziona una data per l'appello.");
-                return;
-            }
-
-            String luogo = luogoTextField.getText();
-
-            int posti = 0;
-            try {
-                posti = Integer.parseInt(postiTextField.getText());
-                if (posti <= 0) {
-                    throw new NumberFormatException();
-                }
-            } catch (NumberFormatException e) {
-                mostraErrore("Posti non validi", "Inserisci un numero intero positivo per i posti.");
-                return;
-            }
-
-            String tipologia = tipologiaTextField.getText();
-
-            // Controllo aggiuntivo di insegnamento prima dell'uso
-            if (insegnamento == null) {
-                mostraErrore("Errore interno", "L'insegnamento è diventato null durante l'elaborazione.");
-                return;
-            }
-
-            Appello_esame appello = new Appello_esame(String.valueOf(idAppello), orario, data, luogo, posti, tipologia, insegnamento);
-            System.out.println("Appello creato: " + appello); // Stampa l'oggetto appello
-            insegnamento.aggiungiAppello(appello);
-            System.out.println("Appelli dell'insegnamento: " + insegnamento.getExam_list()); // Stampa la lista degli appelli
-
-            // Popup di conferma (simile a onBottoneConferma)
-            Dialog<ButtonType> dialog = new Dialog<>();
-            dialog.setTitle("Riepilogo Informazioni Appello");
-
-            String dati = "ID: " + appello.getID_appello() + "\n" +
-                    "Insegnamento: " + insegnamento.getNome() + "\n" +
-                    "Orario: " + appello.getOrario() + "\n" +
-                    "Data: " + appello.getData() + "\n" +
-                    "Luogo: " + appello.getLuogo() + "\n" +
-                    "Posti: " + appello.getPostiDisponibili() + "\n" +
-                    "Tipologia: " + appello.getTipologia();
-
-            dialog.setContentText(dati);
-            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
-
-            Optional<ButtonType> result = dialog.showAndWait();
-
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                // Usa setOnShown() per gestire la chiusura dello Stage *dopo* che è stato mostrato
-                dialog.setOnShown(e -> {
-                    Stage alertStage = (Stage) dialog.getDialogPane().getScene().getWindow();
-                    if (alertStage != null) {
-                        alertStage.close();
-                    }
-                    ems.stampa_tutti_gli_appelli();
-                });
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace(); // Stampa l'errore sulla console (utile per il debug)
-            mostraErrore("Errore durante la creazione dell'appello", e.getMessage()); // Mostra un messaggio all'utente
-        }
-
-    }
-*/ @FXML
+     @FXML
     private void handleConferma(ActionEvent event) {
         try {
             if (insegnamento == null) {
@@ -260,7 +173,7 @@ public class UICreaAppello implements Initializable {
             String idAppello;
             try {
                 // Creazione dell'appello
-                idAppello = ems.creazioneAppello(insegnamento.getID_insegnamento(), data, orario, luogo, posti, tipologia);
+                idAppello = ems.creazioneAppello(data, orario, luogo, posti, tipologia);
             }catch (IllegalArgumentException e) {
                 // **Conflitto rilevato: Mostra errore
                 mostraErrore("Conflitto di Appello", e.getMessage());

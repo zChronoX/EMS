@@ -49,24 +49,17 @@ public class UIListaAppelli implements Initializable {
 
     @FXML
     private Button confermaPrenotazioneButton;
-
-    /*
-    public void setInsegnamento(Insegnamento insegnamento) {
-        this.insegnamento = insegnamento;
-        System.out.println("UIListaAppelli: Insegnamento (set): " + insegnamento);
-        visualizzaAppelli(); // Visualizza gli appelli subito dopo aver ricevuto l'insegnamento
-    }*/
-
     @FXML
     private ListView<String> appelliListView;
     @FXML
     private Button BottoneIndietroCercaInsegnamento;
 
 
-
     private void visualizzaAppelli() {
         if (insegnamento != null && ems != null && studente != null) {
-            List<Appello_esame> appelli = ems.getAppelliByInsegnamento(insegnamento);
+            //non penso ci sia bisogno di passare l'insegnamento a EMS perché abbiamo fatto la set su insegnamentoSelezionato
+            //List<Appello_esame> appelli = ems.getAppelliByInsegnamento(insegnamento);
+            List<Appello_esame> appelli = ems.getAppelliByInsegnamento(); //recupero gli appelli di un determinato insegnamento
 
             appelliListView.getItems().clear();
 
@@ -76,7 +69,8 @@ public class UIListaAppelli implements Initializable {
                 return;
             }
 
-            List<Appello_esame> appelliPrenotati = studente.getAppelli();
+            //FORSE BISOGNA RICHIAMARE EMS.GETAPPELLI() ???
+            List<Appello_esame> appelliPrenotati = studente.getAppelli(); //recupera gli appelli relativi allo studente corrente per vedere se è già prenotato
 
             for (Appello_esame appello : appelli) {
                 // Verifica se lo studente è già prenotato a questo appello

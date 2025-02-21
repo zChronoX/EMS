@@ -55,7 +55,7 @@ public class UIPrenotazioneAppello implements Initializable {
 */
 @FXML
 private void visualizzaInsegnamenti() {
-    HashMap<String, Insegnamento> insegnamenti = ems.visualizzaInsegnamenti(); // Ottieni la mappa degli insegnamenti
+    HashMap<String, Insegnamento> insegnamenti = ems.getInsegnamenti(); // Ottieni la mappa degli insegnamenti
 
     if (insegnamenti != null) {
         for (Map.Entry<String, Insegnamento> entry : insegnamenti.entrySet()) {

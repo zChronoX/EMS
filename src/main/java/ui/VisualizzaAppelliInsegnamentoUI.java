@@ -52,15 +52,14 @@ public class VisualizzaAppelliInsegnamentoUI implements Initializable {
 
     private void visualizzaAppelli() {
         if (insegnamento != null) {
-            HashMap<String, Appello_esame> exam_list = ems.visualizzaAppelliPerInsegnamento(insegnamento.getID_insegnamento());
+            List<Appello_esame> exam_list = ems.getAppelliByInsegnamento();
 
             if (exam_list == null || exam_list.isEmpty()) {
                 appelliInsegnamentoListView.getItems().add("Non ci sono appelli per questo insegnamento.");
                 return;
             }
 
-            for (Map.Entry<String, Appello_esame> entry : exam_list.entrySet()) {
-                Appello_esame appello = entry.getValue();
+            for (Appello_esame appello : exam_list) {
                 String appelloString = appello.getID_appello() + " - " + appello.getData();
                 appelliInsegnamentoListView.getItems().add(appelloString);
             }

@@ -46,7 +46,7 @@ public class VisualizzaAppelliPerModificaUI implements Initializable {
 
     private void visualizzaAppelli() {
         if (insegnamento != null) { // Usa direttamente 'insegnamento'
-            appelli = ems.getAppelliByInsegnamento(insegnamento);
+            appelli = ems.getAppelliByInsegnamento();
             if (appelli != null && !appelli.isEmpty()) {
                 String appelliFormattati = formattaAppelli(appelli);
                 appelliTextArea.setText(appelliFormattati);

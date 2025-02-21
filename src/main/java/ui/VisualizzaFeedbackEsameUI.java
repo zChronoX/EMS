@@ -44,7 +44,7 @@ public class VisualizzaFeedbackEsameUI implements Initializable {
         System.out.println("Docente: " + docente);
         if (docente != null) {
             String codiceDocente = docente.getCodiceDocente();
-            List<Insegnamento> insegnamenti = ems.mostraInsegnamentiDocente(codiceDocente);
+            List<Insegnamento> insegnamenti = ems.mostraInsegnamentiDocente();
 
             if (insegnamenti == null || insegnamenti.isEmpty()) {
                 insegnamentiDocenteListView.getItems().add("Non hai insegnamenti assegnati.");
