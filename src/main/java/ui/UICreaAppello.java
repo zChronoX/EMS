@@ -181,6 +181,7 @@ public class UICreaAppello implements Initializable {
                 return;
             }
 
+
             // Se l'ID è null, significa che l'appello già esiste, quindi mostriamo un errore
             if (idAppello == null) {
                 mostraErrore("Appello già esistente", "Esiste già un appello con gli stessi dati.");
