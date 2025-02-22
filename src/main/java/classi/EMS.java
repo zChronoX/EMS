@@ -459,17 +459,17 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
         if (docenteCorrente.getCodiceDocente() == null || docenteCorrente.getCodiceDocente().isEmpty()) {
             return insegnamentiDocente; // Restituisce una lista vuota se il codice è nullo o vuoto
         }
-        Docente docente = doc_list.get(docenteCorrente.getCodiceDocente());
-        if (docente == null) {
-            return insegnamentiDocente; // Restituisce lista vuota se il docente non esiste
-        }
+        //Docente docente = doc_list.get(docenteCorrente.getCodiceDocente());
+//        if (docente == null) {
+//            return insegnamentiDocente; // Restituisce lista vuota se il docente non esiste
+//        }
 
         for (Insegnamento insegnamento : this.teaching_list.values()) {
             List<Docente> docentiInsegnamento = insegnamento.getDocenti(); // Si ottiene la lista dei docenti
 
             if (docentiInsegnamento != null) { // caso di lista docenti nulla
                 for (Docente docenteInsegnamento : docentiInsegnamento) {
-                    if (docenteInsegnamento.equals(docente)) { // Confronto direttamente gli oggetti Docente
+                    if (docenteInsegnamento.equals(docenteCorrente)) { // Confronto direttamente gli oggetti Docente
                         insegnamentiDocente.add(insegnamento);
                         break;
                     }
@@ -615,8 +615,8 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
     }
 
 public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, int postiDisponibili, String tipologia) {
-    Insegnamento insegnamento = teaching_list.get(insegnamentoSelezionato.getID_insegnamento());
-    if (insegnamento == null) {
+    //Insegnamento insegnamento = teaching_list.get(insegnamentoSelezionato.getID_insegnamento());
+    if (insegnamentoSelezionato == null) {
         throw new IllegalArgumentException("Insegnamento non trovato.");
     }
 
@@ -646,7 +646,7 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
         }
 
         String ID_appello = "APP-" + (System.currentTimeMillis() % 100000);
-        appelloCorrente = new Appello_esame(ID_appello, Data, Orario, Luogo, postiDisponibili, tipologia, insegnamento);
+        appelloCorrente = new Appello_esame(ID_appello, Data, Orario, Luogo, postiDisponibili, tipologia, insegnamentoSelezionato);
         System.out.println("Appello corrente creato: " + appelloCorrente);
         return ID_appello;
     }
@@ -658,17 +658,19 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
         }
 
         // 1. Get the teaching associated with the current appeal
-        Insegnamento insegnamento = appelloCorrente.getInsegnamento();
 
-        if (insegnamento == null) {
+        //Insegnamento insegnamento = appelloCorrente.getInsegnamento();
+        //provo a usare insegnamentoSelezionato
+
+        if (insegnamentoSelezionato == null) {
             System.out.println("Errore: Insegnamento non trovato.");
             return;
         }
 
         // 2. Use the insegnamento's aggiungiAppello method
-        insegnamento.aggiungiAppello(appelloCorrente);
+        insegnamentoSelezionato.aggiungiAppello(appelloCorrente);
 
-        System.out.println("Appello " + appelloCorrente.getID_appello() + " confermato con successo per l'insegnamento " + insegnamento.getNome() + ".");
+        System.out.println("Appello " + appelloCorrente.getID_appello() + " confermato con successo per l'insegnamento " + insegnamentoSelezionato.getNome() + ".");
     }
 
     public List<Appello_esame> getAppelli(){

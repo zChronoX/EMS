@@ -69,6 +69,8 @@ public class VisualizzaAppelliInsegnamentoUI implements Initializable {
     private void visualizzaStudentiPrenotati() throws IOException {
         String idAppello = idAppelloTextField.getText();
 
+
+
         if (idAppello == null || idAppello.isEmpty()) {
             showAlert("Errore", "Inserisci l'ID dell'appello.");
             return;

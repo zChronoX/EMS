@@ -89,6 +89,7 @@ public class VisualizzaPrenotazioniAppelloUI implements Initializable {
             }
 
             for (Appello_esame appello : appelliPrenotati) {
+                ems.setAppelloCorrente(appello);
                 if (appello.getInsegnamento().equals(insegnamento)) {
                     Prenotazione prenotazione = ems.getPrenotazioneByStudenteAndAppello();
 
