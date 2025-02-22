@@ -127,7 +127,7 @@ public class EMS {
 
     //come fa questa funzione a capire qual è l'utente corrente? penso ci voglia una get
     public void AggiungiInfoStudente(String categoria, int anno_corso) {
-        utenteCorrente = ems.getUtenteCorrente();
+        //utenteCorrente = ems.getUtenteCorrente();
         if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) {
             studenteCorrente = (Studente) utenteCorrente;
             studenteCorrente.setCategoria(categoria);
@@ -221,7 +221,7 @@ public class EMS {
 
     // Metodo per generare le credenziali utente
     public void generaCredenziali() {
-        utenteCorrente = ems.getUtenteCorrente();
+        //utenteCorrente = ems.getUtenteCorrente();
 
         if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) {
             studenteCorrente = (Studente) utenteCorrente;
@@ -620,36 +620,36 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
         throw new IllegalArgumentException("Insegnamento non trovato.");
     }
 
-    // Iterate through ALL teachings
-    for (Insegnamento currentInsegnamento : teaching_list.values()) {
-        // Get the exam list for the CURRENT teaching
-        Map<String, Appello_esame> exam_list = currentInsegnamento.getExam_list();
+        // Iterate through ALL teachings
+        for (Insegnamento currentInsegnamento : teaching_list.values()) {
+            // Get the exam list for the CURRENT teaching
+            Map<String, Appello_esame> exam_list = currentInsegnamento.getExam_list();
 
-        // Check for duplicate appeals within the CURRENT teaching's exam list
-        if (exam_list != null) { // Check if the exam_list is not null
-            for (Appello_esame appelloEsistente : exam_list.values()) {
-                if (appelloEsistente.getData().equals(Data) &&
-                        appelloEsistente.getOrario().equals(Orario) &&
-                        appelloEsistente.getLuogo().equals(Luogo) &&
-                        appelloEsistente.getTipologia().equals(tipologia)) {
+            // Check for duplicate appeals within the CURRENT teaching's exam list
+            if (exam_list != null) { // Check if the exam_list is not null
+                for (Appello_esame appelloEsistente : exam_list.values()) {
+                    if (appelloEsistente.getData().equals(Data) &&
+                            appelloEsistente.getOrario().equals(Orario) &&
+                            appelloEsistente.getLuogo().equals(Luogo) &&
+                            appelloEsistente.getTipologia().equals(tipologia)) {
 
-                    System.out.println("Errore: Esiste già un appello con gli stessi dati per l'insegnamento: " + currentInsegnamento.getNome());
-                    return null;
-                } else if (appelloEsistente.getData().equals(Data) &&
-                        appelloEsistente.getOrario().equals(Orario) &&
-                        appelloEsistente.getLuogo().equals(Luogo)) {
+                        System.out.println("Errore: Esiste già un appello con gli stessi dati per l'insegnamento: " + currentInsegnamento.getNome());
+                        return null;
+                    } else if (appelloEsistente.getData().equals(Data) &&
+                            appelloEsistente.getOrario().equals(Orario) &&
+                            appelloEsistente.getLuogo().equals(Luogo)) {
 
-                    throw new IllegalArgumentException("Esiste già un appello nello stesso luogo, alla stessa data e ora per l'insegnamento: " + currentInsegnamento.getNome());
+                        throw new IllegalArgumentException("Esiste già un appello nello stesso luogo, alla stessa data e ora per l'insegnamento: " + currentInsegnamento.getNome());
+                    }
                 }
             }
         }
-    }
 
-    String ID_appello = "APP-" + (System.currentTimeMillis() % 100000);
-    appelloCorrente = new Appello_esame(ID_appello, Data, Orario, Luogo, postiDisponibili, tipologia, insegnamento);
-    System.out.println("Appello corrente creato: " + appelloCorrente);
-    return ID_appello;
-}
+        String ID_appello = "APP-" + (System.currentTimeMillis() % 100000);
+        appelloCorrente = new Appello_esame(ID_appello, Data, Orario, Luogo, postiDisponibili, tipologia, insegnamento);
+        System.out.println("Appello corrente creato: " + appelloCorrente);
+        return ID_appello;
+    }
 
     public void confermaAppello() {
         if (appelloCorrente == null) {
