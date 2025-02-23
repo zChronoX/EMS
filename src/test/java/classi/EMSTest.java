@@ -811,7 +811,7 @@ class EMSTest {
             ems.prenotaAppello(appello); // Prenota l'appello
 
             // 2. Esecuzione: Cancella la prenotazione
-            ems.cancellaPrenotazione(studente, appello);
+            ems.cancellaPrenotazione(appello);
 
             // 3. Asserzioni: Verifica che la prenotazione sia stata cancellata
             assertFalse(appello.getStudenti().contains(studente)); // Studente non più presente nella lista dell'appello

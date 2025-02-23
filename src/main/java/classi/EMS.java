@@ -479,22 +479,22 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
         return insegnamentiDocente;
     }
 
-    public void cancellaPrenotazione(Studente studente, Appello_esame appello) throws Exception {
-        if (studente == null || appello == null) {
+    public void cancellaPrenotazione(Appello_esame appello) throws Exception {
+        if (studenteCorrente == null || appello == null) {
             throw new Exception("Studente o appello non validi.");
         }
 
-        if (!appello.getStudenti().contains(studente)) {
+        if (!appello.getStudenti().contains(studenteCorrente)) {
             throw new Exception("Studente non prenotato a questo appello.");
         }
 
-        appello.removeStudente(studente); // Implementa questo metodo in Appello_esame
-        studente.removeAppello(appello); // Implementa questo metodo in Studente
+        appello.removeStudente(studenteCorrente); // Implementa questo metodo in Appello_esame
+        studenteCorrente.removeAppello(appello); // Implementa questo metodo in Studente
 
         // Incrementa i posti disponibili
         appello.setPostiDisponibili(appello.getPostiDisponibili() + 1);
 
-        System.out.println("Prenotazione cancellata con successo per " + studente.getNome() + " all'appello " + appello.getID_appello());
+        System.out.println("Prenotazione cancellata con successo per " + studenteCorrente.getNome() + " all'appello " + appello.getID_appello());
     }
 
 
