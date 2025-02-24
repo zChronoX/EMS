@@ -191,7 +191,7 @@ public class VisualizzaPrenotazioniAppelloUI implements Initializable {
                 return;
             }
 
-            ems.cancellaPrenotazione(studente, appelloDaCancellare);
+            ems.cancellaPrenotazione(appelloDaCancellare);
             showAlert("Successo", "Prenotazione cancellata con successo.");
 
             visualizzaAppelliPrenotati(); // Aggiorna la lista

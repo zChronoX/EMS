@@ -78,15 +78,18 @@ public class VisualizzaAppelliPerFeedbackUI implements Initializable {
             return;
         }
 
+        ems.setAppelloCorrente(appello);
+
         if(feedbackListView.getItems() != null || !feedbackListView.getItems().isEmpty()){
             feedbackListView.getItems().clear();
         }
 
-        feedbacks=appello.getFeedbacks();
+        feedbacks=ems.getFeedback();
+//        feedbacks=appello.getFeedbacks();
         if (feedbacks.isEmpty()) {
             feedbackListView.getItems().add("Non ci sono feedback per questo appello");
         } else {
-
+//
             for (String feedback : feedbacks) {
                 feedbackListView.getItems().add(feedback);
             }

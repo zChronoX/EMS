@@ -811,7 +811,7 @@ class EMSTest {
             ems.prenotaAppello(appello); // Prenota l'appello
 
             // 2. Esecuzione: Cancella la prenotazione
-            ems.cancellaPrenotazione(studente, appello);
+            ems.cancellaPrenotazione(appello);
 
             // 3. Asserzioni: Verifica che la prenotazione sia stata cancellata
             assertFalse(appello.getStudenti().contains(studente)); // Studente non più presente nella lista dell'appello
@@ -1314,7 +1314,7 @@ class EMSTest {
             ems.prenotaAppello(appello2);
 
             // 2. Execution: Get non-reviewed reservations
-            HashMap<String, Prenotazione> prenotazioni = ems.getPrenotazioniNonRecensiteByStudente(studente);
+            HashMap<String, Prenotazione> prenotazioni = ems.getPrenotazioniNonRecensiteByStudente();
 
             // 3. Assertions: Verify that the correct reservations are returned
             assertEquals(2, prenotazioni.size());
