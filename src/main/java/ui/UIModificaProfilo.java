@@ -59,78 +59,125 @@ public class UIModificaProfilo implements Initializable {
 
 
 
-    @FXML
-    private void modificaProfilo(){
-        String residenza=CasellaResidenza.getText();
-        String email=CasellaEmail.getText();
-        String telefono=CasellaTelefono.getText();
+//    @FXML
+//    private void modificaProfilo(){
+//        String residenza=CasellaResidenza.getText();
+//        String email=CasellaEmail.getText();
+//        String telefono=CasellaTelefono.getText();
+//
+//        tipoProfilo=utente.getTipoProfilo();
+//
+//        // Controlli sui campi
+//        if (residenza.isEmpty() || email.isEmpty() || telefono.isEmpty()) {
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setTitle("Errore");
+//            alert.setHeaderText("Campi mancanti");
+//            alert.setContentText("Compila tutti i campi.");
+//            alert.showAndWait();
+//            return;
+//        }
+//
+//        if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setTitle("Errore");
+//            alert.setHeaderText("Email non valida");
+//            alert.setContentText("Inserisci un'email valida.");
+//            alert.showAndWait();
+//            return;
+//        }
+//
+//        if (!telefono.matches("^\\d{10}$")) {
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setTitle("Errore");
+//            alert.setHeaderText("Telefono non valido");
+//            alert.setContentText("Inserisci un numero di telefono valido (10 cifre).");
+//            alert.showAndWait();
+//            return;
+//        }
+//
+//
+//        if(tipoProfilo.equals(Utente.TipoProfilo.Studente)){
+//            //VOGLIO MODIFICARE UNO STUDENTE
+//            studente=ems.getStudenteCorrente();
+//
+//            //SCORRO LISTA STUDENTI GRAZIE ALLA MATRICOLA E MI FERMO QUANDO L'HO TROVATA
+//            String matricola=studente.getMatricola();
+//            for (Studente studente : student_list.values()) {
+//                if (matricola.equals(studente.getMatricola())) {
+//                    studente.setResidenza(residenza);
+//                    studente.setEmail(email);
+//                    studente.setTelefono(telefono);
+//                    break;
+//                }
+//            }
+//            ems.stampa_studenti();
+//        }else{
+//            //VOGLIO MODIFICARE UN DOCENTE
+//            docente=ems.getDocenteCorrente();
+//
+//            String codice_docente=docente.getCodiceDocente();
+//            for (Docente docente : doc_list.values()) {
+//                if (codice_docente.equals(docente.getCodiceDocente())) {
+//                    docente.setResidenza(residenza);
+//                    docente.setEmail(email);
+//                    docente.setTelefono(telefono);
+//                    break;
+//                }
+//            }
+//            ems.stampa_docenti();
+//        }
+//        // Alert di conferma
+//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//        alert.setTitle("Successo");
+//        alert.setHeaderText("Modifica completata");
+//        alert.setContentText("La modifica dei campi è andata a buon fine.");
+//        alert.showAndWait();
+//    }
 
-        tipoProfilo=utente.getTipoProfilo();
+    @FXML
+    private void modificaProfilo() {
+        String residenza = CasellaResidenza.getText();
+        String email = CasellaEmail.getText();
+        String telefono = CasellaTelefono.getText();
+
+        tipoProfilo = utente.getTipoProfilo();
 
         // Controlli sui campi
         if (residenza.isEmpty() || email.isEmpty() || telefono.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Errore");
-            alert.setHeaderText("Campi mancanti");
-            alert.setContentText("Compila tutti i campi.");
-            alert.showAndWait();
+            mostraErrore("Campi mancanti", "Compila tutti i campi.");
             return;
         }
 
         if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Errore");
-            alert.setHeaderText("Email non valida");
-            alert.setContentText("Inserisci un'email valida.");
-            alert.showAndWait();
+            mostraErrore("Email non valida", "Inserisci un'email valida.");
             return;
         }
 
         if (!telefono.matches("^\\d{10}$")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Errore");
-            alert.setHeaderText("Telefono non valido");
-            alert.setContentText("Inserisci un numero di telefono valido (10 cifre).");
-            alert.showAndWait();
+            mostraErrore("Telefono non valido", "Inserisci un numero di telefono valido (10 cifre).");
             return;
         }
 
+        // Chiamata a EMS per modificare il profilo
+        ems.modificaProfilo(utente, residenza, email, telefono);
 
-        if(tipoProfilo.equals(Utente.TipoProfilo.Studente)){
-            //VOGLIO MODIFICARE UNO STUDENTE
-            studente=ems.getStudenteCorrente();
-
-            //SCORRO LISTA STUDENTI GRAZIE ALLA MATRICOLA E MI FERMO QUANDO L'HO TROVATA
-            String matricola=studente.getMatricola();
-            for (Studente studente : student_list.values()) {
-                if (matricola.equals(studente.getMatricola())) {
-                    studente.setResidenza(residenza);
-                    studente.setEmail(email);
-                    studente.setTelefono(telefono);
-                    break;
-                }
-            }
-            ems.stampa_studenti();
-        }else{
-            //VOGLIO MODIFICARE UN DOCENTE
-            docente=ems.getDocenteCorrente();
-
-            String codice_docente=docente.getCodiceDocente();
-            for (Docente docente : doc_list.values()) {
-                if (codice_docente.equals(docente.getCodiceDocente())) {
-                    docente.setResidenza(residenza);
-                    docente.setEmail(email);
-                    docente.setTelefono(telefono);
-                    break;
-                }
-            }
-            ems.stampa_docenti();
-        }
         // Alert di conferma
+        mostraMessaggio("Modifica completata", "La modifica dei campi è andata a buon fine.");
+    }
+
+    private void mostraErrore(String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Errore");
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void mostraMessaggio(String header, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Successo");
-        alert.setHeaderText("Modifica completata");
-        alert.setContentText("La modifica dei campi è andata a buon fine.");
+        alert.setHeaderText(header);
+        alert.setContentText(content);
         alert.showAndWait();
     }
 

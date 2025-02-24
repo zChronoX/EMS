@@ -3,49 +3,31 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="470.0" prefWidth="600.0" spacing="10"
-      xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="ui.UIStudente">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="600.0" spacing="10" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.UIStudente">
    <children>
       <!-- Contenitore per le label posizionato in alto a sinistra -->
       <VBox alignment="TOP_LEFT" spacing="5">
-         <Label fx:id="nomeLabel" text="Nome" style="-fx-font-size: 14px;"/>
-         <Label fx:id="cognomeLabel" text="Cognome" style="-fx-font-size: 14px;"/>
-         <Label fx:id="matricolaLabel" text="Matricola" style="-fx-font-size: 14px;"/>
+         <Label fx:id="nomeLabel" style="-fx-font-size: 14px;" text="Nome" />
+         <Label fx:id="cognomeLabel" style="-fx-font-size: 14px;" text="Cognome" />
+         <Label fx:id="matricolaLabel" style="-fx-font-size: 14px;" text="Matricola" />
       </VBox>
 
       <!-- Spazio tra le label e i bottoni -->
-      <Pane prefHeight="20"/>
+      <Pane prefHeight="20" />
 
       <!-- Bottoni centrati -->
       <VBox alignment="CENTER" spacing="8">
-         <Button fx:id="BottonePrenotazioneStudente" mnemonicParsing="false"
-                 onAction="#ApriPrenotazioneStudente" text="Prenotazione appello"
-                 prefWidth="250" prefHeight="35"/>
+         <Button fx:id="BottonePrenotazioneStudente" mnemonicParsing="false" onAction="#ApriPrenotazioneStudente" prefHeight="35" prefWidth="250" text="Prenotazione appello" />
 
-         <Button fx:id="BottoneVisualizzaCarriera" mnemonicParsing="false"
-                 onAction="#ApriCarrieraStudente" text="Visualizza carriera universitaria"
-                 prefWidth="250" prefHeight="35"/>
+         <Button fx:id="BottoneVisualizzaCarriera" mnemonicParsing="false" onAction="#ApriCarrieraStudente" prefHeight="35" prefWidth="250" text="Visualizza carriera universitaria" />
 
-         <Button fx:id="BottoneAnnullaPrenotazione" mnemonicParsing="false"
-                 text="Annulla prenotazione appello" prefWidth="250" prefHeight="35"/>
+         <Button fx:id="BottoneVisualizzaInfoEsame" mnemonicParsing="false" onAction="#ApriVisualizzaInfoEsame" prefHeight="35" prefWidth="250" text="Visualizza informazioni esame" />
 
-         <Button fx:id="BottoneVisualizzaInfoEsame" mnemonicParsing="false"
-                 onAction="#ApriVisualizzaInfoEsame" text="Visualizza informazioni esame"
-                 prefWidth="250" prefHeight="35"/>
+         <Button fx:id="BottoneInviaFeedback" mnemonicParsing="false" onAction="#ApriInviaFeedback" prefHeight="35" prefWidth="250" text="Invia feedback esame" />
 
-         <Button fx:id="BottoneInviaFeedback" mnemonicParsing="false"
-                 text="Invia feedback esame" onAction="#ApriInviaFeedback"
-                 prefWidth="250" prefHeight="35"/>
+         <Button fx:id="BottoneModificaProfilo" mnemonicParsing="false" onAction="#ApriModificaProfilo" prefHeight="35" prefWidth="250" text="Modifica profilo" />
 
-         <Button fx:id="BottoneModificaProfilo" mnemonicParsing="false"
-                 onAction="#ApriModificaProfilo" text="Modifica profilo"
-                 prefWidth="250" prefHeight="35"/>
-
-         <Button fx:id="BottoneLogoutStudente" mnemonicParsing="false"
-                 onAction="#LogoutStudente" text="Logout" prefWidth="250" prefHeight="35"/>
+         <Button fx:id="BottoneLogoutStudente" mnemonicParsing="false" onAction="#LogoutStudente" prefHeight="35" prefWidth="250" text="Logout" />
       </VBox>
    </children>
 </VBox>
-

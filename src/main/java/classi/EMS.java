@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.nio.file.Paths;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 
@@ -785,5 +786,56 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
         appelloCorrente.setData(data);
         appelloCorrente.setOrario(orario);
         appelloCorrente.setLuogo(luogo);
+    }
+
+    public boolean isTroppoTardiPerCancellare(Appello_esame appello) {
+        if (appello == null || appello.getData() == null) {
+            return true; // Gestisce il caso in cui l'appello o la data sono null
+        }
+
+        LocalDate dataAppello = appello.getData(); // Ottiene la data come LocalDate
+        LocalDate oggi = LocalDate.now();
+
+        // ChronoUnit per calcolare la differenza in giorni
+        long giorniDiDifferenza = ChronoUnit.DAYS.between(oggi, dataAppello);
+
+        return giorniDiDifferenza < 3; // Restituisce true se mancano meno di 3 giorni
+    }
+
+    public boolean haRicevutoEsito(Appello_esame appello, Studente studente) {
+        for (Prenotazione prenotazione : reservation_list.values()) {
+            if (prenotazione.getAppello().equals(appello) && prenotazione.getStudente().equals(studente)) {
+                return prenotazione.getEsito() != null; // Restituisce true se l'esito è presente
+            }
+        }
+        return false; // Nessuna prenotazione trovata per questo studente e appello
+    }
+
+    public void modificaProfilo(Utente utente, String residenza, String email, String telefono) {
+        if (utente instanceof Studente) {
+            Studente studente = (Studente) utente;
+            String matricola = studente.getMatricola();
+            for (Studente s : student_list.values()) {
+                if (matricola.equals(s.getMatricola())) {
+                    s.setResidenza(residenza);
+                    s.setEmail(email);
+                    s.setTelefono(telefono);
+                    break;
+                }
+            }
+            ems.stampa_studenti();
+        } else if (utente instanceof Docente) {
+            Docente docente = (Docente) utente;
+            String codiceDocente = docente.getCodiceDocente();
+            for (Docente d : doc_list.values()) {
+                if (codiceDocente.equals(d.getCodiceDocente())) {
+                    d.setResidenza(residenza);
+                    d.setEmail(email);
+                    d.setTelefono(telefono);
+                    break;
+                }
+            }
+        }
+        ems.stampa_docenti();
     }
 }

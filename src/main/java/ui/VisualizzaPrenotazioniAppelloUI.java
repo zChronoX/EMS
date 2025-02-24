@@ -180,13 +180,13 @@ public class VisualizzaPrenotazioniAppelloUI implements Initializable {
                 return;
             }
 
-            if (haRicevutoEsito(appelloDaCancellare, studente)) {
+            if (ems.haRicevutoEsito(appelloDaCancellare, studente)) {
                 showAlert("Errore", "Non puoi cancellare la prenotazione perché hai già ricevuto un esito per questo appello.");
                 return;
             }
 
             // Controllo sulla data
-            if (isTroppoTardiPerCancellare(appelloDaCancellare)) {
+            if (ems.isTroppoTardiPerCancellare(appelloDaCancellare)) {
                 showAlert("Errore", "Non puoi cancellare la prenotazione a meno di 3 giorni dalla data dell'appello.");
                 return;
             }
@@ -201,28 +201,28 @@ public class VisualizzaPrenotazioniAppelloUI implements Initializable {
         }
     }
 
-    private boolean isTroppoTardiPerCancellare(Appello_esame appello) {
-        if (appello == null || appello.getData() == null) {
-            return true; // Gestisce il caso in cui l'appello o la data sono null
-        }
-
-        LocalDate dataAppello = appello.getData(); // Ottiene la data come LocalDate
-        LocalDate oggi = LocalDate.now();
-
-        // ChronoUnit per calcolare la differenza in giorni
-        long giorniDiDifferenza = ChronoUnit.DAYS.between(oggi, dataAppello);
-
-        return giorniDiDifferenza < 3; // Restituisce true se mancano meno di 3 giorni
-    }
-
-    private boolean haRicevutoEsito(Appello_esame appello, Studente studente) {
-        for (Prenotazione prenotazione : ems.getReservation_list().values()) {
-            if (prenotazione.getAppello().equals(appello) && prenotazione.getStudente().equals(studente)) {
-                return prenotazione.getEsito() != null; // Restituisce true se l'esito è presente
-            }
-        }
-        return false; // Nessuna prenotazione trovata per questo studente e appello
-    }
+//    private boolean isTroppoTardiPerCancellare(Appello_esame appello) {
+//        if (appello == null || appello.getData() == null) {
+//            return true; // Gestisce il caso in cui l'appello o la data sono null
+//        }
+//
+//        LocalDate dataAppello = appello.getData(); // Ottiene la data come LocalDate
+//        LocalDate oggi = LocalDate.now();
+//
+//        // ChronoUnit per calcolare la differenza in giorni
+//        long giorniDiDifferenza = ChronoUnit.DAYS.between(oggi, dataAppello);
+//
+//        return giorniDiDifferenza < 3; // Restituisce true se mancano meno di 3 giorni
+//    }
+//
+//    private boolean haRicevutoEsito(Appello_esame appello, Studente studente) {
+//        for (Prenotazione prenotazione : ems.getReservation_list().values()) {
+//            if (prenotazione.getAppello().equals(appello) && prenotazione.getStudente().equals(studente)) {
+//                return prenotazione.getEsito() != null; // Restituisce true se l'esito è presente
+//            }
+//        }
+//        return false; // Nessuna prenotazione trovata per questo studente e appello
+//    }
 
 
     @FXML
