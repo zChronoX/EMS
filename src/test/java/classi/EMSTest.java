@@ -1314,7 +1314,7 @@ class EMSTest {
             ems.prenotaAppello(appello2);
 
             // 2. Execution: Get non-reviewed reservations
-            HashMap<String, Prenotazione> prenotazioni = ems.getPrenotazioniNonRecensiteByStudente(studente);
+            HashMap<String, Prenotazione> prenotazioni = ems.getPrenotazioniNonRecensiteByStudente();
 
             // 3. Assertions: Verify that the correct reservations are returned
             assertEquals(2, prenotazioni.size());

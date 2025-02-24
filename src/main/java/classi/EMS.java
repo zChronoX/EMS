@@ -15,6 +15,7 @@ public class EMS {
     private Studente studenteCorrente;
     private Docente docenteCorrente;
     private Appello_esame appelloCorrente;
+    private Prenotazione prenotazioneCorrente;
     private HashMap<String, Studente> student_list;
     private HashMap<String, Docente> doc_list;
     private HashMap<String, Insegnamento> teaching_list;
@@ -22,7 +23,7 @@ public class EMS {
     public static final int POSTI_MAX = 500;
     //private HashMap<String,Appello_esame> exam_list;
     private Insegnamento insegnamentoSelezionato;
-    //private Appello_esame appelloSelezionato;
+    HashMap<String, Prenotazione> prenotazioniStudente = new HashMap<>(); //prenotazioni senza recensioni
 
     private HashMap<String, Prenotazione> reservation_list;
    // private List<Esito_esame> result_list = new ArrayList<>();
@@ -733,12 +734,12 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
         return flag; // Non esiste alcun appello con gli stessi dati in nessun insegnamento
     }
 
-    public HashMap<String, Prenotazione> getPrenotazioniNonRecensiteByStudente(Studente studente) {
-    HashMap<String, Prenotazione> prenotazioniStudente = new HashMap<>();
+    public HashMap<String, Prenotazione> getPrenotazioniNonRecensiteByStudente() {
+
         for (HashMap.Entry<String, Prenotazione> entry : reservation_list.entrySet()) { // Usa entrySet() anche qui
             Prenotazione p = entry.getValue();
 
-            if (p.getStudente().equals(studente) && !p.getRecensito() ) { //controllo attributo recensito=falso
+            if (p.getStudente().equals(studenteCorrente) && !p.getRecensito() ) { //controllo attributo recensito=falso
                 prenotazioniStudente.put(p.getID_prenotazione(), p);
             }
         }
@@ -785,5 +786,32 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
         appelloCorrente.setData(data);
         appelloCorrente.setOrario(orario);
         appelloCorrente.setLuogo(luogo);
+    }
+
+    public void setPrenotazioneCorrente(Prenotazione prenotazione) {
+        this.prenotazioneCorrente = prenotazione;
+    }
+
+    public void aggiungiFeedback(Optional<String> feedback) {
+        prenotazioniStudente.remove(prenotazioneCorrente.getID_prenotazione());
+        Appello_esame appello=prenotazioneCorrente.getAppello();
+//
+            appello.addFeedback(feedback.get()); //aggiungi il feedback alla lista dei feedback dell'appello
+            prenotazioneCorrente.setRecensito(true);
+            System.out.println("Appello: "+ appello.getID_appello() + "Feedback: " + appello.getFeedbacks());
+//            visualizzaPrenotazioni();
+    }
+
+    public List<String> getFeedback() {
+        List<String> feedbacks=appelloCorrente.getFeedbacks();
+        return feedbacks;
+//        if (feedbacks.isEmpty()) {
+//            feedbackListView.getItems().add("Non ci sono feedback per questo appello");
+//        } else {
+//
+//            for (String feedback : feedbacks) {
+//                feedbackListView.getItems().add(feedback);
+//            }
+//        }
     }
 }

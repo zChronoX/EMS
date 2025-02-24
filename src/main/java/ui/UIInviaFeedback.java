@@ -39,7 +39,7 @@ public class UIInviaFeedback implements Initializable {
         ems = EMS.getInstance();
         studente=ems.getStudenteCorrente();
         //prenotazioniSenzaRecensioni = ems.getReservation_list();
-        prenotazioniSenzaRecensioni=new HashMap<String, Prenotazione>(ems.getPrenotazioniNonRecensiteByStudente(studente));
+        prenotazioniSenzaRecensioni=new HashMap<String, Prenotazione>(ems.getPrenotazioniNonRecensiteByStudente());
         visualizzaPrenotazioni();
     }
 
@@ -82,6 +82,7 @@ public class UIInviaFeedback implements Initializable {
 
             // ... (aggiungi qui la logica per inviare il feedback)
 
+            ems.setPrenotazioneCorrente(prenotazione);
             apriPopupFeedback();
 
 
@@ -107,12 +108,14 @@ public class UIInviaFeedback implements Initializable {
 
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
-            prenotazioniSenzaRecensioni.remove(prenotazione.getID_prenotazione());
-            Appello_esame appello=prenotazione.getAppello();
-           // List<String> recensioni=appello.getFeedbacks();
-            appello.addFeedback(result.get()); //aggiungi il feedback alla lista dei feedback dell'appello
-            prenotazione.setRecensito(true);
-            System.out.println("Appello: "+ appello.getID_appello() + "Feedback: " + appello.getFeedbacks());
+            ems.aggiungiFeedback(result);
+//            prenotazioniSenzaRecensioni.remove(prenotazione.getID_prenotazione());
+//            Appello_esame appello=prenotazione.getAppello();
+//
+//            appello.addFeedback(result.get()); //aggiungi il feedback alla lista dei feedback dell'appello
+//            prenotazione.setRecensito(true);
+//            System.out.println("Appello: "+ appello.getID_appello() + "Feedback: " + appello.getFeedbacks());
+            prenotazioniSenzaRecensioni=ems.getPrenotazioniNonRecensiteByStudente(); //si richiama per visualizzare a schermo la lista delle prenotazioni senza recensione
             visualizzaPrenotazioni();
         }
     }
