@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.nio.file.Paths;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 
@@ -15,6 +16,7 @@ public class EMS {
     private Studente studenteCorrente;
     private Docente docenteCorrente;
     private Appello_esame appelloCorrente;
+    private Prenotazione prenotazioneCorrente;
     private HashMap<String, Studente> student_list;
     private HashMap<String, Docente> doc_list;
     private HashMap<String, Insegnamento> teaching_list;
@@ -22,7 +24,7 @@ public class EMS {
     public static final int POSTI_MAX = 500;
     //private HashMap<String,Appello_esame> exam_list;
     private Insegnamento insegnamentoSelezionato;
-    //private Appello_esame appelloSelezionato;
+    HashMap<String, Prenotazione> prenotazioniStudente = new HashMap<>(); //prenotazioni senza recensioni
 
     private HashMap<String, Prenotazione> reservation_list;
    // private List<Esito_esame> result_list = new ArrayList<>();
@@ -479,22 +481,22 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
         return insegnamentiDocente;
     }
 
-    public void cancellaPrenotazione(Studente studente, Appello_esame appello) throws Exception {
-        if (studente == null || appello == null) {
+    public void cancellaPrenotazione(Appello_esame appello) throws Exception {
+        if (studenteCorrente == null || appello == null) {
             throw new Exception("Studente o appello non validi.");
         }
 
-        if (!appello.getStudenti().contains(studente)) {
+        if (!appello.getStudenti().contains(studenteCorrente)) {
             throw new Exception("Studente non prenotato a questo appello.");
         }
 
-        appello.removeStudente(studente); // Implementa questo metodo in Appello_esame
-        studente.removeAppello(appello); // Implementa questo metodo in Studente
+        appello.removeStudente(studenteCorrente); // Implementa questo metodo in Appello_esame
+        studenteCorrente.removeAppello(appello); // Implementa questo metodo in Studente
 
         // Incrementa i posti disponibili
         appello.setPostiDisponibili(appello.getPostiDisponibili() + 1);
 
-        System.out.println("Prenotazione cancellata con successo per " + studente.getNome() + " all'appello " + appello.getID_appello());
+        System.out.println("Prenotazione cancellata con successo per " + studenteCorrente.getNome() + " all'appello " + appello.getID_appello());
     }
 
 
@@ -733,12 +735,12 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
         return flag; // Non esiste alcun appello con gli stessi dati in nessun insegnamento
     }
 
-    public HashMap<String, Prenotazione> getPrenotazioniNonRecensiteByStudente(Studente studente) {
-    HashMap<String, Prenotazione> prenotazioniStudente = new HashMap<>();
+    public HashMap<String, Prenotazione> getPrenotazioniNonRecensiteByStudente() {
+
         for (HashMap.Entry<String, Prenotazione> entry : reservation_list.entrySet()) { // Usa entrySet() anche qui
             Prenotazione p = entry.getValue();
 
-            if (p.getStudente().equals(studente) && !p.getRecensito() ) { //controllo attributo recensito=falso
+            if (p.getStudente().equals(studenteCorrente) && !p.getRecensito() ) { //controllo attributo recensito=falso
                 prenotazioniStudente.put(p.getID_prenotazione(), p);
             }
         }
@@ -787,6 +789,33 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
         appelloCorrente.setLuogo(luogo);
     }
 
+    public void setPrenotazioneCorrente(Prenotazione prenotazione) {
+        this.prenotazioneCorrente = prenotazione;
+    }
+
+    public void aggiungiFeedback(Optional<String> feedback) {
+        prenotazioniStudente.remove(prenotazioneCorrente.getID_prenotazione());
+        Appello_esame appello=prenotazioneCorrente.getAppello();
+//
+            appello.addFeedback(feedback.get()); //aggiungi il feedback alla lista dei feedback dell'appello
+            prenotazioneCorrente.setRecensito(true);
+            System.out.println("Appello: "+ appello.getID_appello() + "Feedback: " + appello.getFeedbacks());
+//            visualizzaPrenotazioni();
+    }
+
+    public List<String> getFeedback() {
+        List<String> feedbacks=appelloCorrente.getFeedbacks();
+        return feedbacks;
+//        if (feedbacks.isEmpty()) {
+//            feedbackListView.getItems().add("Non ci sono feedback per questo appello");
+//        } else {
+//
+//            for (String feedback : feedbacks) {
+//                feedbackListView.getItems().add(feedback);
+//            }
+//        }
+    }
+
     public void modificaProfilo(Utente utente, String residenza, String email, String telefono) {
         if (utente instanceof Studente) {
             Studente studente = (Studente) utente;
@@ -813,5 +842,28 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
             }
         }
         ems.stampa_studenti();
+    }
+
+    public boolean isTroppoTardiPerCancellare(Appello_esame appello) {
+        if (appello == null || appello.getData() == null) {
+            return true; // Gestisce il caso in cui l'appello o la data sono null
+        }
+
+        LocalDate dataAppello = appello.getData(); // Ottiene la data come LocalDate
+        LocalDate oggi = LocalDate.now();
+
+        // ChronoUnit per calcolare la differenza in giorni
+        long giorniDiDifferenza = ChronoUnit.DAYS.between(oggi, dataAppello);
+
+        return giorniDiDifferenza < 3; // Restituisce true se mancano meno di 3 giorni
+    }
+
+    public boolean haRicevutoEsito(Appello_esame appello, Studente studente) {
+        for (Prenotazione prenotazione : reservation_list.values()) {
+            if (prenotazione.getAppello().equals(appello) && prenotazione.getStudente().equals(studente)) {
+                return prenotazione.getEsito() != null; // Restituisce true se l'esito è presente
+            }
+        }
+        return false; // Nessuna prenotazione trovata per questo studente e appello
     }
 }
