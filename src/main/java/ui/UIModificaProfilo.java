@@ -159,7 +159,7 @@ public class UIModificaProfilo implements Initializable {
         }
 
         // Chiamata a EMS per modificare il profilo
-        ems.modificaProfilo(utente, residenza, email, telefono);
+        ems.modificaProfilo(residenza, email, telefono);
 
         // Alert di conferma
         mostraMessaggio("Modifica completata", "La modifica dei campi è andata a buon fine.");

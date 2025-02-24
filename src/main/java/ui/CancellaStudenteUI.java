@@ -22,6 +22,10 @@ public class CancellaStudenteUI implements Initializable {
 
     private EMS ems;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ems=EMS.getInstance();
+    }
 
     @FXML
     private TextField matricolaField;
@@ -52,7 +56,7 @@ public class CancellaStudenteUI implements Initializable {
     @FXML
     public void cancellaStudente() throws IOException {
         String matricola = matricolaField.getText();
-        String password = passwordField.getText();
+        //String password = passwordField.getText();
 
         try {
             Studente studente = ems.getStudenti().get(matricola); // Ottieni lo studente dalla mappa
@@ -61,11 +65,11 @@ public class CancellaStudenteUI implements Initializable {
                 mostraMessaggio("Errore", "Studente non trovato.");
                 return;
             }
-
-            if (!studente.getPassword().equals(password)) {
-                mostraMessaggio("Errore", "Password errata.");
-                return;
-            }
+            //se togliamo la password si può levare
+//            if (!studente.getPassword().equals(password)) {
+//                mostraMessaggio("Errore", "Password errata.");
+//                return;
+//            }
 
             // Mostra popup di conferma
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -92,7 +96,8 @@ public class CancellaStudenteUI implements Initializable {
             alert.showAndWait().ifPresent(response -> {
                 if (response == buttonTypeSi) {
                     try {
-                        ems.cancellaStudente(matricola, password);
+                        //ems.cancellaStudente(matricola, password);
+                        ems.cancellaStudente(matricola);
                         mostraMessaggio("Successo", "Studente cancellato con successo.");
                         // Puoi anche chiudere la finestra o resettare i campi qui
                     } catch (Exception e) {
@@ -114,8 +119,5 @@ public class CancellaStudenteUI implements Initializable {
         alert.showAndWait();
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        ems=EMS.getInstance();
-    }
+
 }

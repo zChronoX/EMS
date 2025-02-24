@@ -624,7 +624,7 @@ class EMSTest {
             ems.getStudenti().put("12345", studente);
 
             // 2. Execution: Call the function
-            boolean result = ems.cancellaStudente("12345", "password123");
+            boolean result = ems.cancellaStudente("12345");
 
             // 3. Assertions: Verify the student is removed and the function returns true
             assertTrue(result);

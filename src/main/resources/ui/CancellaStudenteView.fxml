@@ -7,8 +7,8 @@
     <children>
         <Label text="Matricola" />
         <TextField fx:id="matricolaField" />
-        <Label text="Password" />
-        <TextField fx:id="passwordField" />
+<!--        <Label text="Password" />-->
+<!--        <TextField fx:id="passwordField" />-->
         <Button fx:id="cancellaButton" mnemonicParsing="false" onAction="#cancellaStudente" text="Conferma" />
         <Button fx:id="BottoneIndietroWelcomeView" mnemonicParsing="false" onAction="#IndietroWelcomeView" text="Indietro" />
     </children>

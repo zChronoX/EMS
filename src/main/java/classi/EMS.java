@@ -341,16 +341,29 @@ public class EMS {
         return student_list;
     }
 
-    public boolean cancellaStudente(String matricola, String password) throws Exception {
+//    public boolean cancellaStudente(String matricola, String password) throws Exception {
+//        Studente studente = student_list.get(matricola);
+//
+//        if (studente == null) {
+//            throw new Exception("Studente non presente nel registro.");
+//        }
+//
+//        if (!studente.getPassword().equals(password)) {
+//            throw new Exception("Password errata.");
+//        }
+//
+//        student_list.remove(matricola); // Rimozione dalla mappa
+//        return true;
+//    }
+
+    public boolean cancellaStudente(String matricola) throws Exception {
         Studente studente = student_list.get(matricola);
 
         if (studente == null) {
             throw new Exception("Studente non presente nel registro.");
         }
 
-        if (!studente.getPassword().equals(password)) {
-            throw new Exception("Password errata.");
-        }
+
 
         student_list.remove(matricola); // Rimozione dalla mappa
         return true;
@@ -816,9 +829,9 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
 //        }
     }
 
-    public void modificaProfilo(Utente utente, String residenza, String email, String telefono) {
-        if (utente instanceof Studente) {
-            Studente studente = (Studente) utente;
+    public void modificaProfilo(String residenza, String email, String telefono) {
+        if (utenteCorrente instanceof Studente) {
+            Studente studente = (Studente) utenteCorrente;
             String matricola = studente.getMatricola();
             for (Studente s : student_list.values()) {
                 if (matricola.equals(s.getMatricola())) {
@@ -829,8 +842,8 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
                 }
             }
             ems.stampa_studenti();
-        } else if (utente instanceof Docente) {
-            Docente docente = (Docente) utente;
+        } else if (utenteCorrente instanceof Docente) {
+            Docente docente = (Docente) utenteCorrente;
             String codiceDocente = docente.getCodiceDocente();
             for (Docente d : doc_list.values()) {
                 if (codiceDocente.equals(d.getCodiceDocente())) {
