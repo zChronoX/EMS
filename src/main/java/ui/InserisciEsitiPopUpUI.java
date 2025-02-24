@@ -78,7 +78,7 @@ public class InserisciEsitiPopUpUI implements Initializable {
             showAlert("Errore", "Studente non trovato.");
             return;
         }
-
+        ems.setStudenteCorrente(studente);
         // 4. Controllo che l'appello sia stato selezionato
         if (appello == null) {
             showAlert("Errore", "Nessun appello selezionato.");

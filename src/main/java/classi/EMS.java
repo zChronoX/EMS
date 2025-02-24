@@ -594,11 +594,15 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
         }
         System.out.println("3 fatto");
         // 4. Recupero prenotazione
-        System.out.println("APPELLO " + appelloCorrente.getID_appello());
+        System.out.println("APPELLO: " + appelloCorrente.getID_appello());
+        System.out.println("STUDENTE: " + studente.getNome() + " " + studente.getCognome());
         Prenotazione prenotazione = this.getPrenotazioneByStudenteAndAppello();
         if (prenotazione == null) {
             throw new Exception("Errore: Lo studente non è prenotato a questo appello.");
         }
+        System.out.println("APPELLO: " + appelloCorrente.getID_appello());
+        System.out.println("STUDENTE: " + studente.getNome() + " " + studente.getCognome());
+        System.out.println("PRENOTAZIONE: " + prenotazione);
         System.out.println("4 fatto");
         // 5. Controllo che l'esito non sia già stato inserito
         if (prenotazione.getEsito() != null) {
@@ -878,5 +882,9 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
             }
         }
         return false; // Nessuna prenotazione trovata per questo studente e appello
+    }
+
+    public void setStudenteCorrente(Studente studente) {
+        studenteCorrente = studente;
     }
 }
