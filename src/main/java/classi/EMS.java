@@ -786,4 +786,32 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
         appelloCorrente.setOrario(orario);
         appelloCorrente.setLuogo(luogo);
     }
+
+    public void modificaProfilo(Utente utente, String residenza, String email, String telefono) {
+        if (utente instanceof Studente) {
+            Studente studente = (Studente) utente;
+            String matricola = studente.getMatricola();
+            for (Studente s : student_list.values()) {
+                if (matricola.equals(s.getMatricola())) {
+                    s.setResidenza(residenza);
+                    s.setEmail(email);
+                    s.setTelefono(telefono);
+                    break;
+                }
+            }
+            ems.stampa_studenti();
+        } else if (utente instanceof Docente) {
+            Docente docente = (Docente) utente;
+            String codiceDocente = docente.getCodiceDocente();
+            for (Docente d : doc_list.values()) {
+                if (codiceDocente.equals(d.getCodiceDocente())) {
+                    d.setResidenza(residenza);
+                    d.setEmail(email);
+                    d.setTelefono(telefono);
+                    break;
+                }
+            }
+        }
+        ems.stampa_studenti();
+    }
 }
