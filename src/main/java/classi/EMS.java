@@ -124,11 +124,16 @@ public class EMS {
     //come fa questa funzione a capire qual è l'utente corrente? penso ci voglia una get
     public void AggiungiInfoStudente(String categoria, int anno_corso) {
         //utenteCorrente = ems.getUtenteCorrente();
-        if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) {
-            studenteCorrente = (Studente) utenteCorrente;
+      if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) {
+          /*  studenteCorrente = (Studente) utenteCorrente;
             studenteCorrente.setCategoria(categoria);
             studenteCorrente.setAnnoCorso(anno_corso);
         }
+        */
+          studenteCorrente = (Studente) utenteCorrente;
+          studenteCorrente.aggiungiInfo(categoria, anno_corso);
+      }
+
     }
 
     public void confermaUtente() {

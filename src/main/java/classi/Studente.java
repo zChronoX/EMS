@@ -145,4 +145,11 @@ public Studente() {}
     public void removeAppello(Appello_esame appello) {
         this.appelli.remove(appello);
     }
+    public void aggiungiInfo (String categoria, int anno_corso) {
+
+        this.setCategoria(categoria);
+        this.setAnnoCorso(anno_corso);
+
+    }
 }
+
