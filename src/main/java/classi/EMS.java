@@ -367,7 +367,7 @@ public class EMS {
     }
 
     public Appello_esame getAppelloById(String idAppello) {
-        for (Insegnamento insegnamento : this.teaching_list.values()) { // Itera sugli insegnamenti
+        //for (Insegnamento insegnamento : this.teaching_list.values()) { // Itera sugli insegnamenti
             List<Appello_esame> appelli = this.getAppelliByInsegnamento(); // Recupera gli appelli per l'insegnamento
 
             if (appelli != null) {
@@ -377,7 +377,7 @@ public class EMS {
                     }
                 }
             }
-        }
+        //}
         return null; // Nessun appello trovato con questo ID
     }
 
