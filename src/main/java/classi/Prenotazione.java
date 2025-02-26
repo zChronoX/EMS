@@ -83,12 +83,6 @@ public class Prenotazione {
         this.esito = esito;
     }
 
-    /*public void inserisciEsito(String voto,String stato) {
-
-        this.esito = new Esito_esame(voto, stato);
-    }*/
-
-    // public Prenotazione getPrenotato() { return prenotato; }
 
     @Override
     public String toString() {

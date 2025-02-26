@@ -65,11 +65,6 @@ public class CancellaStudenteUI implements Initializable {
                 mostraMessaggio("Errore", "Studente non trovato.");
                 return;
             }
-            //se togliamo la password si può levare
-//            if (!studente.getPassword().equals(password)) {
-//                mostraMessaggio("Errore", "Password errata.");
-//                return;
-//            }
 
             // Mostra popup di conferma
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

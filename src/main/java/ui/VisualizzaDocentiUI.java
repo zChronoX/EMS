@@ -24,17 +24,9 @@ public class VisualizzaDocentiUI implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         ems = EMS.getInstance();
         docentiListTextArea.appendText(ems.stampa_docentiView());
-        //displayDocentiList();
+
     }
 
-    // FORSE NON SERVE
-    /*public void displayDocentiList() {
-        if (ems != null) {
-            docentiListTextArea.setText(ems.stampa_docentiView());
-        } else {
-            docentiListTextArea.setText("Istanza EMS nulla. Impossibile visualizzare i docenti.");
-        }
-    }*/
 
     @FXML
     public void IndietroWelcomeView() throws IOException {

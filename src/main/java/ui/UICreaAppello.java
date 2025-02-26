@@ -124,12 +124,6 @@ public class UICreaAppello implements Initializable {
         confermaButton.setVisible(true);
     }
 
-    private int generateRandomInt(int digits) {
-        Random random = new Random();
-        int min = (int) Math.pow(10, digits - 1);
-        int max = (int) Math.pow(10, digits) - 1;
-        return min + random.nextInt(max - min + 1);
-    }
 
      @FXML
     private void handleConferma(ActionEvent event) {

@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Appello_esame {
-    //private HashMap<String,Prenotazione> reservation_list;
     private String ID_appello;
     private LocalTime Orario;
     private LocalDate Data;
@@ -17,19 +16,7 @@ public class Appello_esame {
     private Insegnamento insegnamento;
     private List<Studente> studenti = new ArrayList<>();
     private List<String> feedbacks = new ArrayList<>();
-    //private List<Esito_esame> result_list;
 
-   /* public Appello_esame(String ID_appello, LocalTime orario, LocalDate data, String luogo, int postiDisponibili,
-                         String tipologia, Insegnamento insegnamento) {
-        this.ID_appello = ID_appello;
-        Orario = orario;
-        Data = data;
-        Luogo = luogo;
-        this.postiDisponibili = postiDisponibili;
-        Tipologia = tipologia;
-        this.insegnamento = insegnamento;
-    }
-*/
    public Appello_esame(String ID_appello, LocalDate Data, LocalTime Orario, String Luogo, int postiDisponibili, String Tipologia, Insegnamento insegnamento) {
        this.ID_appello = ID_appello;
        this.Data = Data;
@@ -109,12 +96,7 @@ public class Appello_esame {
 
     public void setInsegnamento(Insegnamento insegnamento) { this.insegnamento = insegnamento; }
 
-//    public boolean verificaDisponibilitaAppello(Studente studente) {
-//        if(this.getTipologia().equals(studente.getCategoria())){
-//            return true;
-//        }
-//        return false;
-//    }
+
 
     public List<String> getFeedbacks() {
         return feedbacks;

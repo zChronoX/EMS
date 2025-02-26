@@ -33,13 +33,7 @@ public class VisualizzaStudentiPrenotatiUI implements Initializable {
     private EMS ems;
     private Docente docente;
 
-    /*public void setAppello(Appello_esame appello) {
-        this.appello = appello;
-        visualizzaStudenti();
-    }
-    public void setInsegnamento(Insegnamento insegnamento) {
-        this.insegnamento = insegnamento; // Inizializza il campo insegnamento
-    }*/
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -91,19 +85,11 @@ public class VisualizzaStudentiPrenotatiUI implements Initializable {
         // 1. Carica il pop-up
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("InserisciEsitiPopUpView.fxml"));
         Parent root = fxmlLoader.load();
-
-
-
-        // 2. Crea una nuova finestra (Stage) per il pop-up
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL); // Impedisce l'interazione con altre finestre
         popupStage.setScene(new Scene(root));
         popupStage.setTitle("Inserisci Esito");
-
-        // 3. Mostra il pop-up e attendi la chiusura
         popupStage.showAndWait();
-
-        // 4. Aggiorna la lista degli studenti (opzionale)
         visualizzaStudenti();
     }
 

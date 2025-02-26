@@ -41,18 +41,8 @@ public class UIPrenotazioneAppello implements Initializable {
         studente = ems.getStudenteCorrente();
         System.out.println("UIPrenotazioneAppello: Studente: " + studente.getNome() + " " + studente.getCognome() + " " + studente.getMatricola() + "\n\n" ); // Stampa l'oggetto Studente
     }
-/*
-    private void visualizzaInsegnamenti() {
-        if (ems != null) {
-            HashMap<String, Insegnamento> insegnamenti = ems.getInsegnamenti();
-            if (insegnamenti != null) {
-                for (Insegnamento insegnamento : insegnamenti.values()) {
-                    insegnamentiListView.getItems().add(insegnamento.getID_insegnamento() + " - " + insegnamento.getNome());
-                }
-            }
-        }
-    }
-*/
+
+
 @FXML
 private void visualizzaInsegnamenti() {
     HashMap<String, Insegnamento> insegnamenti = ems.getInsegnamenti(); // Ottieni la mappa degli insegnamenti

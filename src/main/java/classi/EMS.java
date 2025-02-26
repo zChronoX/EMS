@@ -21,13 +21,10 @@ public class EMS {
     private HashMap<String, Docente> doc_list;
     private HashMap<String, Insegnamento> teaching_list;
     private UtenteFactory utenteFactory;
-    public static final int POSTI_MAX = 500;
-    //private HashMap<String,Appello_esame> exam_list;
     private Insegnamento insegnamentoSelezionato;
     HashMap<String, Prenotazione> prenotazioniStudente = new HashMap<>(); //prenotazioni senza recensioni
-
     private HashMap<String, Prenotazione> reservation_list;
-   // private List<Esito_esame> result_list = new ArrayList<>();
+
 
     public EMS() {
 
@@ -35,7 +32,7 @@ public class EMS {
         this.doc_list = new HashMap<>();
         this.teaching_list = new HashMap<>(); //lista insegnamenti
         this.reservation_list = new HashMap<>(); //lista prenotazioni
-        //this.exam_list = new HashMap<>(); //lista appelli
+
 
         Utility utility = new Utility(); // Crea un'istanza di Utility
 
@@ -62,9 +59,6 @@ public class EMS {
             }
             System.out.println(teaching_list);
         }
-
-        //utility.loadaAppelli();
-
     }
 
     public void stampa_tutti_gli_appelli() {
@@ -223,7 +217,7 @@ public class EMS {
 
     // Metodo per generare le credenziali utente
     public void generaCredenziali() {
-        //utenteCorrente = ems.getUtenteCorrente();
+
 
         if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) {
             studenteCorrente = (Studente) utenteCorrente;
@@ -341,20 +335,6 @@ public class EMS {
         return student_list;
     }
 
-//    public boolean cancellaStudente(String matricola, String password) throws Exception {
-//        Studente studente = student_list.get(matricola);
-//
-//        if (studente == null) {
-//            throw new Exception("Studente non presente nel registro.");
-//        }
-//
-//        if (!studente.getPassword().equals(password)) {
-//            throw new Exception("Password errata.");
-//        }
-//
-//        student_list.remove(matricola); // Rimozione dalla mappa
-//        return true;
-//    }
 
     public boolean cancellaStudente(String matricola) throws Exception {
         Studente studente = student_list.get(matricola);
@@ -362,9 +342,6 @@ public class EMS {
         if (studente == null) {
             throw new Exception("Studente non presente nel registro.");
         }
-
-
-
         student_list.remove(matricola); // Rimozione dalla mappa
         return true;
     }
@@ -474,11 +451,6 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
         if (docenteCorrente.getCodiceDocente() == null || docenteCorrente.getCodiceDocente().isEmpty()) {
             return insegnamentiDocente; // Restituisce una lista vuota se il codice è nullo o vuoto
         }
-        //Docente docente = doc_list.get(docenteCorrente.getCodiceDocente());
-//        if (docente == null) {
-//            return insegnamentiDocente; // Restituisce lista vuota se il docente non esiste
-//        }
-
         for (Insegnamento insegnamento : this.teaching_list.values()) {
             List<Docente> docentiInsegnamento = insegnamento.getDocenti(); // Si ottiene la lista dei docenti
 
@@ -503,8 +475,8 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
             throw new Exception("Studente non prenotato a questo appello.");
         }
 
-        appello.removeStudente(studenteCorrente); // Implementa questo metodo in Appello_esame
-        studenteCorrente.removeAppello(appello); // Implementa questo metodo in Studente
+        appello.removeStudente(studenteCorrente);
+        studenteCorrente.removeAppello(appello);
 
         // Incrementa i posti disponibili
         appello.setPostiDisponibili(appello.getPostiDisponibili() + 1);
@@ -634,7 +606,7 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
     }
 
 public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, int postiDisponibili, String tipologia) {
-    //Insegnamento insegnamento = teaching_list.get(insegnamentoSelezionato.getID_insegnamento());
+
     if (insegnamentoSelezionato == null) {
         throw new IllegalArgumentException("Insegnamento non trovato.");
     }
@@ -675,12 +647,6 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
             System.out.println("Errore: Appello non trovato.");
             return;
         }
-
-        // 1. Get the teaching associated with the current appeal
-
-        //Insegnamento insegnamento = appelloCorrente.getInsegnamento();
-        //provo a usare insegnamentoSelezionato
-
         if (insegnamentoSelezionato == null) {
             System.out.println("Errore: Insegnamento non trovato.");
             return;
@@ -823,14 +789,6 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
     public List<String> getFeedback() {
         List<String> feedbacks=appelloCorrente.getFeedbacks();
         return feedbacks;
-//        if (feedbacks.isEmpty()) {
-//            feedbackListView.getItems().add("Non ci sono feedback per questo appello");
-//        } else {
-//
-//            for (String feedback : feedbacks) {
-//                feedbackListView.getItems().add(feedback);
-//            }
-//        }
     }
 
     public void modificaProfilo(String residenza, String email, String telefono) {

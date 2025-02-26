@@ -22,59 +22,6 @@ class Appello_esameTest {
 
     }
 
-    @Test
-    void testVerificaDisponibilitaAppello() throws Exception {
-        try {
-            // 1. Setup: Create docente, insegnamento, appello, studente, and confirm them
-            Docente docente = (Docente) utenteFactory.newUser(Utente.TipoProfilo.Docente);
-            ems.setUtenteCorrente(docente);
-            // Set docente details
-            docente.setNome("Luigi");
-            docente.setCognome("Verdi");
-            docente.setData_nascita(new Date());
-            docente.setGenere("Maschio");
-            docente.setCodice_fiscale("VRDLGU70A01F205E");
-            docente.setResidenza("Roma");
-            docente.setEmail("luigi.verdi@example.com");
-            docente.setTelefono("9876543210");
-            docente.setCodiceDocente("DV987");
-            docente.setPassword("password456");
-            ems.confermaUtente();
-
-            Insegnamento insegnamento = new Insegnamento("INF-01", "Informatica", 6, "Descrizione", 2023);
-            insegnamento.aggiungiDocente(docente); // Associa il docente all'insegnamento
-            ems.getTeaching_list().put("INF-01", insegnamento);
-
-            Appello_esame appello = new Appello_esame("APP-1", LocalDate.now(), LocalTime.now(), "Aula A", 30, "Scritto", insegnamento);
-            appello.setTipologia("In corso"); // Imposta la tipologia dell'appello
-            ems.getExam_list().put("APP-1", appello);
-
-            Studente studente = (Studente) utenteFactory.newUser(Utente.TipoProfilo.Studente);
-            ems.setUtenteCorrente(studente);
-            // Set studente details
-            studente.setNome("Mario");
-            studente.setCognome("Rossi");
-            studente.setData_nascita(new Date());
-            studente.setGenere("Maschio");
-            studente.setCodice_fiscale("RSSMRO80A01L735A");
-            studente.setResidenza("Milano");
-            studente.setEmail("mario.rossi@example.com");
-            studente.setTelefono("1234567890");
-            studente.setMatricola("12345");
-            studente.setPassword("password123");
-            studente.setCategoria("In corso"); // Imposta la categoria dello studente
-            studente.setAnnoCorso(2023);
-            ems.confermaUtente();
-
-            // 2. Execution: Check availability
-            boolean disponibile = appello.verificaDisponibilitaAppello(studente);
-
-            // 3. Assertions: Verify that the method returns true
-            assertTrue(disponibile);
-        } catch (Exception e) {
-            fail("Unexpected exception: " + e.getMessage());
-        }
-    }
 
     @Test
     void testAddStudente() throws Exception {
@@ -100,7 +47,8 @@ class Appello_esameTest {
             ems.getTeaching_list().put("INF-01", insegnamento);
 
             Appello_esame appello = new Appello_esame("APP-1", LocalDate.now(), LocalTime.now(), "Aula A", 30, "Scritto", insegnamento);
-            ems.getExam_list().put("APP-1", appello);
+            // Usa insegnamento.aggiungiAppello() per aggiungere l'appello all'insegnamento
+            insegnamento.aggiungiAppello(appello);
 
             // 2. Setup: Create studente
             Studente studente = (Studente) utenteFactory.newUser(Utente.TipoProfilo.Studente);
@@ -154,14 +102,15 @@ class Appello_esameTest {
             ems.getTeaching_list().put("INF-01", insegnamento);
 
             Appello_esame appello = new Appello_esame("APP-1", LocalDate.now(), LocalTime.now(), "Aula A", 30, "Scritto", insegnamento);
-            ems.getExam_list().put("APP-1", appello);
+            // Usa insegnamento.aggiungiAppello() per aggiungere l'appello all'insegnamento
+            insegnamento.aggiungiAppello(appello);
 
             // 2. Execution: Add feedback
-            appello.addFeedback("Ottimo servizio!");
+            appello.addFeedback("Ottimo esame!");
 
             // 3. Assertions: Verify that the feedback is added
             assertEquals(1, appello.getFeedbacks().size());
-            assertEquals("Ottimo servizio!", appello.getFeedbacks().get(0));
+            assertEquals("Ottimo esame!", appello.getFeedbacks().get(0));
         } catch (Exception e) {
             fail("Unexpected exception: " + e.getMessage());
         }
@@ -191,7 +140,8 @@ class Appello_esameTest {
             ems.getTeaching_list().put("INF-01", insegnamento);
 
             Appello_esame appello = new Appello_esame("APP-1", LocalDate.now(), LocalTime.now(), "Aula A", 30, "Scritto", insegnamento);
-            ems.getExam_list().put("APP-1", appello);
+            // Usa insegnamento.aggiungiAppello() per aggiungere l'appello all'insegnamento
+            insegnamento.aggiungiAppello(appello);
 
             // 2. Execution: Check if the docente can manage results
             boolean puòGestire = appello.puòGestireEsiti(docente1);

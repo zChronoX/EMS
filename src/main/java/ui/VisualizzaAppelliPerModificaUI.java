@@ -111,7 +111,7 @@ public class VisualizzaAppelliPerModificaUI implements Initializable {
                         alert.setContentText(e.getMessage());
                         alert.showAndWait();
                     }
-                    // ... visualizza i dettagli dell'appello ...
+
                     return; // Esci dal metodo dopo aver trovato l'appello
                 }
             }

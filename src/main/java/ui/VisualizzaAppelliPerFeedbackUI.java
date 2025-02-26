@@ -85,11 +85,11 @@ public class VisualizzaAppelliPerFeedbackUI implements Initializable {
         }
 
         feedbacks=ems.getFeedback();
-//        feedbacks=appello.getFeedbacks();
+
         if (feedbacks.isEmpty()) {
             feedbackListView.getItems().add("Non ci sono feedback per questo appello");
         } else {
-//
+
             for (String feedback : feedbacks) {
                 feedbackListView.getItems().add(feedback);
             }

@@ -58,7 +58,6 @@ public class UIListaAppelli implements Initializable {
     private void visualizzaAppelli() {
         if (insegnamento != null && ems != null && studente != null) {
             //non penso ci sia bisogno di passare l'insegnamento a EMS perché abbiamo fatto la set su insegnamentoSelezionato
-            //List<Appello_esame> appelli = ems.getAppelliByInsegnamento(insegnamento);
             List<Appello_esame> appelli = ems.getAppelliByInsegnamento(); //recupero gli appelli di un determinato insegnamento
 
             appelliListView.getItems().clear();
@@ -130,39 +129,8 @@ public class UIListaAppelli implements Initializable {
         alert.showAndWait();
     }
 
-    /*
-    private void showRiepilogoAppello(Appello_esame appello) {
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("Riepilogo Appello");
-
-        // Crea il contenuto del pop-up
-        VBox vbox = new VBox();
-        vbox.getChildren().add(new Label("ID: " + appello.getID_appello()));
-        vbox.getChildren().add(new Label("Insegnamento: " + appello.getInsegnamento().getNome()));
-        vbox.getChildren().add(new Label("Data: " + appello.getData()));
-        vbox.getChildren().add(new Label("Tipologia: " + appello.getTipologia()));
-        vbox.getChildren().add(new Label("Orario: " + appello.getOrario()));
-        vbox.getChildren().add(new Label("Luogo: " + appello.getLuogo()));
 
 
-        dialog.getDialogPane().setContent(vbox);
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
-
-
-        dialog.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                try {
-                    ems.prenotaAppello(studente, appello); // Metodo da implementare in EMS
-                    showAlert("Successo", "Prenotazione effettuata con successo.");
-                    visualizzaAppelli();
-
-                } catch (Exception e) {
-                    showAlert("Errore", "Errore durante la prenotazione: " + e.getMessage());
-                }
-            }
-        });
-    }
-*/
     private void showRiepilogoAppello(Appello_esame appello) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Riepilogo Appello");

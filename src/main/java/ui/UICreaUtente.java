@@ -116,7 +116,7 @@ public class UICreaUtente implements Initializable {
         BottoneCreaUtente.setVisible(false); // Nascondi il bottone "Crea Utente"
         BottoneStudente.setVisible(true); // Mostra il bottone "Studente"
         BottoneDocente.setVisible(true); // Mostra il bottone "Docente"
-        //BottoneIndietroWelcomeView.setVisible(false);
+
     }
 
     @FXML
@@ -282,14 +282,6 @@ public class UICreaUtente implements Initializable {
 
 
 
-    /*@FXML
-    public void Indietro() throws IOException {
-        Stage primaryStage = (Stage) indietroButton.getScene().getWindow(); // Ottieni lo Stage
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Carica WelcomeView.fxml
-        Scene scene = new Scene(fxmlLoader.load());
-        primaryStage.setScene(scene); // Imposta la scena di WelcomeView sullo Stage
-        primaryStage.setTitle("EMS"); // Puoi anche reimpostare il titolo
-    }*/
 
 }

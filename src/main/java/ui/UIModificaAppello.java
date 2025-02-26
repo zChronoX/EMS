@@ -110,14 +110,14 @@ public class UIModificaAppello implements Initializable {
     private void apriFinestraVisualizzaAppelli() throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("VisualizzaAppelliPerModificaView.fxml"));
-        Parent root = loader.load(); // Carica il file FXML e ottieni la radice della scena
+        Parent root = loader.load();
 
         Stage stage = new Stage();
         stage.setTitle("Lista Appelli dell'Insegnamento");
-        stage.setScene(new Scene(root)); // Imposta la scena con la radice caricata
+        stage.setScene(new Scene(root));
         stage.show();
 
-        // Opzionale: Chiudi la finestra corrente (se lo desideri)
+
         Stage currentStage = (Stage) selezionaInsegnamentoButton.getScene().getWindow();
         currentStage.close();
     }

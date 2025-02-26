@@ -410,38 +410,41 @@ class EMSTest {
 
     @Test
     void testCreazioneAppello_Successo() {
-        // 1. Setup: Crea un insegnamento e lo aggiungi alla lista
-//        try {
-//            Insegnamento insegnamento = new Insegnamento("INF-01", "Informatica", 6, "Descrizione", 2023);
-//            ems.getTeaching_list().put("INF-01", insegnamento);
-//
-//            // Dati appello
-//            LocalDate data = LocalDate.now();
-//            LocalTime orario = LocalTime.now();
-//            String luogo = "Aula A";
-//            int postiDisponibili = 30;
-//            String tipologia = "Scritto";
-//
-//            // 2. Esecuzione: Chiama la funzione da testare
-//            String idAppello = ems.creazioneAppello("INF-01", data, orario, luogo, postiDisponibili, tipologia);
-//
-//            // 3. Asserzioni: Verifica che l'appello sia stato creato e aggiunto alle liste
-//            assertNotNull(idAppello);
-//            assertNull(ems.getExam_list().get(idAppello)); // L'appello NON deve essere in exam_list dopo creazioneAppello
-//
-//            // 4. Imposta appello corrente (usando l'ID)
-//            Appello_esame appello = new Appello_esame(idAppello, data, orario, luogo, postiDisponibili, tipologia, insegnamento);
-//            ems.setAppelloCorrente(appello);
-//
-//            // 5. Esecuzione: Conferma l'appello
-//            ems.confermaAppello();
-//
-//            // 6. Asserzioni: Verifica che l'appello sia stato aggiunto a exam_list dopo confermaAppello
-//            assertNotNull(ems.getExam_list().get(idAppello)); // L'appello deve essere in exam_list dopo confermaAppello
-//            assertEquals(insegnamento, ems.getExam_list().get(idAppello).getInsegnamento());
-//        } catch (Exception e) {
-//            fail("Unexpected exception: " + e.getMessage());
-//        }
+        try {
+            // 1. Setup: Crea un insegnamento e lo aggiungi alla lista
+            Insegnamento insegnamento = new Insegnamento("INF-01", "Informatica", 6, "Descrizione", 2023);
+            ems.getTeaching_list().put("INF-01", insegnamento);
+
+            // Imposta insegnamentoSelezionato
+            ems.setInsegnamentoSelezionato(insegnamento);
+
+            // Dati appello
+            LocalDate data = LocalDate.now();
+            LocalTime orario = LocalTime.now();
+            String luogo = "Aula A";
+            int postiDisponibili = 30;
+            String tipologia = "Scritto";
+
+            // 2. Esecuzione: Chiama la funzione da testare
+            String idAppello = ems.creazioneAppello(data, orario, luogo, postiDisponibili, tipologia);
+
+            // 3. Asserzioni: Verifica che l'appello sia stato creato e aggiunto alle liste
+            assertNotNull(idAppello);
+            assertNull(insegnamento.getExam_list().get(idAppello)); // Verifica la mappa dell'insegnamento
+
+            // 4. Imposta appello corrente (usando l'ID)
+            Appello_esame appello = new Appello_esame(idAppello, data, orario, luogo, postiDisponibili, tipologia, insegnamento);
+            ems.setAppelloCorrente(appello);
+
+            // 5. Esecuzione: Conferma l'appello
+            ems.confermaAppello();
+
+            // 6. Asserzioni: Verifica che l'appello sia stato aggiunto a exam_list dopo confermaAppello
+            assertNotNull(insegnamento.getExam_list().get(idAppello)); // Verifica la mappa dell'insegnamento
+            assertEquals(insegnamento, insegnamento.getExam_list().get(idAppello).getInsegnamento());
+        } catch (Exception e) {
+            fail("Unexpected exception: " + e.getMessage());
+        }
     }
 
 
@@ -450,6 +453,9 @@ class EMSTest {
     void testCreazioneAppello_InsegnamentoNonTrovato() {
         try {
             // 1. Setup: Non aggiungo l'insegnamento alla lista
+
+            // Imposta insegnamentoSelezionato a null
+            ems.setInsegnamentoSelezionato(null);
 
             // Dati appello
             LocalDate data = LocalDate.now();
@@ -460,7 +466,7 @@ class EMSTest {
 
             // 2. Esecuzione: Chiama la funzione da testare e verifica che venga lanciata l'eccezione
             assertThrows(IllegalArgumentException.class, () -> {
-                ems.creazioneAppello("INF-03", data, orario, luogo, postiDisponibili, tipologia);
+                ems.creazioneAppello(data, orario, luogo, postiDisponibili, tipologia);
             });
         } catch (Exception e) {
             fail("Unexpected exception: " + e.getMessage());
@@ -471,8 +477,11 @@ class EMSTest {
     void testCreazioneAppello_AppelloEsistente() {
         try {
             // 1. Setup: Crea un insegnamento e lo aggiungi alla lista
-            Insegnamento insegnamento = new Insegnamento("INF-01", "Informatica", 6, "Descrizione", 2023); // Usa il costruttore corretto
-            ems.getTeaching_list().put("INF-01", insegnamento); // Usa il getter
+            Insegnamento insegnamento = new Insegnamento("INF-01", "Informatica", 6, "Descrizione", 2023);
+            ems.getTeaching_list().put("INF-01", insegnamento);
+
+            // Imposta insegnamentoSelezionato
+            ems.setInsegnamentoSelezionato(insegnamento);
 
             // Crea un appello esistente
             LocalDate data = LocalDate.now();
@@ -481,10 +490,12 @@ class EMSTest {
             int postiDisponibili = 30;
             String tipologia = "Scritto";
             Appello_esame appelloEsistente = new Appello_esame("APP-1", data, orario, luogo, postiDisponibili, tipologia, insegnamento);
-           // ems.getExam_list().put("APP-1", appelloEsistente); // Usa il getter
+
+            // Aggiungi l'appello alla mappa degli appelli dell'insegnamento
+            insegnamento.aggiungiAppello(appelloEsistente);
 
             // 2. Esecuzione: Chiama la funzione da testare con gli stessi dati e verifica che venga restituito null
-            String idAppello = ems.creazioneAppello("INF-01", data, orario, luogo, postiDisponibili, tipologia);
+            String idAppello = ems.creazioneAppello(data, orario, luogo, postiDisponibili, tipologia);
 
             // 3. Asserzioni: Verifica che la funzione abbia restituito null
             assertNull(idAppello);
@@ -500,6 +511,9 @@ class EMSTest {
             Insegnamento insegnamento = new Insegnamento("INF-01", "Informatica", 6, "Descrizione", 2023);
             ems.getTeaching_list().put("INF-01", insegnamento);
 
+            // Imposta insegnamentoSelezionato
+            ems.setInsegnamentoSelezionato(insegnamento);
+
             // Crea un appello esistente
             LocalDate data = LocalDate.now();
             LocalTime orario = LocalTime.now();
@@ -507,10 +521,12 @@ class EMSTest {
             int postiDisponibili = 30;
             String tipologia = "Scritto";
             Appello_esame appelloEsistente = new Appello_esame("APP-1", data, orario, luogo, postiDisponibili, tipologia, insegnamento);
-         //   ems.getExam_list().put("APP-1", appelloEsistente);
+
+            // Aggiungi l'appello alla mappa degli appelli dell'insegnamento
+            insegnamento.aggiungiAppello(appelloEsistente);
 
             // 2. Esecuzione: Chiama la funzione da testare con gli stessi dati
-            String idAppello = ems.creazioneAppello("INF-01", data, orario, luogo, postiDisponibili, tipologia);
+            String idAppello = ems.creazioneAppello(data, orario, luogo, postiDisponibili, tipologia);
 
             // 3. Asserzioni: Verifica che la funzione restituisca null
             assertNull(idAppello);
@@ -527,6 +543,9 @@ class EMSTest {
             Insegnamento insegnamento = new Insegnamento("INF-01", "Informatica", 6, "Descrizione", 2023);
             ems.getTeaching_list().put("INF-01", insegnamento);
 
+            // Imposta insegnamentoSelezionato
+            ems.setInsegnamentoSelezionato(insegnamento);
+
             LocalDate data = LocalDate.now();
             LocalTime orario = LocalTime.now();
             String luogo = "Aula A";
@@ -534,7 +553,7 @@ class EMSTest {
             String tipologia = "Scritto";
 
             // 2. Esecuzione: Chiama la funzione da testare
-            String idAppello = ems.creazioneAppello("INF-01", data, orario, luogo, postiDisponibili, tipologia);
+            String idAppello = ems.creazioneAppello(data, orario, luogo, postiDisponibili, tipologia);
 
             // 3. Crea l'oggetto Appello_esame *direttamente* usando i dati
             Appello_esame appello = new Appello_esame(idAppello, data, orario, luogo, postiDisponibili, tipologia, insegnamento);
@@ -545,8 +564,8 @@ class EMSTest {
             // 5. Esecuzione: Conferma l'appello
             ems.confermaAppello();
 
-            // 6. Asserzioni: Verifica che l'appello sia presente nella mappa exam_list di EMS
-            //assertNotNull(ems.getExam_list().get(idAppello));
+            // 6. Asserzioni: Verifica che l'appello sia presente nella mappa exam_list dell'insegnamento
+            assertNotNull(insegnamento.getExam_list().get(idAppello));
         } catch (Exception e) {
             fail("Unexpected exception: " + e.getMessage());
         }
@@ -559,6 +578,9 @@ class EMSTest {
             Insegnamento insegnamento = new Insegnamento("INF-01", "Informatica", 6, "Descrizione", 2023);
             ems.getTeaching_list().put("INF-01", insegnamento);
 
+            // Imposta insegnamentoSelezionato
+            ems.setInsegnamentoSelezionato(insegnamento);
+
             LocalDate data = LocalDate.now();
             LocalTime orario = LocalTime.now();
             String luogo = "Aula A";
@@ -567,12 +589,9 @@ class EMSTest {
 
             Appello_esame appello1 = new Appello_esame("APP-1", data, orario, luogo, postiDisponibili, tipologia, insegnamento);
             insegnamento.aggiungiAppello(appello1); // Aggiungi appello all'insegnamento
-          //  ems.getExam_list().put("APP-1", appello1); // Aggiungi appello alla lista di EMS
 
             Appello_esame appello2 = new Appello_esame("APP-2", data, orario, "Aula B", postiDisponibili, tipologia, insegnamento);
             insegnamento.aggiungiAppello(appello2); // Aggiungi appello all'insegnamento
-           // ems.getExam_list().put("APP-2", appello2); // Aggiungi appello alla lista di EMS
-
 
             // 2. Esecuzione: Chiama la funzione
             List<Appello_esame> appelli = ems.getAppelliByInsegnamento();
@@ -593,6 +612,9 @@ class EMSTest {
             Insegnamento insegnamento = new Insegnamento("INF-01", "Informatica", 6, "Descrizione", 2023);
             ems.getTeaching_list().put("INF-01", insegnamento);
 
+            // Imposta insegnamentoSelezionato
+            ems.setInsegnamentoSelezionato(insegnamento);
+
             LocalDate data = LocalDate.now();
             LocalTime orario = LocalTime.now();
             String luogo = "Aula A";
@@ -601,7 +623,6 @@ class EMSTest {
 
             Appello_esame appello = new Appello_esame("APP-1", data, orario, luogo, postiDisponibili, tipologia, insegnamento);
             insegnamento.aggiungiAppello(appello);
-          //  ems.getExam_list().put("APP-1", appello);
 
             // 2. Esecuzione: Chiama la funzione con un ID valido
             Appello_esame appelloRecuperato = ems.getAppelloById("APP-1");
@@ -741,45 +762,6 @@ class EMSTest {
         }
     }
 
-    @Test
-    void testMostraInsegnamentiDocente() throws Exception {
-        try {
-            // 1. Setup: Crea docente con la factory, imposta i dati e lo conferma
-            Docente docente = (Docente) utenteFactory.newUser(Utente.TipoProfilo.Docente);
-            ems.setUtenteCorrente(docente);
-            // Dati docente (esempio)
-            docente.setNome("Mario");
-            docente.setCognome("Rossi");
-            docente.setData_nascita(new Date());
-            docente.setGenere("Maschio");
-            docente.setCodice_fiscale("RSSMRO80A01L735A");
-            docente.setResidenza("Milano");
-            docente.setEmail("mario.rossi@example.com");
-            docente.setTelefono("1234567890");
-            docente.setCodiceDocente("CD123");
-            docente.setPassword("password123");
-
-            ems.confermaUtente(); // Conferma il docente
-
-            Insegnamento insegnamento1 = new Insegnamento("INF-01", "Informatica", 6, "Descrizione1", 2023);
-            Insegnamento insegnamento2 = new Insegnamento("MAT-01", "Matematica", 6, "Descrizione2", 2023);
-            ems.getTeaching_list().put("INF-01", insegnamento1);
-            ems.getTeaching_list().put("MAT-01", insegnamento2);
-
-            insegnamento1.getDocenti().add(docente);
-            insegnamento2.getDocenti().add(docente);
-
-            // 2. Esecuzione
-           // List<Insegnamento> insegnamenti = ems.mostraInsegnamentiDocente("CD123"); // Usa il codice docente
-
-            // 3. Asserzioni
-      //      assertEquals(2, insegnamenti.size());
-        //    assertTrue(insegnamenti.contains(insegnamento1));
-          //  assertTrue(insegnamenti.contains(insegnamento2));
-        } catch (Exception e) {
-            fail("Unexpected exception: " + e.getMessage());
-        }
-    }
 
     @Test
     void testCancellaPrenotazione() throws Exception {
@@ -848,6 +830,9 @@ class EMSTest {
             ems.getTeaching_list().put("INF-01", insegnamento);
 
             Appello_esame appello = new Appello_esame("APP-1", LocalDate.now(), LocalTime.now(), "Aula A", 30, "Scritto", insegnamento);
+            insegnamento.aggiungiAppello(appello); // Aggiungi appello all'insegnamento
+
+            ems.setAppelloCorrente(appello); // Imposta appello corrente
 
             ems.prenotaAppello(appello); // Prenota l'appello
 
@@ -862,6 +847,7 @@ class EMSTest {
             fail("Unexpected exception: " + e.getMessage());
         }
     }
+
     @Test
     void testInserisciEsito_Successo() throws Exception {
         try {
@@ -976,6 +962,8 @@ class EMSTest {
             fail("Unexpected exception: " + e.getMessage());
         }
     }
+
+
     @Test
     void testVisualizzaAppelliPerInsegnamento_AppelliEsistenti() throws Exception {
         try {
@@ -1003,28 +991,26 @@ class EMSTest {
             insegnamento2.aggiungiDocente(docente); // Associa il docente all'insegnamento
             ems.getTeaching_list().put("MAT-01", insegnamento2);
 
-
             Appello_esame appello1 = new Appello_esame("APP-1", LocalDate.now(), LocalTime.now(), "Aula A", 30, "Scritto", insegnamento1);
-          //  ems.getExam_list().put("APP-1", appello1);
+            insegnamento1.aggiungiAppello(appello1); // Aggiungi appello all'insegnamento
 
             Appello_esame appello2 = new Appello_esame("APP-2", LocalDate.now(), LocalTime.now(), "Aula B", 30, "Orale", insegnamento1);
-           // ems.getExam_list().put("APP-2", appello2);
+            insegnamento1.aggiungiAppello(appello2); // Aggiungi appello all'insegnamento
 
             Appello_esame appello3 = new Appello_esame("APP-3", LocalDate.now(), LocalTime.now(), "Aula C", 30, "Scritto", insegnamento2);
-           // ems.getExam_list().put("APP-3", appello3);
+            insegnamento2.aggiungiAppello(appello3); // Aggiungi appello all'insegnamento
 
+            // Imposta insegnamentoSelezionato
+            ems.setInsegnamentoSelezionato(insegnamento1);
 
             // 2. Execution: Get appelli for insegnamento1
             List<Appello_esame> appelli = ems.getAppelliByInsegnamento();
 
             // 3. Assertions: Verify the correct appelli are returned
             assertEquals(2, appelli.size());
-//            assertTrue(appelli.containsKey("APP-1"));
-//            assertTrue(appelli.containsKey("APP-2"));
-//            assertFalse(appelli.containsKey("APP-3")); //Verifica che non ci sia l'appello dell'altro insegnamento
-//
-//            assertEquals(appello1, appelli.get("APP-1"));
-//            assertEquals(appello2, appelli.get("APP-2"));
+            assertTrue(appelli.contains(appello1));
+            assertTrue(appelli.contains(appello2));
+            assertFalse(appelli.contains(appello3)); // Verifica che non ci sia l'appello dell'altro insegnamento
         } catch (Exception e) {
             fail("Unexpected exception: " + e.getMessage());
         }
@@ -1254,7 +1240,10 @@ class EMSTest {
             String luogo = "Aula A";
 
             Appello_esame appello = new Appello_esame("APP-1", data, orario, luogo, 30, "Scritto", insegnamento);
-          //  ems.getExam_list().put("APP-1", appello); // Aggiungi l'appello alla lista
+            insegnamento.aggiungiAppello(appello); // Aggiungi l'appello all'insegnamento
+
+            // Imposta insegnamentoSelezionato
+            ems.setInsegnamentoSelezionato(insegnamento);
 
             // 2. Execution: Check if the appello exists
             boolean esiste = ems.controlloEsistenzaAppello(data, orario, luogo);
@@ -1327,6 +1316,323 @@ class EMSTest {
     }
 
 
+    @Test
+    void testGetAppelliApprovati_AppelliApprovati() throws Exception {
+        try {
+            // 1. Setup: Crea studente, insegnamento, appelli, prenotazioni e esiti
+            Studente studente = (Studente) utenteFactory.newUser(Utente.TipoProfilo.Studente);
+            ems.setUtenteCorrente(studente);
+            // Dati studente (esempio)
+            studente.setNome("Mario");
+            studente.setCognome("Rossi");
+            studente.setData_nascita(new Date());
+            studente.setGenere("Maschio");
+            studente.setCodice_fiscale("RSSMRO80A01L735A");
+            studente.setResidenza("Milano");
+            studente.setEmail("mario.rossi@example.com");
+            studente.setTelefono("1234567890");
+            studente.setMatricola("12345");
+            studente.setPassword("password123");
+            studente.setCategoria("In corso");
+            studente.setAnnoCorso(2023);
+
+            ems.confermaUtente(); // Conferma lo studente
+
+            Insegnamento insegnamento1 = new Insegnamento("INF-01", "Informatica", 6, "Descrizione", 2023);
+            ems.getTeaching_list().put("INF-01", insegnamento1);
+
+            Insegnamento insegnamento2 = new Insegnamento("MAT-01", "Matematica", 6, "Descrizione", 2023);
+            ems.getTeaching_list().put("MAT-01", insegnamento2);
+
+            LocalDate data = LocalDate.now();
+            LocalTime ora = LocalTime.now();
+
+            Appello_esame appello1 = new Appello_esame("APP-1", data, ora, "Aula A", 30, "Scritto", insegnamento1);
+            insegnamento1.aggiungiAppello(appello1);
+
+            Appello_esame appello2 = new Appello_esame("APP-2", data, ora, "Aula B", 30, "Orale", insegnamento2);
+            insegnamento2.aggiungiAppello(appello2);
+
+            // Crea prenotazioni e esiti
+            Prenotazione prenotazione1 = new Prenotazione("PREN-1", data, ora, 1, studente, appello1);
+            Esito_esame esito1 = new Esito_esame("28", "Approvato", studente, appello1);
+            prenotazione1.setEsito(esito1);
+            ems.getReservation_list().put("PREN-1", prenotazione1);
+
+            Prenotazione prenotazione2 = new Prenotazione("PREN-2", data, ora, 2, studente, appello2);
+            Esito_esame esito2 = new Esito_esame("25", "Approvato", studente, appello2);
+            prenotazione2.setEsito(esito2);
+            ems.getReservation_list().put("PREN-2", prenotazione2);
+
+            // Crea una prenotazione non approvata
+            Prenotazione prenotazione3 = new Prenotazione("PREN-3", data, ora, 3, studente, appello1);
+            Esito_esame esito3 = new Esito_esame("15", "Non Approvato", studente, appello1);
+            prenotazione3.setEsito(esito3);
+            ems.getReservation_list().put("PREN-3", prenotazione3);
+
+            // 2. Esecuzione: Recupera la lista degli appelli approvati
+            List<String> appelliApprovati = ems.getAppelliApprovati();
+
+            // 3. Asserzioni: Verifica che la lista contenga gli appelli approvati corretti
+            assertEquals(2, appelliApprovati.size());
+            assertTrue(appelliApprovati.contains("ID Appello: (APP-1) Nome Insegnamento: Informatica - Voto: 28 Esito: Approvato"));
+            assertTrue(appelliApprovati.contains("ID Appello: (APP-2) Nome Insegnamento: Matematica - Voto: 25 Esito: Approvato"));
+        } catch (Exception e) {
+            fail("Unexpected exception: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void testReinserisciDatiAppello_Successo() throws Exception {
+        try {
+            // 1. Setup: Crea un insegnamento e un appello
+            Insegnamento insegnamento = new Insegnamento("INF-01", "Informatica", 6, "Descrizione", 2023);
+            ems.getTeaching_list().put("INF-01", insegnamento);
+
+            LocalDate dataOriginale = LocalDate.now();
+            LocalTime orarioOriginale = LocalTime.now();
+            String luogoOriginale = "Aula A";
+
+            Appello_esame appello = new Appello_esame("APP-1", dataOriginale, orarioOriginale, luogoOriginale, 30, "Scritto", insegnamento);
+            insegnamento.aggiungiAppello(appello);
+
+            // Imposta appello corrente
+            ems.setAppelloCorrente(appello);
+
+            // 2. Esecuzione: Chiama la funzione con nuovi dati
+            LocalDate dataNuova = LocalDate.now().plusDays(1);
+            LocalTime orarioNuovo = LocalTime.now().plusHours(1);
+            String luogoNuovo = "Aula B";
+
+            ems.reinserisciDatiAppello(dataNuova, orarioNuovo, luogoNuovo);
+
+            // 3. Asserzioni: Verifica che i dati dell'appello siano stati aggiornati
+            assertEquals(dataNuova, appello.getData());
+            assertEquals(orarioNuovo, appello.getOrario());
+            assertEquals(luogoNuovo, appello.getLuogo());
+        } catch (Exception e) {
+            fail("Unexpected exception: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void testAggiungiFeedback_Successo() throws Exception {
+        try {
+            // 1. Setup: Crea studente, insegnamento, appello, prenotazione e imposta i valori correnti
+            Studente studente = (Studente) utenteFactory.newUser(Utente.TipoProfilo.Studente);
+            ems.setUtenteCorrente(studente);
+            // Dati studente (esempio)
+            studente.setNome("Mario");
+            studente.setCognome("Rossi");
+            studente.setData_nascita(new Date());
+            studente.setGenere("Maschio");
+            studente.setCodice_fiscale("RSSMRO80A01L735A");
+            studente.setResidenza("Milano");
+            studente.setEmail("mario.rossi@example.com");
+            studente.setTelefono("1234567890");
+            studente.setMatricola("12345");
+            studente.setPassword("password123");
+            studente.setCategoria("In corso");
+            studente.setAnnoCorso(2023);
+
+            ems.confermaUtente(); // Conferma lo studente
+
+            Insegnamento insegnamento = new Insegnamento("INF-01", "Informatica", 6, "Descrizione", 2023);
+            ems.getTeaching_list().put("INF-01", insegnamento);
+
+            LocalDate data = LocalDate.now();
+            LocalTime ora = LocalTime.now();
+
+            Appello_esame appello = new Appello_esame("APP-1", data, ora, "Aula A", 30, "Scritto", insegnamento);
+            insegnamento.aggiungiAppello(appello);
+
+            Prenotazione prenotazione = new Prenotazione("PREN-1", data, ora, 1, studente, appello);
+            ems.getReservation_list().put("PREN-1", prenotazione);
+
+            // Imposta prenotazione corrente
+            ems.setPrenotazioneCorrente(prenotazione);
+
+            // 2. Esecuzione: Chiama la funzione aggiungiFeedback
+            Optional<String> feedback = Optional.of("Ottimo appello!");
+            ems.aggiungiFeedback(feedback);
+
+            // 3. Asserzioni: Verifica che il feedback sia stato aggiunto e la prenotazione recensita
+            assertEquals(1, appello.getFeedbacks().size());
+            assertEquals("Ottimo appello!", appello.getFeedbacks().get(0));
+            assertTrue(prenotazione.getRecensito());
+        } catch (Exception e) {
+            fail("Unexpected exception: " + e.getMessage());
+        }
+    }
+
+
+    @Test
+    void testGetFeedback_Successo() throws Exception {
+        try {
+            // 1. Setup: Crea insegnamento, appello e imposta appello corrente
+            Insegnamento insegnamento = new Insegnamento("INF-01", "Informatica", 6, "Descrizione", 2023);
+            ems.getTeaching_list().put("INF-01", insegnamento);
+
+            LocalDate data = LocalDate.now();
+            LocalTime ora = LocalTime.now();
+
+            Appello_esame appello = new Appello_esame("APP-1", data, ora, "Aula A", 30, "Scritto", insegnamento);
+            insegnamento.aggiungiAppello(appello);
+
+            // Aggiungi feedback all'appello
+            appello.addFeedback("Ottimo appello!");
+            appello.addFeedback("Ben organizzato.");
+
+            // Imposta appello corrente
+            ems.setAppelloCorrente(appello);
+
+            // 2. Esecuzione: Chiama la funzione getFeedback
+            List<String> feedbacks = ems.getFeedback();
+
+            // 3. Asserzioni: Verifica che la lista dei feedback sia corretta
+            assertEquals(2, feedbacks.size());
+            assertTrue(feedbacks.contains("Ottimo appello!"));
+            assertTrue(feedbacks.contains("Ben organizzato."));
+        } catch (Exception e) {
+            fail("Unexpected exception: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void testModificaProfilo_Studente() throws Exception {
+        try {
+            // 1. Setup: Crea uno studente e lo conferma
+            Studente studente = (Studente) utenteFactory.newUser(Utente.TipoProfilo.Studente);
+            ems.setUtenteCorrente(studente);
+            // Dati studente (esempio)
+            studente.setNome("Mario");
+            studente.setCognome("Rossi");
+            studente.setData_nascita(new Date());
+            studente.setGenere("Maschio");
+            studente.setCodice_fiscale("RSSMRO80A01L735A");
+            studente.setResidenza("Milano");
+            studente.setEmail("mario.rossi@example.com");
+            studente.setTelefono("1234567890");
+            studente.setMatricola("12345");
+            studente.setPassword("password123");
+            studente.setCategoria("In corso");
+            studente.setAnnoCorso(2023);
+
+            ems.confermaUtente(); // Conferma lo studente
+
+            // 2. Esecuzione: Chiama la funzione modificaProfilo con nuovi dati
+            String residenzaNuova = "Roma";
+            String emailNuova = "mario.rossi.nuovo@example.com";
+            String telefonoNuovo = "9876543210";
+
+            ems.modificaProfilo(residenzaNuova, emailNuova, telefonoNuovo);
+
+            // 3. Asserzioni: Verifica che i dati dello studente siano stati aggiornati
+            assertEquals(residenzaNuova, studente.getResidenza());
+            assertEquals(emailNuova, studente.getEmail());
+            assertEquals(telefonoNuovo, studente.getTelefono());
+        } catch (Exception e) {
+            fail("Unexpected exception: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void testModificaProfilo_Docente() throws Exception {
+        try {
+            // 1. Setup: Crea un docente e lo conferma
+            Docente docente = (Docente) utenteFactory.newUser(Utente.TipoProfilo.Docente);
+            ems.setUtenteCorrente(docente);
+            // Dati docente (esempio)
+            docente.setNome("Luigi");
+            docente.setCognome("Verdi");
+            docente.setData_nascita(new Date());
+            docente.setGenere("Maschio");
+            docente.setCodice_fiscale("VRDLGU70A01F205E");
+            docente.setResidenza("Roma");
+            docente.setEmail("luigi.verdi@example.com");
+            docente.setTelefono("9876543210");
+            docente.setCodiceDocente("DV987");
+            docente.setPassword("password456");
+            ems.confermaUtente();
+
+            // 2. Esecuzione: Chiama la funzione modificaProfilo con nuovi dati
+            String residenzaNuova = "Milano";
+            String emailNuova = "luigi.verdi.nuovo@example.com";
+            String telefonoNuovo = "1234567890";
+
+            ems.modificaProfilo(residenzaNuova, emailNuova, telefonoNuovo);
+
+            // 3. Asserzioni: Verifica che i dati del docente siano stati aggiornati
+            assertEquals(residenzaNuova, docente.getResidenza());
+            assertEquals(emailNuova, docente.getEmail());
+            assertEquals(telefonoNuovo, docente.getTelefono());
+        } catch (Exception e) {
+            fail("Unexpected exception: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void testIsTroppoTardiPerCancellare() throws Exception {
+        try {
+            // 1. Setup: Crea un appello con data a meno di 3 giorni da oggi
+            LocalDate dataAppello = LocalDate.now().plusDays(2);
+            Appello_esame appello = new Appello_esame("APP-1", dataAppello, LocalTime.now(), "Aula A", 30, "Scritto", null);
+
+            // 2. Esecuzione: Chiama la funzione
+            boolean troppoTardi = ems.isTroppoTardiPerCancellare(appello);
+
+            // 3. Asserzioni: Verifica che la funzione restituisca true
+            assertTrue(troppoTardi);
+        } catch (Exception e) {
+            fail("Unexpected exception: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void testHaRicevutoEsito_EsitoPresente() throws Exception {
+        try {
+            // 1. Setup: Crea studente, appello, prenotazione ed esito
+            Studente studente = (Studente) utenteFactory.newUser(Utente.TipoProfilo.Studente);
+            ems.setUtenteCorrente(studente);
+            // Dati studente (esempio)
+            studente.setNome("Mario");
+            studente.setCognome("Rossi");
+            studente.setData_nascita(new Date());
+            studente.setGenere("Maschio");
+            studente.setCodice_fiscale("RSSMRO80A01L735A");
+            studente.setResidenza("Milano");
+            studente.setEmail("mario.rossi@example.com");
+            studente.setTelefono("1234567890");
+            studente.setMatricola("12345");
+            studente.setPassword("password123");
+            studente.setCategoria("In corso");
+            studente.setAnnoCorso(2023);
+
+            ems.confermaUtente(); // Conferma lo studente
+
+            Insegnamento insegnamento = new Insegnamento("INF-01", "Informatica", 6, "Descrizione", 2023);
+            ems.getTeaching_list().put("INF-01", insegnamento);
+
+            LocalDate data = LocalDate.now();
+            LocalTime ora = LocalTime.now();
+
+            Appello_esame appello = new Appello_esame("APP-1", data, ora, "Aula A", 30, "Scritto", insegnamento);
+            insegnamento.aggiungiAppello(appello);
+
+            Prenotazione prenotazione = new Prenotazione("PREN-1", data, ora, 1, studente, appello);
+            Esito_esame esito = new Esito_esame("28", "Approvato", studente, appello);
+            prenotazione.setEsito(esito);
+            ems.getReservation_list().put("PREN-1", prenotazione);
+
+            // 2. Esecuzione: Chiama la funzione
+            boolean esitoPresente = ems.haRicevutoEsito(appello, studente);
+
+            // 3. Asserzioni: Verifica che la funzione restituisca true
+            assertTrue(esitoPresente);
+        } catch (Exception e) {
+            fail("Unexpected exception: " + e.getMessage());
+        }
+    }
 
 
 
@@ -1337,4 +1643,16 @@ class EMSTest {
 
 
 
-}
+    }
+
+
+
+
+
+
+
+
+
+
+
+

@@ -44,7 +44,7 @@ public class VisualizzaPrenotatiEsameUI implements Initializable {
 
     private void visualizzaInsegnamentiDocente() {
         System.out.println("Docente: " + docente);
-        //String codiceDocente = docente.getCodiceDocente();
+
         if (docente != null) {
             List<Insegnamento> insegnamenti = ems.mostraInsegnamentiDocente();
 
@@ -60,11 +60,7 @@ public class VisualizzaPrenotatiEsameUI implements Initializable {
     }
 
     public VisualizzaPrenotatiEsameUI() {}
-/*
-    @FXML
-    private Button BottoneIndietroPrenotatiEsame;
 
- */
 
     @FXML
     private void visualizzaAppelliInsegnamento() throws IOException {

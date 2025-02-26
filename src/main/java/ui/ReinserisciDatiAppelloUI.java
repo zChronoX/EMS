@@ -34,9 +34,6 @@ public class ReinserisciDatiAppelloUI implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ems=EMS.getInstance();
-        //appello=ems.getAppelloCorrente();
-        //insegnamento=ems.getInsegnamentoSelezionato();
-        //lista vecchia
         appelli = ems.getAppelliByInsegnamento();
 
     }

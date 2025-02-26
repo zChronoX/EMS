@@ -5,7 +5,7 @@ public class Esito_esame {
     private String stato;
     private Studente studente;
     private Appello_esame appello;
-    //private Prenotazione prenotazione;
+
 
     public Esito_esame(String voto, String stato, Studente studente, Appello_esame appello) {
         this.voto = voto;
@@ -42,13 +42,7 @@ public class Esito_esame {
         return appello;
     }
 
-//    public Prenotazione getPrenotazione() {
-//        return prenotazione;
-//    }
-//
-//    public void setPrenotazione(Prenotazione prenotazione) {
-//        this.prenotazione = prenotazione;
-//    }
+
 
     @Override
     public String toString() {

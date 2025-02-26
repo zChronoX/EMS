@@ -41,16 +41,8 @@ public class VisualizzaStudentiUI implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         ems = EMS.getInstance();
         studentListTextArea.appendText(ems.stampa_studentiView());
-        //displayStudentList();
+
 
     }
 
-    //FORSE NON SERVE
-   /* public void displayStudentList() { // New method to display students
-        if (ems != null) {
-            studentListTextArea.setText(ems.stampa_studentiView());
-        } else {
-            studentListTextArea.setText("EMS instance is null. Cannot display students.");
-        }
-    }*/
 }
