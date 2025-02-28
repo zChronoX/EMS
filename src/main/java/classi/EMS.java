@@ -838,9 +838,9 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
         return giorniDiDifferenza < 3; // Restituisce true se mancano meno di 3 giorni
     }
 
-    public boolean haRicevutoEsito(Appello_esame appello, Studente studente) {
+    public boolean haRicevutoEsito(Appello_esame appello) {
         for (Prenotazione prenotazione : reservation_list.values()) {
-            if (prenotazione.getAppello().equals(appello) && prenotazione.getStudente().equals(studente)) {
+            if (prenotazione.getAppello().equals(appello) && prenotazione.getStudente().equals(studenteCorrente)) {
                 return prenotazione.getEsito() != null; // Restituisce true se l'esito è presente
             }
         }

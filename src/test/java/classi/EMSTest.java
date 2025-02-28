@@ -1625,7 +1625,7 @@ class EMSTest {
             ems.getReservation_list().put("PREN-1", prenotazione);
 
             // 2. Esecuzione: Chiama la funzione
-            boolean esitoPresente = ems.haRicevutoEsito(appello, studente);
+            boolean esitoPresente = ems.haRicevutoEsito(appello);
 
             // 3. Asserzioni: Verifica che la funzione restituisca true
             assertTrue(esitoPresente);

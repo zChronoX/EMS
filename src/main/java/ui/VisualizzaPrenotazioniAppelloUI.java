@@ -180,7 +180,7 @@ public class VisualizzaPrenotazioniAppelloUI implements Initializable {
                 return;
             }
 
-            if (ems.haRicevutoEsito(appelloDaCancellare, studente)) {
+            if (ems.haRicevutoEsito(appelloDaCancellare)) {
                 showAlert("Errore", "Non puoi cancellare la prenotazione perché hai già ricevuto un esito per questo appello.");
                 return;
             }
