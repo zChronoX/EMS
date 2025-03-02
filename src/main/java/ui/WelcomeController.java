@@ -64,7 +64,7 @@ public class WelcomeController {
         stage.setScene(scene);
         stage.show();
 
-        Stage currentStage = (Stage) BottoneVisualizzaDocenti.getScene().getWindow(); // Assumi che tu abbia un bottone per questa azione
+        Stage currentStage = (Stage) BottoneVisualizzaDocenti.getScene().getWindow();
         currentStage.close();
     }
 

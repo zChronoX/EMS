@@ -29,7 +29,7 @@ public class VisualizzaPrenotazioniInsegnamentoUI implements Initializable {
         ems=EMS.getInstance();
         visualizzaInsegnamenti();
         studente = ems.getStudenteCorrente();
-        System.out.println("UIPrenotazioneAppello: Studente: " + studente); // Stampa l'oggetto Studente
+        System.out.println("UIPrenotazioneAppello: Studente: " + studente);
     }
 
     public VisualizzaPrenotazioniInsegnamentoUI() {}
@@ -65,14 +65,14 @@ public class VisualizzaPrenotazioniInsegnamentoUI implements Initializable {
         Insegnamento insegnamento = ems.getInsegnamento(codiceInsegnamento);
 
         if (insegnamento != null) {
-            //FORSE MANCAVA QUESTO SET --> FUNZIONA ADESSO
+
             ems.setInsegnamentoSelezionato(insegnamento);
 
             apriListaAppelliView(insegnamento);
         } else {
-            // Gestisci il caso in cui l'insegnamento non viene trovato
+
             System.out.println("Insegnamento non trovato.");
-            // Puoi anche mostrare un messaggio di errore all'utente qui, ad esempio:
+
             Alert alert = new Alert(Alert.AlertType.ERROR, "Insegnamento non trovato.");
             alert.showAndWait();
         }
@@ -90,7 +90,7 @@ public class VisualizzaPrenotazioniInsegnamentoUI implements Initializable {
 
     @FXML
     public void IndietroCercaVistaStudente() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("StudenteView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("StudenteView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 

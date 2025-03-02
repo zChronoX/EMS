@@ -32,13 +32,13 @@ public class UILoginDocente implements Initializable {
     private Button Indietro;
 
     @FXML
-    private TextField codiceDocenteField; // Corrisponde all'fx:id nel FXML
+    private TextField codiceDocenteField;
 
     @FXML
-    private TextField passwordDocenteField; // Corrisponde all'fx:id nel FXML
+    private TextField passwordDocenteField;
 
     @FXML
-    private Button BottoneConfermaLoginDocente; // Corrisponde all'fx:id nel FXML
+    private Button BottoneConfermaLoginDocente;
 
     public void loginDocente() throws IOException {
 

@@ -75,7 +75,7 @@ public class VisualizzaAppelliInsegnamentoUI implements Initializable {
             showAlert("Errore", "Inserisci l'ID dell'appello.");
             return;
         }
-//
+
         Appello_esame appello = ems.getAppelloById(idAppello);
 
         if (appello == null) {
@@ -83,8 +83,7 @@ public class VisualizzaAppelliInsegnamentoUI implements Initializable {
             return;
         }
         ems.setAppelloCorrente(appello);
-        System.out.println(" APPELLO CORRENTE: " + idAppello);
-        System.out.println("AGGIORNAMENTO APPELLO CORRENTE: " + appello.getID_appello());
+
         apriListaStudentiView(appello, insegnamento);
     }
 
@@ -100,7 +99,7 @@ public class VisualizzaAppelliInsegnamentoUI implements Initializable {
 
     @FXML
     public void IndietroInsegnamentiDocente() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaPrenotatiEsameView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaPrenotatiEsameView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 

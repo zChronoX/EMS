@@ -142,10 +142,8 @@ public class Utility {
 
                         for (String nomeDocente : nomiDocenti) { // Itera sui nomi dei docenti
                             Docente docente = trovaDocente(docenti, nomeDocente.trim()); // Trova il docente
-                            if (docente != null) { // Aggiungi controllo null
-                                //System.out.println("Aggiungo docente " + docente.getNome() + " all'insegnamento " + insegnamento.getNome());
+                            if (docente != null) {
                                 insegnamento.aggiungiDocente(docente);
-                               // System.out.println("agaga"+insegnamento.getDocenti().toString());
                             } else {
                                 System.out.println("Docente " + nomeDocente + " non trovato!");
                             }
@@ -170,12 +168,9 @@ public class Utility {
 
 
     private Docente trovaDocente(HashMap<String, Docente> docenti, String nomeDocente) {
-        //System.out.println("Cerco docente: " + nomeDocente);
-        if (docenti != null) { // Aggiungi controllo null
+        if (docenti != null) {
             for (Docente docente : docenti.values()) {
-                //System.out.println("Docente presente nella mappa: " + docente.getNome() + " " + docente.getCognome());
                 if ((docente.getNome() + " " + docente.getCognome()).equals(nomeDocente)) { // Confronta SOLO nome completo
-                    //System.out.println("Docente trovato!");
                     return docente;
                 }
             }

@@ -43,16 +43,8 @@ public class Prenotazione {
         Data = data;
     }
 
-    public LocalTime getOra() {
-        return Ora;
-    }
-
     public void setOra(LocalTime ora) {
         Ora = ora;
-    }
-
-    public int getProgressivo() {
-        return Progressivo;
     }
 
     public void setProgressivo(int progressivo) {

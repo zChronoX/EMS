@@ -12,10 +12,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-//Metodo initialize(): Il modo corretto per inizializzare gli elementi FXML
-// è utilizzare il metodo initialize() del tuo controller. Questo metodo viene
-// chiamato automaticamente dopo che il file FXML è stato caricato e tutti gli
-// elementi sono stati iniettati.
+
 public class VisualizzaStudentiUI implements Initializable {
     private EMS ems;
     @FXML
@@ -25,7 +22,7 @@ public class VisualizzaStudentiUI implements Initializable {
 
     @FXML
     public void IndietroWelcomeView() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
         stage.setTitle("EMS");

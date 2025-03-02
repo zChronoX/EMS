@@ -42,7 +42,7 @@ public class CancellaStudenteUI implements Initializable {
 
     @FXML
     public void IndietroWelcomeView() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
         stage.setTitle("EMS");
@@ -56,10 +56,9 @@ public class CancellaStudenteUI implements Initializable {
     @FXML
     public void cancellaStudente() throws IOException {
         String matricola = matricolaField.getText();
-        //String password = passwordField.getText();
 
         try {
-            Studente studente = ems.getStudenti().get(matricola); // Ottieni lo studente dalla mappa
+            Studente studente = ems.getStudenti().get(matricola); // recupera lo studente dalla mappa
 
             if (studente == null) {
                 mostraMessaggio("Errore", "Studente non trovato.");
@@ -74,11 +73,11 @@ public class CancellaStudenteUI implements Initializable {
                     "Nome: " + studente.getNome() + "\n" +
                     "Cognome: " + studente.getCognome() + "\n" +
                     "Data di nascita: " + studente.getData_nascita() + "\n" +
-                    "Genere: " + studente.getGenere() + "\n" + // Aggiunto genere
-                    "Codice Fiscale: " + studente.getCodice_fiscale() + "\n" + // Aggiunto codice fiscale
-                    "Residenza: " + studente.getResidenza() + "\n" + // Aggiunta residenza
-                    "Email: " + studente.getEmail() + "\n" + // Aggiunta email
-                    "Telefono: " + studente.getTelefono() + "\n" + // Aggiunto telefono
+                    "Genere: " + studente.getGenere() + "\n" +
+                    "Codice Fiscale: " + studente.getCodice_fiscale() + "\n" +
+                    "Residenza: " + studente.getResidenza() + "\n" +
+                    "Email: " + studente.getEmail() + "\n" +
+                    "Telefono: " + studente.getTelefono() + "\n" +
                     "Categoria: " + studente.getCategoria() + "\n" +
                     "Anno di corso: " + studente.getAnnoCorso() + "\n";
 
@@ -91,10 +90,8 @@ public class CancellaStudenteUI implements Initializable {
             alert.showAndWait().ifPresent(response -> {
                 if (response == buttonTypeSi) {
                     try {
-                        //ems.cancellaStudente(matricola, password);
                         ems.cancellaStudente(matricola);
                         mostraMessaggio("Successo", "Studente cancellato con successo.");
-                        // Puoi anche chiudere la finestra o resettare i campi qui
                     } catch (Exception e) {
                         mostraMessaggio("Errore", "Errore durante la cancellazione: " + e.getMessage());
                     }

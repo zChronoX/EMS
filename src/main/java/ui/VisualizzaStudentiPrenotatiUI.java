@@ -72,7 +72,7 @@ public class VisualizzaStudentiPrenotatiUI implements Initializable {
             }
 
             // Cancella gli elementi esistenti prima di aggiungere i nuovi
-            studentiPrenotatiListView.getItems().clear(); // <--- Aggiungi questa linea
+            studentiPrenotatiListView.getItems().clear();
 
             for (Studente studente : studenti) {
                 studentiPrenotatiListView.getItems().add(studente.getNome() + " " + studente.getCognome() + " (" + studente.getMatricola() + ")");
@@ -95,7 +95,7 @@ public class VisualizzaStudentiPrenotatiUI implements Initializable {
 
     @FXML
     public void IndietroAppelliDocente() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaAppelliInsegnamentoView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaAppelliInsegnamentoView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 

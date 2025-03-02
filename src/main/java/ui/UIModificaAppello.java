@@ -64,29 +64,29 @@ public class UIModificaAppello implements Initializable {
 
     @FXML
     private void selezionaInsegnamento() {
-        // 1. Recupera il codice dell'insegnamento inserito
+        // Recupera il codice dell'insegnamento inserito
         String codiceInsegnamento = codiceInsegnamentoTextField.getText();
 
-        // 2. Verifica se il campo è vuoto
+        // Verifica se il campo è vuoto
         if (codiceInsegnamento == null || codiceInsegnamento.isEmpty()) {
             mostraAvviso("Inserisci il codice dell'insegnamento.");
             return; // Esci dal metodo se il campo è vuoto
         }
 
-        // 3. Cerca l'insegnamento nella HashMap
+        // Cerca l'insegnamento nella HashMap
         Insegnamento insegnamentoSelezionato = insegnamenti.get(codiceInsegnamento);
 
-        // 4. Verifica se l'insegnamento è stato trovato
+        // Verifica se l'insegnamento è stato trovato
         if (insegnamentoSelezionato != null) {
-            // 5. Imposta l'insegnamento selezionato nell'EMS
+            // Imposta l'insegnamento selezionato
             ems.setInsegnamentoSelezionato(insegnamentoSelezionato);
             System.out.println("Insegnamento selezionato: " + insegnamentoSelezionato.getNome());
 
-            // 6. Apri la finestra per visualizzare gli appelli
+            // Apri la finestra per visualizzare gli appelli
             try {
                 apriFinestraVisualizzaAppelli();
             } catch (IOException e) {
-                // 7. Gestisci l'eccezione in caso di errore nell'apertura della finestra
+                // Gestisci l'eccezione in caso di errore nell'apertura della finestra
                 e.printStackTrace(); // Stampa l'errore per debug
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Errore");
@@ -124,12 +124,12 @@ public class UIModificaAppello implements Initializable {
 
     @FXML
     public void Indietro() throws IOException {
-        Stage primaryStage = (Stage) indietroButton.getScene().getWindow(); // Ottieni lo Stage
+        Stage primaryStage = (Stage) indietroButton.getScene().getWindow();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Carica WelcomeView.fxml
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        primaryStage.setScene(scene); // Imposta la scena di WelcomeView sullo Stage
-        primaryStage.setTitle("EMS"); // Puoi anche reimpostare il titolo
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("EMS");
     }
 
 }

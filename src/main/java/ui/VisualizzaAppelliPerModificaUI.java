@@ -45,7 +45,7 @@ public class VisualizzaAppelliPerModificaUI implements Initializable {
 
 
     private void visualizzaAppelli() {
-        if (insegnamento != null) { // Usa direttamente 'insegnamento'
+        if (insegnamento != null) {
             appelli = ems.getAppelliByInsegnamento();
             if (appelli != null && !appelli.isEmpty()) {
                 String appelliFormattati = formattaAppelli(appelli);
@@ -54,7 +54,7 @@ public class VisualizzaAppelliPerModificaUI implements Initializable {
                 appelliTextArea.setText("Non ci sono appelli per questo insegnamento.");
             }
         } else {
-            appelliTextArea.setText("Insegnamento non trovato."); // Gestisci il caso in cui 'insegnamento' è null
+            appelliTextArea.setText("Insegnamento non trovato."); // Gestisce il caso in cui 'insegnamento' è null
         }
     }
 
@@ -75,12 +75,12 @@ public class VisualizzaAppelliPerModificaUI implements Initializable {
 
     @FXML
     public void Indietro() throws IOException {
-        Stage primaryStage = (Stage) indietroButton.getScene().getWindow(); // Ottieni lo Stage
+        Stage primaryStage = (Stage) indietroButton.getScene().getWindow();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ModificaAppelloView.fxml")); //
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ModificaAppelloView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        primaryStage.setScene(scene); //
-        primaryStage.setTitle("Modifica Appello"); //
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Modifica Appello");
     }
 
     @FXML
@@ -88,13 +88,11 @@ public class VisualizzaAppelliPerModificaUI implements Initializable {
         String idAppello = idAppelloTextField.getText(); // Recupera l'ID dal TextField
 
         if (idAppello != null && !idAppello.isEmpty()) { // Verifica se l'ID è stato inserito
-            // ID inserito, puoi fare qualcosa con esso
             System.out.println("ID Appello inserito: " + idAppello);
 
-            // ricerca l'appello nella lista e fai qualcosa
-            for (Appello_esame appello : appelli) { // Assumi che 'appelli' sia la tua List<Appello_esame>
+            // ricerca l'appello nella lista
+            for (Appello_esame appello : appelli) {
                 if (appello.getID_appello().equals(idAppello)) {
-                    // Appello trovato! Fai qualcosa con 'appello', ad esempio:
                     System.out.println("Appello trovato: " + appello.getID_appello());
 
                     //voglio modificare l'appello trovato
@@ -103,7 +101,7 @@ public class VisualizzaAppelliPerModificaUI implements Initializable {
                     try {
                         reinserisciDatiAppello();
                     } catch (IOException e) {
-                        // 7. Gestisci l'eccezione in caso di errore nell'apertura della finestra
+                        // Gestisci l'eccezione in caso di errore nell'apertura della finestra
                         e.printStackTrace(); // Stampa l'errore per debug
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Errore");
@@ -112,7 +110,7 @@ public class VisualizzaAppelliPerModificaUI implements Initializable {
                         alert.showAndWait();
                     }
 
-                    return; // Esci dal metodo dopo aver trovato l'appello
+                    return; // Esce dal metodo dopo aver trovato l'appello
                 }
             }
         }else {
@@ -124,14 +122,13 @@ public class VisualizzaAppelliPerModificaUI implements Initializable {
 
     void reinserisciDatiAppello() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ReinserisciDatiAppelloView.fxml"));
-        Parent root = loader.load(); // Carica il file FXML e ottieni la radice della scena
+        Parent root = loader.load();
 
         Stage stage = new Stage();
         stage.setTitle("Reinserisci Dati Appello");
-        stage.setScene(new Scene(root)); // Imposta la scena con la radice caricata
+        stage.setScene(new Scene(root));
         stage.show();
 
-        // Opzionale: Chiudi la finestra corrente (se lo desideri)
         Stage currentStage = (Stage) selezionaAppelloButton.getScene().getWindow();
         currentStage.close();
     }

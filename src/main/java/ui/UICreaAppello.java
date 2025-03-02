@@ -10,6 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -52,7 +54,7 @@ public class UICreaAppello implements Initializable {
     @FXML
     private Button BottoneIndietroWelcomeViewAppello;
     @FXML
-    private ListView<String> docentiListView; // ListView per visualizzare i docenti*/
+    private ListView<String> docentiListView; // ListView per visualizzare i docenti
 
 
 
@@ -61,11 +63,11 @@ public class UICreaAppello implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+
         ems=EMS.getInstance();
 
     }
-
-    //verificare caricamento insegnamenti --> dovrebbero essere caricati
 
     //cosa succede quando premo "Cerca insegnamento"
     @FXML
@@ -77,14 +79,14 @@ public class UICreaAppello implements Initializable {
         if (insegnamenti != null && insegnamenti.containsKey(codice)) {
              insegnamento = insegnamenti.get(codice);
             ems.setInsegnamentoSelezionato(insegnamento);
-            //docentiListView.getItems().clear(); capire se serve
-            idInsegnamentoTextField.clear(); //capire se serve
+            idInsegnamentoTextField.clear();
             List<Docente> docenti = insegnamento.getDocenti();
 
             if (docenti != null && !docenti.isEmpty()) {
                 for (Docente docente : docenti) {
                     docentiListView.getItems().add(docente.getNome() + " " + docente.getCognome());
                 }
+
             } else {
                 docentiListView.getItems().add("Nessun docente assegnato.");
             }
@@ -169,7 +171,7 @@ public class UICreaAppello implements Initializable {
                 // Creazione dell'appello
                 idAppello = ems.creazioneAppello(data, orario, luogo, posti, tipologia);
             }catch (IllegalArgumentException e) {
-                // **Conflitto rilevato: Mostra errore
+                // Conflitto rilevato: mostra errore
                 mostraErrore("Conflitto di Appello", e.getMessage());
                 resetCampi();
                 return;
@@ -205,7 +207,7 @@ public class UICreaAppello implements Initializable {
             // Stampa gli appelli confermati
             ems.stampa_tutti_gli_appelli();
 
-            // **SVUOTA I CAMPI DOPO LA CREAZIONE**
+            // SVUOTA I CAMPI DOPO LA CREAZIONE
             resetCampi();
 
         } catch (Exception e) {

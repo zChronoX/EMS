@@ -71,7 +71,7 @@ public class VisualizzaAppelliPerFeedbackUI implements Initializable {
             return;
         }
 
-        Appello_esame appello = ems.getAppelloById(idAppello); // Implementa questo metodo in EMS, accetta una stringa
+        Appello_esame appello = ems.getAppelloById(idAppello);
 
         if (appello == null) {
             showAlert("Errore", "Appello non trovato.");
@@ -107,7 +107,7 @@ public class VisualizzaAppelliPerFeedbackUI implements Initializable {
 
     @FXML
     public void IndietroInsegnamentiDocente() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaPrenotatiEsameView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaPrenotatiEsameView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 

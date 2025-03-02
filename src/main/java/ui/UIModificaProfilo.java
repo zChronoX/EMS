@@ -42,8 +42,7 @@ public class UIModificaProfilo implements Initializable {
             docente = (Docente) utente;
             doc_list=ems.getDoc_list();
         }
-        //studente=ems.getStudenteCorrente();
-        //docente=ems.getDocenteCorrente();
+
     }
 
     @FXML
@@ -110,17 +109,17 @@ public class UIModificaProfilo implements Initializable {
 
     @FXML
     public void Indietro() throws IOException {
-        Stage primaryStage = (Stage) BottoneIndietro.getScene().getWindow(); // Ottieni lo Stage
+        Stage primaryStage = (Stage) BottoneIndietro.getScene().getWindow();
         tipoProfilo=utente.getTipoProfilo();
         FXMLLoader fxmlLoader;
         if(tipoProfilo.equals(Utente.TipoProfilo.Studente)){
-            fxmlLoader = new FXMLLoader(getClass().getResource("StudenteView.fxml")); // Carica WelcomeView.fxml
+            fxmlLoader = new FXMLLoader(getClass().getResource("StudenteView.fxml"));
         }else{
-            fxmlLoader = new FXMLLoader(getClass().getResource("DocenteView.fxml")); // Carica WelcomeView.fxml
+            fxmlLoader = new FXMLLoader(getClass().getResource("DocenteView.fxml"));
         }
 
         Scene scene = new Scene(fxmlLoader.load());
-        primaryStage.setScene(scene); // Imposta la scena di WelcomeView sullo Stage
-        primaryStage.setTitle("EMS"); // Puoi anche reimpostare il titolo
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("EMS");
     }
 }

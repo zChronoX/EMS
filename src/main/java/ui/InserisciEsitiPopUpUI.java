@@ -17,10 +17,6 @@ public class InserisciEsitiPopUpUI implements Initializable {
     private EMS ems;
     private Appello_esame appello;
 
-    //public void setAppello(Appello_esame appello) {
-    //    this.appello = appello;
-    //}
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ems=EMS.getInstance();
@@ -52,7 +48,7 @@ public class InserisciEsitiPopUpUI implements Initializable {
         String voto = votoTextField.getText(); // Manteniamo voto come String
         String stato = statoTextField.getText();
 
-        // 1. Validazione input
+        // Validazione input
         if (matricola == null || matricola.isEmpty() ||
                 voto == null || voto.isEmpty() ||
                 stato == null || stato.isEmpty()) {
@@ -60,7 +56,7 @@ public class InserisciEsitiPopUpUI implements Initializable {
             return;
         }
 
-        // 2. Controllo che voto sia un numero tra 0 e 30
+        // Controllo che voto sia un numero tra 0 e 30
         try {
             int votoNum = Integer.parseInt(voto); // Conversione temporanea
             if (votoNum < 0 || votoNum > 30) {
@@ -72,27 +68,27 @@ public class InserisciEsitiPopUpUI implements Initializable {
             return;
         }
 
-        // 3. Recupero studente
+        // Recupero studente
         Studente studente = ems.getStudente(matricola);
         if (studente == null) {
             showAlert("Errore", "Studente non trovato.");
             return;
         }
         ems.setStudenteCorrente(studente);
-        // 4. Controllo che l'appello sia stato selezionato
+        // Controllo che l'appello sia stato selezionato
         if (appello == null) {
             showAlert("Errore", "Nessun appello selezionato.");
             return;
         }
 
-        // 5. Recupero prenotazione
+        // Recupero prenotazione
         Prenotazione prenotazione = ems.getPrenotazioneByStudenteAndAppello();
         if (prenotazione == null) {
             showAlert("Errore", "Lo studente non è prenotato a questo appello.");
             return;
         }
 
-        // 6. Inserimento esito
+        // Inserimento esito
         try {
             ems.inserisciEsito(matricola, voto, stato); // Passiamo voto come String
             showAlert("Successo", "Esito inserito con successo.");

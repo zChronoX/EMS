@@ -20,8 +20,6 @@ import java.util.ResourceBundle;
 public class UIInviaFeedback implements Initializable {
     private EMS ems;
     private HashMap<String, Prenotazione> prenotazioniSenzaRecensioni;
-    //private HashMap<String, Prenotazione> prenotazioniConRecensioni;
-    private Esito_esame esito;
     private Prenotazione prenotazione;
     private Studente studente;
 
@@ -44,7 +42,7 @@ public class UIInviaFeedback implements Initializable {
 
 
     private void visualizzaPrenotazioni() {
-        sezionePrenotazioni.getItems().clear(); // Pulisci la ListView!
+        sezionePrenotazioni.getItems().clear(); // Pulisce la ListView
 
         for (Prenotazione p : prenotazioniSenzaRecensioni.values()) {
             Esito_esame esito = p.getEsito();
@@ -69,21 +67,17 @@ public class UIInviaFeedback implements Initializable {
         if (idPrenotazione == null || idPrenotazione.isEmpty()) {
             // Mostra un messaggio di errore se l'ID non è stato inserito
             mostraAvviso("Errore", "Inserisci l'ID della prenotazione.");
-            return; // Esci dalla funzione
+            return;
         }
 
         //  Verifica se l'ID corrisponde a una prenotazione nella mappa
         if (prenotazioniSenzaRecensioni.containsKey(idPrenotazione)) {
-            // L'ID esiste, puoi procedere con l'invio del feedback
+            // L'ID esiste, si procede con l'invio del feedback
             Prenotazione prenotazione = prenotazioniSenzaRecensioni.get(idPrenotazione);
             System.out.println("Prenotazione trovata: " + prenotazione.getID_prenotazione());
 
-
-
-
             ems.setPrenotazioneCorrente(prenotazione);
             apriPopupFeedback();
-
 
         } else {
             mostraAvviso("Errore", "ID prenotazione non trovato.");
@@ -115,7 +109,7 @@ public class UIInviaFeedback implements Initializable {
 
     @FXML
     public void Indietro() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("StudenteView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("StudenteView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 

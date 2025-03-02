@@ -52,7 +52,7 @@ public class UILogin {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Carica WelcomeView.fxml
         Scene scene = new Scene(fxmlLoader.load());
-        primaryStage.setScene(scene); // Imposta la scena di WelcomeView sullo Stage
-        primaryStage.setTitle("EMS"); // Puoi anche reimpostare il titolo
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("EMS");
     }
 }

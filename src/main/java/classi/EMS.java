@@ -121,19 +121,11 @@ public class EMS {
 
     }
 
-    //come fa questa funzione a capire qual è l'utente corrente? penso ci voglia una get
     public void AggiungiInfoStudente(String categoria, int anno_corso) {
-        //utenteCorrente = ems.getUtenteCorrente();
       if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) {
-          /*  studenteCorrente = (Studente) utenteCorrente;
-            studenteCorrente.setCategoria(categoria);
-            studenteCorrente.setAnnoCorso(anno_corso);
-        }
-        */
           studenteCorrente = (Studente) utenteCorrente;
           studenteCorrente.aggiungiInfo(categoria, anno_corso);
       }
-
     }
 
     public void confermaUtente() {
@@ -205,6 +197,7 @@ public class EMS {
 
         return false; // Codice fiscale non trovato, può essere usato
     }
+
     // Metodo per creare un nuovo profilo utente con controllo del codice fiscale
     public boolean creaProfiloUtente(String nome, String cognome, Date data_nascita, String genere,
                                      String codice_fiscale, String residenza, String email, String telefono) {
@@ -222,8 +215,6 @@ public class EMS {
 
     // Metodo per generare le credenziali utente
     public void generaCredenziali() {
-
-
         if (utenteCorrente.getTipoProfilo() == Utente.TipoProfilo.Studente) {
             studenteCorrente = (Studente) utenteCorrente;
             studenteCorrente.assegnaIdentificativiStudente();
@@ -301,7 +292,6 @@ public class EMS {
             sb.append("Matricola: ").append(matricola).append("\n"); // Includi la matricola
 
             sb.append(studente.toString()).append("\n\n"); // Aggiungi una riga vuota per chiarezza
-            System.out.println(sb.toString());
         }
         return sb.toString();
     }
@@ -367,7 +357,6 @@ public class EMS {
     }
 
     public Appello_esame getAppelloById(String idAppello) {
-        //for (Insegnamento insegnamento : this.teaching_list.values()) { // Itera sugli insegnamenti
             List<Appello_esame> appelli = this.getAppelliByInsegnamento(); // Recupera gli appelli per l'insegnamento
 
             if (appelli != null) {
@@ -377,11 +366,8 @@ public class EMS {
                     }
                 }
             }
-        //}
         return null; // Nessun appello trovato con questo ID
     }
-
-
 
     private String generaIdPrenotazione() {
         Random random = new Random();
@@ -499,7 +485,6 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
     }
 
     public Prenotazione getPrenotazioneByStudenteAndAppello() {
-        //penso non sia necessario passare parametri a questa funzione perché studente e appello corrente li abbiamo qua
         System.out.println("getPrenotazioneByStudenteAndAppello() chiamata per studente: " + studenteCorrente.getMatricola() + " e appello: " + appelloCorrente.getID_appello());
 
         if (studenteCorrente == null || appelloCorrente == null) {
@@ -509,15 +494,15 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
 
         System.out.println("Lista prenotazioni:");
         if (reservation_list.isEmpty()) {
-            System.out.println("  La lista è vuota.");
+            System.out.println("La lista è vuota.");
         } else {
-            for (HashMap.Entry<String, Prenotazione> entry : reservation_list.entrySet()) { // Usa entrySet()
+            for (HashMap.Entry<String, Prenotazione> entry : reservation_list.entrySet()) {
                 Prenotazione p = entry.getValue(); // Ottieni l'oggetto Prenotazione
                 System.out.println("  - " + p.getStudente().getMatricola() + " - " + p.getAppello().getID_appello());
             }
         }
 
-        for (HashMap.Entry<String, Prenotazione> entry : reservation_list.entrySet()) { // Usa entrySet() anche qui
+        for (HashMap.Entry<String, Prenotazione> entry : reservation_list.entrySet()) {
             Prenotazione p = entry.getValue();
             System.out.println("Confronto con prenotazione: " + p.getStudente().getMatricola() + " - " + p.getAppello().getID_appello());
             if (p.getStudente().equals(studenteCorrente) && p.getAppello().equals(appelloCorrente)) {
@@ -554,39 +539,34 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
     }
 
     public void inserisciEsito(String matricola, String voto, String stato) throws Exception {
-        // 1. Verifica che il docente possa gestire gli esiti per questo appello
+        // Verifica che il docente possa gestire gli esiti per questo appello
         if (!appelloCorrente.puòGestireEsiti(docenteCorrente)) {
             throw new Exception("Errore: Non hai i permessi per inserire esiti in questo appello.");
         }
-        System.out.println("1 fatto");
-        // 2. Controllo input nulli
+
+        // Controllo input nulli
         if (matricola == null || matricola.isEmpty() || voto == null || voto.isEmpty() || stato == null || stato.isEmpty()) {
             throw new Exception("Errore: Tutti i campi devono essere compilati.");
         }
-        System.out.println("2 fatto");
-        // 3. Recupero studente
+
+        // Recupero studente
         Studente studente = this.getStudente(matricola);
         if (studente == null) {
             throw new Exception("Errore: Studente non trovato.");
         }
-        System.out.println("3 fatto");
-        // 4. Recupero prenotazione
-        System.out.println("APPELLO: " + appelloCorrente.getID_appello());
-        System.out.println("STUDENTE: " + studente.getNome() + " " + studente.getCognome());
+
+        // Recupero prenotazione
         Prenotazione prenotazione = this.getPrenotazioneByStudenteAndAppello();
         if (prenotazione == null) {
             throw new Exception("Errore: Lo studente non è prenotato a questo appello.");
         }
-        System.out.println("APPELLO: " + appelloCorrente.getID_appello());
-        System.out.println("STUDENTE: " + studente.getNome() + " " + studente.getCognome());
-        System.out.println("PRENOTAZIONE: " + prenotazione);
-        System.out.println("4 fatto");
-        // 5. Controllo che l'esito non sia già stato inserito
+
+        // Controllo che l'esito non sia già stato inserito
         if (prenotazione.getEsito() != null) {
             throw new Exception("Errore: Esito già registrato per questo studente.");
         }
-        System.out.println("5 fatto");
-        // 6. Se lo stato è "Approvato", controlliamo la validità del voto
+
+        // Se lo stato è "Approvato", controlliamo la validità del voto
         if (stato.equalsIgnoreCase("Approvato")) {
             try {
                 int votoInt = Integer.parseInt(voto);
@@ -597,17 +577,13 @@ public boolean prenotaAppello(Appello_esame appello) throws Exception {
                 throw new Exception("Errore: Il voto deve essere un numero valido.");
             }
         }
-        System.out.println("6 fatto");
-        // 7. Creazione dell'esito
-        Esito_esame esito = new Esito_esame(voto, stato, studente, appelloCorrente);
-        System.out.println("7 fatto");
-        // 8. Associa l'esito alla prenotazione
-        prenotazione.setEsito(esito);
-        System.out.println("8 fatto");
-        // 9. Mostra conferma
-        System.out.println("Esito inserito correttamente per lo studente " + matricola);
 
-        // 10. Se tutto è andato bene, l'esito è stato inserito con successo
+        // Creazione dell'esito
+        Esito_esame esito = new Esito_esame(voto, stato, studente, appelloCorrente);
+
+        // Associa l'esito alla prenotazione
+        prenotazione.setEsito(esito);
+        System.out.println("Esito inserito correttamente per lo studente " + matricola);
     }
 
 public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, int postiDisponibili, String tipologia) {
@@ -615,14 +591,9 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
     if (insegnamentoSelezionato == null) {
         throw new IllegalArgumentException("Insegnamento non trovato.");
     }
-
-        // Iterate through ALL teachings
         for (Insegnamento currentInsegnamento : teaching_list.values()) {
-            // Get the exam list for the CURRENT teaching
             Map<String, Appello_esame> exam_list = currentInsegnamento.getExam_list();
-
-            // Check for duplicate appeals within the CURRENT teaching's exam list
-            if (exam_list != null) { // Check if the exam_list is not null
+            if (exam_list != null) {
                 for (Appello_esame appelloEsistente : exam_list.values()) {
                     if (appelloEsistente.getData().equals(Data) &&
                             appelloEsistente.getOrario().equals(Orario) &&
@@ -643,7 +614,7 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
 
         String ID_appello = "APP-" + (System.currentTimeMillis() % 100000);
         appelloCorrente = new Appello_esame(ID_appello, Data, Orario, Luogo, postiDisponibili, tipologia, insegnamentoSelezionato);
-        System.out.println("Appello corrente creato: " + appelloCorrente);
+
         return ID_appello;
     }
 
@@ -657,9 +628,7 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
             return;
         }
 
-        // 2. Use the insegnamento's aggiungiAppello method
         insegnamentoSelezionato.aggiungiAppello(appelloCorrente);
-
         System.out.println("Appello " + appelloCorrente.getID_appello() + " confermato con successo per l'insegnamento " + insegnamentoSelezionato.getNome() + ".");
     }
 
@@ -686,7 +655,7 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
                         sommaVoti += voto;
                         numeroAppelli++;
                     } catch (NumberFormatException e) {
-                        // Gestisci l'errore se il voto non è un numero valido
+                        // Gestisce l'errore se il voto non è un numero valido
                         System.err.println("Errore: voto non valido per l'appello " + prenotazione.getAppello().getID_appello());
                     }
                 }
@@ -701,13 +670,10 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
     }
 
     public boolean controlloEsistenzaAppello(LocalDate data, LocalTime orario, String luogo) {
-        // Itera su tutti gli insegnamenti
         boolean flag;
         for (Insegnamento insegnamento : teaching_list.values()) {
-            // Ottieni la mappa degli appelli per l'insegnamento corrente
+            // recupera la mappa degli appelli per l'insegnamento corrente
             Map<String, Appello_esame> exam_list = insegnamento.getExam_list();
-
-            // Se la mappa esiste, itera sugli appelli
             if (exam_list != null) {
                 for (Appello_esame appelloEsistente : exam_list.values()) {
                     if (appelloEsistente.getData().equals(data) &&
@@ -725,7 +691,7 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
 
     public HashMap<String, Prenotazione> getPrenotazioniNonRecensiteByStudente() {
 
-        for (HashMap.Entry<String, Prenotazione> entry : reservation_list.entrySet()) { // Usa entrySet() anche qui
+        for (HashMap.Entry<String, Prenotazione> entry : reservation_list.entrySet()) {
             Prenotazione p = entry.getValue();
 
             if (p.getStudente().equals(studenteCorrente) && !p.getRecensito() ) { //controllo attributo recensito=falso
@@ -761,7 +727,7 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
                         "ID Appello: (%s) Nome Insegnamento: %s - Voto: %s Esito: %s",
                         appelloEsame.getID_appello(),
                         insegnamento.getNome(),
-                        prenotazione.getEsito().getVoto(), // Formatta il voto come stringa (%s)
+                        prenotazione.getEsito().getVoto(),
                         prenotazione.getEsito().getStato()
                 );
                 appelli.add(appelloString);
@@ -784,11 +750,10 @@ public String creazioneAppello(LocalDate Data, LocalTime Orario, String Luogo, i
     public void aggiungiFeedback(Optional<String> feedback) {
         prenotazioniStudente.remove(prenotazioneCorrente.getID_prenotazione());
         Appello_esame appello=prenotazioneCorrente.getAppello();
-//
-            appello.addFeedback(feedback.get()); //aggiungi il feedback alla lista dei feedback dell'appello
+
+            appello.addFeedback(feedback.get()); //aggiunge il feedback alla lista dei feedback dell'appello
             prenotazioneCorrente.setRecensito(true);
             System.out.println("Appello: "+ appello.getID_appello() + "Feedback: " + appello.getFeedbacks());
-//            visualizzaPrenotazioni();
     }
 
     public List<String> getFeedback() {

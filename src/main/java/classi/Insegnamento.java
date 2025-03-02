@@ -41,24 +41,13 @@ public class Insegnamento {
         studenti.add(studente);
     }
 
-    public boolean isStudenteIscritto(Studente studente) {
-        return studenti.contains(studente);
-    }
-
     public List<Studente> getStudenti() {
         return studenti;
     }
 
-
     public String getID_insegnamento() {
         return ID_insegnamento;
     }
-
-    public void setID_insegnamento(String ID_insegnamento) {
-        this.ID_insegnamento = ID_insegnamento;
-    }
-
-
 
     public String getNome() {
         return Nome;
@@ -127,12 +116,12 @@ public class Insegnamento {
             docentiString.append("Sconosciuto");
         }
         return "Insegnamento{" +
-                "ID_insegnamento='" + ID_insegnamento + '\'' + // Corretto: ID_insegnamento
-                ", Nome='" + Nome + '\'' + // Corretto: Nome
-                ", CFU=" + CFU + // Corretto: CFU
-                ", Descrizione='" + Descrizione + '\'' + // Corretto: Descrizione
-                ", Anno=" + Anno + // Corretto: Anno
-                ", docenti=" + docentiString.toString() + // Stampa la lista di docenti
+                "ID_insegnamento='" + ID_insegnamento + '\'' +
+                ", Nome='" + Nome + '\'' +
+                ", CFU=" + CFU +
+                ", Descrizione='" + Descrizione + '\'' +
+                ", Anno=" + Anno +
+                ", docenti=" + docentiString.toString() +
                 '}';
     }
 }

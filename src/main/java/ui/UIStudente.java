@@ -64,7 +64,7 @@ public class UIStudente implements Initializable {
 
     @FXML
     public void ApriPrenotazioneStudente() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PrenotazioneAppelloView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PrenotazioneAppelloView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 
@@ -78,7 +78,7 @@ public class UIStudente implements Initializable {
 
     @FXML
     public void ApriVisualizzaInfoEsame() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaPrenotazioniInsegnamentoView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaPrenotazioniInsegnamentoView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 
@@ -92,7 +92,7 @@ public class UIStudente implements Initializable {
 
     @FXML
     public void ApriCarrieraStudente() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaCarrieraView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaCarrieraView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 
@@ -107,18 +107,18 @@ public class UIStudente implements Initializable {
 
     @FXML
     public void LogoutStudente() throws IOException {
-        Stage primaryStage = (Stage) BottoneLogoutStudente.getScene().getWindow(); // Ottieni lo Stage
+        Stage primaryStage = (Stage) BottoneLogoutStudente.getScene().getWindow();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Carica WelcomeView.fxml
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
-        primaryStage.setScene(scene); // Imposta la scena di WelcomeView sullo Stage
-        primaryStage.setTitle("EMS"); // Puoi anche reimpostare il titolo
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("EMS");
     }
 
     @FXML
     public void ApriModificaProfilo() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ModificaProfiloView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ModificaProfiloView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 
@@ -132,7 +132,7 @@ public class UIStudente implements Initializable {
 
     @FXML
     public void ApriInviaFeedback() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("InviaFeedbackView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("InviaFeedbackView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 

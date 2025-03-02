@@ -110,7 +110,7 @@ public class VisualizzaCarrieraUI implements Initializable {
 
     @FXML
     public void IndietroVistaStudente() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("StudenteView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("StudenteView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 

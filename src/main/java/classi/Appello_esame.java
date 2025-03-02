@@ -86,17 +86,11 @@ public class Appello_esame {
         return Tipologia;
     }
 
-    public void setTipologia(String tipologia) {
-        Tipologia = tipologia;
-    }
-
     public Insegnamento getInsegnamento() {
         return insegnamento;
     }
 
     public void setInsegnamento(Insegnamento insegnamento) { this.insegnamento = insegnamento; }
-
-
 
     public List<String> getFeedbacks() {
         return feedbacks;
@@ -112,7 +106,7 @@ public class Appello_esame {
             for (Docente docente : insegnamento.getDocenti()) {
                 sb.append(docente.getNome()).append(" ").append(docente.getCognome()).append(", ");
             }
-            docentiString = sb.substring(0, sb.length() - 2); // Rimuovi l'ultima virgola e spazio
+            docentiString = sb.substring(0, sb.length() - 2); // Rimuove l'ultima virgola e spazio
         } else {
             docentiString = "Sconosciuto";
         }

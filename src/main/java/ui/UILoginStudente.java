@@ -35,13 +35,13 @@ public class UILoginStudente implements Initializable {
     private Button Indietro;
 
     @FXML
-    private TextField matricolaField; // Corrisponde all'fx:id nel FXML
+    private TextField matricolaField;
 
     @FXML
-    private TextField passwordField; // Corrisponde all'fx:id nel FXML
+    private TextField passwordField;
 
     @FXML
-    private Button BottoneConfermaLoginStudente; // Corrisponde all'fx:id nel FXML
+    private Button BottoneConfermaLoginStudente;
 
 
 
@@ -78,12 +78,12 @@ public class UILoginStudente implements Initializable {
 
     @FXML
     public void Indietro() throws IOException {
-        Stage primaryStage = (Stage) Indietro.getScene().getWindow(); // Ottieni lo Stage
+        Stage primaryStage = (Stage) Indietro.getScene().getWindow();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Carica WelcomeView.fxml
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        primaryStage.setScene(scene); // Imposta la scena di WelcomeView sullo Stage
-        primaryStage.setTitle("EMS"); // Puoi anche reimpostare il titolo
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("EMS");
     }
 
 }

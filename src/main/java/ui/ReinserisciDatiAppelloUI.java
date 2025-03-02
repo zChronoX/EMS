@@ -26,10 +26,7 @@ import java.util.ResourceBundle;
 
 public class ReinserisciDatiAppelloUI implements Initializable {
     private EMS ems;
-    private Appello_esame appello;
     private List<Appello_esame> appelli;
-    private Insegnamento insegnamento;
-    private List<Appello_esame> VERIFICA;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -56,7 +53,6 @@ public class ReinserisciDatiAppelloUI implements Initializable {
     @FXML
     void modificaCampi(){
         LocalDate data = dataDatePicker.getValue();
-        //LocalTime orario = LocalTime.parse(orarioTextField.getText());
         String luogo = luogoTextField.getText();
 
         String orarioString = orarioTextField.getText();
@@ -72,7 +68,7 @@ public class ReinserisciDatiAppelloUI implements Initializable {
                 return;
             }
         } else {
-            // Gestisci il caso in cui l'orario non è stato inserito
+            // Gestisce il caso in cui l'orario non è stato inserito
             Alert alert = new Alert(Alert.AlertType.WARNING, "L'orario non è stato inserito.");
             alert.showAndWait();
             return;
@@ -80,7 +76,7 @@ public class ReinserisciDatiAppelloUI implements Initializable {
         if (ems.controlloEsistenzaAppello(data, orario, luogo)) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Esiste già un appello con gli stessi dati.");
             alert.showAndWait();
-            return; // Interrompi la modifica se l'appello esiste già
+            return; // Interrompe la modifica se l'appello esiste già
         }
 
         ems.reinserisciDatiAppello(data, orario, luogo);
@@ -102,11 +98,11 @@ public class ReinserisciDatiAppelloUI implements Initializable {
     @FXML
     public void Indietro() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("VisualizzaAppelliPerModificaView.fxml"));
-        Parent root = loader.load(); // Carica il file FXML e ottieni la radice della scena
+        Parent root = loader.load();
 
         Stage stage = new Stage();
         stage.setTitle("Lista Appelli dell'Insegnamento");
-        stage.setScene(new Scene(root)); // Imposta la scena con la radice caricata
+        stage.setScene(new Scene(root));
         stage.show();
 
         Stage currentStage = (Stage) bottoneConfermaModifiche.getScene().getWindow();

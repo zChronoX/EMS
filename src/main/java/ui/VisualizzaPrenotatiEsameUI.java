@@ -87,12 +87,12 @@ public class VisualizzaPrenotatiEsameUI implements Initializable {
     }
 
     private void apriListaAppelliView(Insegnamento insegnamento) throws IOException {
-        Stage primaryStage = (Stage) codiceInsegnamentoTextField.getScene().getWindow(); // Ottieni lo Stage corrente
+        Stage primaryStage = (Stage) codiceInsegnamentoTextField.getScene().getWindow();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaAppelliInsegnamentoView.fxml")); // Crea un nuovo FXMLLoader
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaAppelliInsegnamentoView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
-        primaryStage.setScene(scene); // Imposta la nuova scena sullo Stage
+        primaryStage.setScene(scene);
         primaryStage.setTitle("Appelli di " + insegnamento.getNome());
     }
 
@@ -105,7 +105,7 @@ public class VisualizzaPrenotatiEsameUI implements Initializable {
 
     @FXML
     public void IndietroPaginaDocente() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DocenteView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DocenteView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 

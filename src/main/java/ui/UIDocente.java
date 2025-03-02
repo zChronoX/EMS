@@ -56,9 +56,9 @@ public class UIDocente implements Initializable {
 
     @FXML
     public void LogoutDocente() throws IOException {
-        Stage primaryStage = (Stage) BottoneLogoutDocente.getScene().getWindow(); // Ottieni lo Stage
+        Stage primaryStage = (Stage) BottoneLogoutDocente.getScene().getWindow();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Carica WelcomeView.fxml
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         primaryStage.setScene(scene);
         primaryStage.setTitle("EMS");

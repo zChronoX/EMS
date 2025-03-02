@@ -20,7 +20,7 @@ public class UIMain extends Application {
         stage.setScene(scene);
         stage.show();
 
-        ems.stampa_utenti(); // Stampa gli utenti (ora usa la stessa istanza)
+        ems.stampa_utenti(); // Stampa gli utenti
     }
 
     public static void main(String[] args) {

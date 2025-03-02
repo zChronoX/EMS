@@ -31,7 +31,7 @@ public class UICreaUtente implements Initializable {
 
     String nome;
     String cognome;
-    Date data_nascita; //qui bisogna capire che tipo dobbiamo mettere --> Date
+    Date data_nascita;
     String genere;
     String codice_fiscale;
     String residenza;
@@ -54,13 +54,13 @@ public class UICreaUtente implements Initializable {
 
     @FXML
     private void tornaAllaWelcomeView() throws IOException {
-        Stage primaryStage = (Stage) BottoneIndietroWelcomeView.getScene().getWindow(); // Ottieni lo Stage
+        Stage primaryStage = (Stage) BottoneIndietroWelcomeView.getScene().getWindow();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml")); // Carica WelcomeView.fxml
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
-        primaryStage.setScene(scene); // Imposta la scena di WelcomeView sullo Stage
-        primaryStage.setTitle("EMS"); // Puoi anche reimpostare il titolo
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("EMS");
     }
 
     @FXML
@@ -131,7 +131,6 @@ public class UICreaUtente implements Initializable {
 
         ems.scegliTipoProfilo(tipoProfilo); //qui si richiama EMS che richiama la factory
 
-        //CAPIRE SE QUESTA RIGA SERVE, SENZA ABBIAMO ERRORI IN ESECUZIONE
         docente = (Docente) ems.getUtenteCorrente();
 
 
@@ -161,8 +160,8 @@ public class UICreaUtente implements Initializable {
 
         ems.scegliTipoProfilo(tipoProfilo); //qui si richiama ems che richiama la factory
 
-    //CAPIRE SE QUESTA RIGA SERVE SOLO PER LE STAMPE, SENZA DI QUESTA ERRORI IN ESECUZIONE
-        studente = (Studente) ems.getUtenteCorrente(); //questo credo serva solo per la stampa
+
+        studente = (Studente) ems.getUtenteCorrente();
 
         //elenco parametri
         ContenitoreInformazioni.setVisible(true);
@@ -186,31 +185,31 @@ public class UICreaUtente implements Initializable {
                 residenza.isEmpty() || email.isEmpty() || telefono.isEmpty() || dataNascitaLocalDate == null) {
 
             mostraMessaggioErrore("Errore: Tutti i campi devono essere compilati.");
-            return; // **Blocca l'esecuzione se un campo è vuoto**
+            return; // Blocca l'esecuzione se un campo è vuoto
         }
 
-        // **Conversione data**
+        // Conversione data
         data_nascita = Date.from(dataNascitaLocalDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
 
 
         if (ems.verificaCodiceFiscaleEsistente(codice_fiscale)) {
             mostraMessaggioErrore("Errore: Il codice fiscale è già registrato.");
-            return; // **Blocca la creazione dell'utente**
+            return; // Blocca la creazione dell'utente
         }
         if (tipoProfilo == Utente.TipoProfilo.Studente) {
             String matricola = studente.getMatricola();
             if (ems.verificaMatricolaEsistente(matricola)) {
                 mostraMessaggioErrore("Errore: La matricola " + matricola + " è già associata a un altro studente.");
-                return; // **Blocca la creazione dello studente**
+                return; // Blocca la creazione dello studente
             }
         } else if (tipoProfilo == Utente.TipoProfilo.Docente) {
             String codiceDocente = docente.getCodiceDocente();
             if (ems.verificaCodiceDocenteEsistente(codiceDocente)) {
                 mostraMessaggioErrore("Errore: Il codice docente " + codiceDocente + " è già associato a un altro docente.");
-                return; // **Blocca la creazione del docente**
+                return; // Blocca la creazione del docente
             }
         }
-        // **Creazione utente**
+        // Creazione utente
         if (ems.creaProfiloUtente(nome, cognome, data_nascita, genere, codice_fiscale, residenza, email, telefono)) {
             System.out.println("Utente creato con successo");
 
@@ -236,10 +235,10 @@ public class UICreaUtente implements Initializable {
 
             ContenitoreInformazioni.setVisible(false);
 
-            // **Genera credenziali**
+            // Genera credenziali
             ems.generaCredenziali();
 
-            // **Mostra riepilogo informazioni**
+            // Mostra riepilogo informazioni
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setTitle("Riepilogo Informazioni");
 
@@ -264,7 +263,7 @@ public class UICreaUtente implements Initializable {
 
             Optional<ButtonType> result = dialog.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                // **Conferma e aggiunta utente alla mappa**
+                // Conferma e aggiunta utente alla mappa
                 ems.confermaUtente();
                 BottoneCreaUtente.setVisible(true);
             }
@@ -279,9 +278,5 @@ public class UICreaUtente implements Initializable {
         alert.setContentText(messaggio);
         alert.showAndWait();
     }
-
-
-
-
 
 }

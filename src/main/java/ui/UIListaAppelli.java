@@ -35,7 +35,6 @@ public class UIListaAppelli implements Initializable {
         ems = EMS.getInstance();
         studente = ems.getStudenteCorrente();
 
-        //codice inserito in UIPrenotazioneAppello, come faccio a recuperarlo?
         insegnamento=ems.getInsegnamentoSelezionato();
 
         visualizzaAppelli(); // Visualizza gli appelli subito dopo aver ricevuto l'insegnamento
@@ -45,7 +44,7 @@ public class UIListaAppelli implements Initializable {
     public UIListaAppelli() {}
 
     @FXML
-    private TextField idAppelloTextField; // Nuova casella di testo per l'ID dell'appello
+    private TextField idAppelloTextField;
 
     @FXML
     private Button confermaPrenotazioneButton;
@@ -57,8 +56,7 @@ public class UIListaAppelli implements Initializable {
 
     private void visualizzaAppelli() {
         if (insegnamento != null && ems != null && studente != null) {
-            //non penso ci sia bisogno di passare l'insegnamento a EMS perché abbiamo fatto la set su insegnamentoSelezionato
-            List<Appello_esame> appelli = ems.getAppelliByInsegnamento(); //recupero gli appelli di un determinato insegnamento
+            List<Appello_esame> appelli = ems.getAppelliByInsegnamento(); //recupero gli appelli di un determinato insegnamento scelto
 
             appelliListView.getItems().clear();
 
@@ -68,7 +66,6 @@ public class UIListaAppelli implements Initializable {
                 return;
             }
 
-            //FORSE BISOGNA RICHIAMARE EMS.GETAPPELLI() ???
             List<Appello_esame> appelliPrenotati = studente.getAppelli(); //recupera gli appelli relativi allo studente corrente per vedere se è già prenotato
 
             for (Appello_esame appello : appelli) {
@@ -174,7 +171,7 @@ public class UIListaAppelli implements Initializable {
 
     @FXML
     public void IndietroCercaInsegnamento() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PrenotazioneAppelloView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PrenotazioneAppelloView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 

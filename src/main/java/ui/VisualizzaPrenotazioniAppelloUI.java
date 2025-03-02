@@ -37,7 +37,6 @@ public class VisualizzaPrenotazioniAppelloUI implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         ems=EMS.getInstance();
         studente = ems.getStudenteCorrente();
-        System.out.println("UIListaAppelli: Studente (set): " + studente);
 
         //RECUPERARE INSEGNAMENTO SELEZIONATO DOPO FARE LE ISTRUZIONI CHE SEGUONO
         insegnamento=ems.getInsegnamentoSelezionato();
@@ -77,7 +76,7 @@ public class VisualizzaPrenotazioniAppelloUI implements Initializable {
 
     private void visualizzaAppelliPrenotati() {
         if (studente != null && insegnamento != null) {
-            //provare a spostare getAppelli in ems
+
 
             List<Appello_esame> appelliPrenotati = ems.getAppelli();
             appelliPrenotatiListView.getItems().clear(); // Pulisci la lista
@@ -231,7 +230,7 @@ public class VisualizzaPrenotazioniAppelloUI implements Initializable {
 
     @FXML
     public void IndietroCercaInsegnamento() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaPrenotazioniInsegnamentoView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VisualizzaPrenotazioniInsegnamentoView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 

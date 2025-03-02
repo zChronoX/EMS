@@ -45,7 +45,7 @@ public class UIPrenotazioneAppello implements Initializable {
 
 @FXML
 private void visualizzaInsegnamenti() {
-    HashMap<String, Insegnamento> insegnamenti = ems.getInsegnamenti(); // Ottieni la mappa degli insegnamenti
+    HashMap<String, Insegnamento> insegnamenti = ems.getInsegnamenti(); // Recupera la mappa degli insegnamenti
 
     if (insegnamenti != null) {
         for (Map.Entry<String, Insegnamento> entry : insegnamenti.entrySet()) {
@@ -68,7 +68,6 @@ private void visualizzaInsegnamenti() {
         } else {
             // Gestisci il caso in cui l'insegnamento non viene trovato
             System.out.println("Insegnamento non trovato.");
-            // Puoi anche mostrare un messaggio di errore all'utente qui, ad esempio:
             Alert alert = new Alert(Alert.AlertType.ERROR, "Insegnamento non trovato.");
             alert.showAndWait();
         }
@@ -91,7 +90,7 @@ private void visualizzaInsegnamenti() {
 
     @FXML
     public void IndietroCercaVistaStudente() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("StudenteView.fxml")); // Assicurati che il nome del file sia corretto
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("StudenteView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
 
