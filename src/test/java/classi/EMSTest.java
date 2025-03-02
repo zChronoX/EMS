@@ -572,6 +572,61 @@ class EMSTest {
     }
 
     @Test
+    void testGetAppelli_AppelliPresenti() throws Exception {
+        try {
+
+            Studente studente = (Studente) utenteFactory.newUser(Utente.TipoProfilo.Studente);
+            ems.setUtenteCorrente(studente);
+
+            studente.setNome("Mario");
+            studente.setCognome("Rossi");
+            studente.setData_nascita(new Date());
+            studente.setGenere("Maschio");
+            studente.setCodice_fiscale("RSSMRO80A01L735A");
+            studente.setResidenza("Milano");
+            studente.setEmail("mario.rossi@example.com");
+            studente.setTelefono("1234567890");
+            studente.setMatricola("12345");
+            studente.setPassword("password123");
+            studente.setCategoria("In corso");
+            studente.setAnnoCorso(2023);
+
+            ems.confermaUtente();
+
+            Insegnamento insegnamento1 = new Insegnamento("INF-01", "Informatica", 6, "Descrizione", 2023);
+            ems.getTeaching_list().put("INF-01", insegnamento1);
+
+            Insegnamento insegnamento2 = new Insegnamento("MAT-01", "Matematica", 6, "Descrizione", 2023);
+            ems.getTeaching_list().put("MAT-01", insegnamento2);
+
+            LocalDate data = LocalDate.now();
+            LocalTime ora = LocalTime.now();
+
+            Appello_esame appello1 = new Appello_esame("APP-1", data, ora, "Aula A", 30, "Scritto", insegnamento1);
+            insegnamento1.aggiungiAppello(appello1);
+
+            Appello_esame appello2 = new Appello_esame("APP-2", data, ora, "Aula B", 30, "Orale", insegnamento2);
+            insegnamento2.aggiungiAppello(appello2);
+
+
+            studente.getAppelli().add(appello1);
+            studente.getAppelli().add(appello2);
+
+
+            List<Appello_esame> appelliPrenotati = ems.getAppelli();
+
+
+            assertEquals(2, appelliPrenotati.size());
+            assertTrue(appelliPrenotati.contains(appello1));
+            assertTrue(appelliPrenotati.contains(appello2));
+        } catch (Exception e) {
+            fail("Unexpected exception: " + e.getMessage());
+        }
+    }
+
+
+
+    @Test
     void testGetAppelliByInsegnamento_AppelliPresenti() {
         try {
             // 1. Setup: Insegnamento esiste e ha appelli
@@ -766,10 +821,8 @@ class EMSTest {
     @Test
     void testCancellaPrenotazione() throws Exception {
         try {
-            // 1. Setup: Crea studente, appello, conferma lo studente e prenota l'appello
             Studente studente = (Studente) utenteFactory.newUser(Utente.TipoProfilo.Studente);
             ems.setUtenteCorrente(studente);
-            // Dati studente (esempio)
             studente.setNome("Mario");
             studente.setCognome("Rossi");
             studente.setData_nascita(new Date());
@@ -790,12 +843,12 @@ class EMSTest {
 
             Appello_esame appello = new Appello_esame("APP-1", LocalDate.now(), LocalTime.now(), "Aula A", 30, "Scritto", insegnamento);
 
-            ems.prenotaAppello(appello); // Prenota l'appello
+            ems.prenotaAppello(appello);
 
-            // 2. Esecuzione: Cancella la prenotazione
+
             ems.cancellaPrenotazione(appello);
 
-            // 3. Asserzioni: Verifica che la prenotazione sia stata cancellata
+
             assertFalse(appello.getStudenti().contains(studente)); // Studente non più presente nella lista dell'appello
             assertFalse(studente.getAppelli().contains(appello)); // Appello non più presente nella lista dello studente
             assertEquals(30, appello.getPostiDisponibili()); // Posti disponibili incrementati
