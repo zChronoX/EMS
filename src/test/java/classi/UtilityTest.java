@@ -29,17 +29,17 @@ class UtilityTest {
     @Test
     void testLoadStudents() {
         try {
-            // 1. Setup & Execution: Load students
+
             Utility utility = new Utility();
             HashMap<String, Studente> studentList = utility.loadStudents();
 
-            // 2. Assertions: Check if students are loaded correctly
+
             assertEquals(2, studentList.size());
 
-            // Check details of student 1 (using any key)
+
             for (Map.Entry<String, Studente> entry : studentList.entrySet()) {
                 Studente s1 = entry.getValue();
-                if (s1.getCodice_fiscale().equals("CNTGNN01D07C351H")) { // Find the student by codice fiscale
+                if (s1.getCodice_fiscale().equals("CNTGNN01D07C351H")) {
                     assertEquals("Giovanni", s1.getNome());
                     assertEquals("Contarino", s1.getCognome());
                     assertEquals("M", s1.getGenere());
@@ -55,14 +55,14 @@ class UtilityTest {
                     assertEquals("giovanni.contarino.gc@gmail.com", s1.getEmail());
                     assertEquals("3801577024", s1.getTelefono());
                     assertEquals(Utente.TipoProfilo.Studente, s1.getTipoProfilo());
-                    break; // Stop searching once the student is found
+                    break;
                 }
             }
 
-            // Check details of student 2 (using any key)
+
             for (Map.Entry<String, Studente> entry : studentList.entrySet()) {
                 Studente s2 = entry.getValue();
-                if (s2.getCodice_fiscale().equals("NPPGGPS214312PP")) { // Find the student by codice fiscale
+                if (s2.getCodice_fiscale().equals("NPPGGPS214312PP")) {
                     assertEquals("Giuseppe", s2.getNome());
                     assertEquals("Nappo", s2.getCognome());
                     assertEquals("M", s2.getGenere());
@@ -78,7 +78,7 @@ class UtilityTest {
                     assertEquals("nappopippo@gmail.com", s2.getEmail());
                     assertEquals("1234567890", s2.getTelefono());
                     assertEquals(Utente.TipoProfilo.Studente, s2.getTipoProfilo());
-                    break; // Stop searching once the student is found
+                    break;
                 }
             }
         } catch (Exception e) {
@@ -89,17 +89,17 @@ class UtilityTest {
     @Test
     void testLoadProfessors_CaricamentoCorretto() {
         try {
-            // 1. Setup & Execution: Load professors
+
             Utility utility = new Utility();
             HashMap<String, Docente> professorList = utility.loadProfessors();
 
-            // 2. Assertions: Check if professors are loaded correctly
+
             assertEquals(4, professorList.size());
 
-            // Check details of professor 1 (using any key)
+
             for (Map.Entry<String, Docente> entry : professorList.entrySet()) {
                 Docente d1 = entry.getValue();
-                if (d1.getCodice_fiscale().equals("RSSMRO70E10F900X")) { // Find the professor by codice fiscale
+                if (d1.getCodice_fiscale().equals("RSSMRO70E10F900X")) {
                     assertEquals("Mario", d1.getNome());
                     assertEquals("Rossi", d1.getCognome());
                     assertEquals("M", d1.getGenere());
@@ -115,14 +115,14 @@ class UtilityTest {
                     assertEquals("mario.rossi@example.com", d1.getEmail());
                     assertEquals("3331234567", d1.getTelefono());
                     assertEquals(Utente.TipoProfilo.Docente, d1.getTipoProfilo());
-                    break; // Stop searching once the professor is found
+                    break;
                 }
             }
 
-            // Check details of professor 2 (using any key)
+
             for (Map.Entry<String, Docente> entry : professorList.entrySet()) {
                 Docente d2 = entry.getValue();
-                if (d2.getCodice_fiscale().equals("VRDLUG65K25G800Y")) { // Find the professor by codice fiscale
+                if (d2.getCodice_fiscale().equals("VRDLUG65K25G800Y")) {
                     assertEquals("Luigi", d2.getNome());
                     assertEquals("Verdi", d2.getCognome());
                     assertEquals("M", d2.getGenere());
@@ -138,14 +138,14 @@ class UtilityTest {
                     assertEquals("luigi.verdi@example.com", d2.getEmail());
                     assertEquals("3479876543", d2.getTelefono());
                     assertEquals(Utente.TipoProfilo.Docente, d2.getTipoProfilo());
-                    break; // Stop searching once the professor is found
+                    break;
                 }
             }
 
-            // Check details of professor 3 (using any key)
+
             for (Map.Entry<String, Docente> entry : professorList.entrySet()) {
                 Docente d3 = entry.getValue();
-                if (d3.getCodice_fiscale().equals("BNCANN82C08H900Z")) { // Find the professor by codice fiscale
+                if (d3.getCodice_fiscale().equals("BNCANN82C08H900Z")) {
                     assertEquals("Anna", d3.getNome());
                     assertEquals("Bianchi", d3.getCognome());
                     assertEquals("F", d3.getGenere());
@@ -161,14 +161,14 @@ class UtilityTest {
                     assertEquals("anna.bianchi@example.com", d3.getEmail());
                     assertEquals("3281011122", d3.getTelefono());
                     assertEquals(Utente.TipoProfilo.Docente, d3.getTipoProfilo());
-                    break; // Stop searching once the professor is found
+                    break;
                 }
             }
 
-            // Check details of professor 4 (using any key)
+
             for (Map.Entry<String, Docente> entry : professorList.entrySet()) {
                 Docente d4 = entry.getValue();
-                if (d4.getCodice_fiscale().equals("NRIGVN78I15I000W")) { // Find the professor by codice fiscale
+                if (d4.getCodice_fiscale().equals("NRIGVN78I15I000W")) {
                     assertEquals("Giovanni", d4.getNome());
                     assertEquals("Neri", d4.getCognome());
                     assertEquals("M", d4.getGenere());
@@ -184,7 +184,7 @@ class UtilityTest {
                     assertEquals("giovanni.neri@example.com", d4.getEmail());
                     assertEquals("3394445555", d4.getTelefono());
                     assertEquals(Utente.TipoProfilo.Docente, d4.getTipoProfilo());
-                    break; // Stop searching once the professor is found
+                    break;
                 }
             }
         } catch (Exception e) {
@@ -195,15 +195,15 @@ class UtilityTest {
     @Test
     void testLoadCourses_CaricamentoCorretto() throws IOException {
         try {
-            // 1. Setup: Create Utility instance, mock docenti and studenti
+
             Utility utility = new Utility();
             HashMap<String, Docente> docenti = new HashMap<>();
             HashMap<String, Studente> studenti = new HashMap<>();
 
-            // Add some mock docenti (adjust as needed)
+
             Docente docente1 = (Docente) utenteFactory.newUser(Utente.TipoProfilo.Docente);
             ems.setUtenteCorrente(docente1);
-            // Set docente details
+
             docente1.setNome("Luigi");
             docente1.setCognome("Verdi");
             docente1.setData_nascita(new Date());
@@ -219,7 +219,7 @@ class UtilityTest {
 
             Docente docente2 = (Docente) utenteFactory.newUser(Utente.TipoProfilo.Docente);
             ems.setUtenteCorrente(docente2);
-            // Set docente details
+
             docente2.setNome("Mario");
             docente2.setCognome("Rossi");
             docente2.setData_nascita(new Date());
@@ -235,7 +235,7 @@ class UtilityTest {
 
             Docente docente3 = (Docente) utenteFactory.newUser(Utente.TipoProfilo.Docente);
             ems.setUtenteCorrente(docente3);
-            // Set docente details
+
             docente3.setNome("Anna");
             docente3.setCognome("Bianchi");
             docente3.setData_nascita(new Date());
@@ -251,7 +251,7 @@ class UtilityTest {
 
             Docente docente4 = (Docente) utenteFactory.newUser(Utente.TipoProfilo.Docente);
             ems.setUtenteCorrente(docente4);
-            // Set docente details
+
             docente4.setNome("Giovanni");
             docente4.setCognome("Neri");
             docente4.setData_nascita(new Date());
@@ -265,10 +265,10 @@ class UtilityTest {
             ems.confermaUtente();
             docenti.put(docente4.getCodiceDocente(), docente4);
 
-            // Add some mock studenti (adjust as needed)
+
             Studente studente1 = (Studente) utenteFactory.newUser(Utente.TipoProfilo.Studente);
             ems.setUtenteCorrente(studente1);
-            // Set studente details
+
             studente1.setNome("Giovanni");
             studente1.setCognome("Contarino");
             studente1.setData_nascita(new Date());
@@ -286,7 +286,7 @@ class UtilityTest {
 
             Studente studente2 = (Studente) utenteFactory.newUser(Utente.TipoProfilo.Studente);
             ems.setUtenteCorrente(studente2);
-            // Set studente details
+
             studente2.setNome("Giuseppe");
             studente2.setCognome("Nappo");
             studente2.setData_nascita(new Date());
@@ -302,28 +302,28 @@ class UtilityTest {
             ems.confermaUtente();
             studenti.put(studente2.getMatricola(), studente2);
 
-            // 2. Execution: Load courses (using the same path as in EMS)
-            Path filePath = Paths.get("src/main/files/insegnamenti.txt"); // Path corretto
+
+            Path filePath = Paths.get("src/main/files/insegnamenti.txt");
             if (!Files.exists(filePath)) {
-                Files.createFile(filePath); //Crea il file se non esiste
+                Files.createFile(filePath);
             }
             HashMap<String, Insegnamento> insegnamenti = utility.loadCourses(filePath.toString(), docenti, studenti);
 
-            // 3. Assertions: Verify courses are loaded correctly (same as before)
-            assertNotNull(insegnamenti);
-            assertEquals(4, insegnamenti.size()); // Assuming 4 courses in the CSV
 
-            // Verify details of course 1 (adjust ID and details as needed)
+            assertNotNull(insegnamenti);
+            assertEquals(4, insegnamenti.size());
+
+
             Insegnamento corso1 = insegnamenti.get("MAT001");
             assertNotNull(corso1);
             assertEquals("Algebra Lineare", corso1.getNome());
             assertEquals(6, corso1.getCFU());
             assertEquals("Corso di algebra lineare", corso1.getDescrizione());
             assertEquals(2023, corso1.getAnno());
-            assertEquals(2, corso1.getDocenti().size()); // Assuming 2 docenti for this course
+            assertEquals(2, corso1.getDocenti().size());
             assertTrue(corso1.getDocenti().contains(docente1));
             assertTrue(corso1.getDocenti().contains(docente2));
-            assertEquals(2, corso1.getStudenti().size()); // Assuming all
+            assertEquals(2, corso1.getStudenti().size());
 
         }
         catch (Exception e) {
@@ -334,15 +334,15 @@ class UtilityTest {
     @Test
     void testTrovaDocente_DocentePresente() throws IOException {
         try {
-            // 1. Setup: Crea Utility, docenti e studenti
+
             Utility utility = new Utility();
             HashMap<String, Docente> docenti = new HashMap<>();
             HashMap<String, Studente> studenti = new HashMap<>();
 
-            // Aggiungi docenti mock usando UtenteFactory
+
             Docente docente1 = (Docente) utenteFactory.newUser(Utente.TipoProfilo.Docente);
             ems.setUtenteCorrente(docente1);
-            // Set docente details
+
             docente1.setNome("Luigi");
             docente1.setCognome("Verdi");
             docente1.setData_nascita(new Date());
@@ -356,18 +356,18 @@ class UtilityTest {
             ems.confermaUtente();
             docenti.put(docente1.getCodiceDocente(), docente1);
 
-            // ... Aggiungi altri docenti se necessario
 
-            // 2. Execution: Carica corsi (e quindi usa trovaDocente)
+
+
             Path filePath = Paths.get("src/main/files/insegnamenti.txt");
             if (!Files.exists(filePath)) {
                 Files.createFile(filePath);
             }
             HashMap<String, Insegnamento> insegnamenti = utility.loadCourses(filePath.toString(), docenti, studenti);
 
-            // 3. Assertions: Verifica che il docente sia stato trovato e associato al corso
+
             assertNotNull(insegnamenti);
-            Insegnamento corso = insegnamenti.get("MAT001"); // Assumi che MAT001 abbia Luigi Verdi come docente
+            Insegnamento corso = insegnamenti.get("MAT001");
             assertNotNull(corso);
             assertTrue(corso.getDocenti().stream().anyMatch(d -> d.getNome().equals("Luigi") && d.getCognome().equals("Verdi")));
         } catch (Exception e) {

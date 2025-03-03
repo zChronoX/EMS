@@ -15,35 +15,35 @@ public class Utility {
         HashMap<String, Studente> student_list = new HashMap<>();
 
             Studente s1 = new Studente(
-                    "Giovanni", // Nome (come nel controller)
-                    "Contarino", // Cognome (come nel controller)
-                    "M", // Genere (come nel controller)
-                    new Date(), // Data di nascita (come nel controller)
-                    "CNTGNN01D07C351H", // Codice fiscale (come nel controller)
-                    "Via Blanco 14, Acireale", // Residenza (come nel controller)
-                    "giovanni.contarino.gc@gmail.com", // Email (come nel controller)
-                    "3801577024", // Telefono (come nel controller)
-                    Utente.TipoProfilo.Studente, // Tipo Profilo
-                    generatore.generaMatricola(), // Matricola
-                    generatore.generaPassword(), // Password
-                    "In corso", // Categoria (come nel controller)
-                    2025 // Anno corso (come nel controller)
+                    "Giovanni",
+                    "Contarino",
+                    "M",
+                    new Date(),
+                    "CNTGNN01D07C351H",
+                    "Via Blanco 14, Acireale",
+                    "giovanni.contarino.gc@gmail.com",
+                    "3801577024",
+                    Utente.TipoProfilo.Studente,
+                    generatore.generaMatricola(),
+                    generatore.generaPassword(),
+                    "In corso",
+                    2025
             );
 
         Studente s2 = new Studente(
-                "Giuseppe", // Nome
-                "Nappo", // Cognome
-                "M", // Genere
-                new Date(), // Data di nascita
-                "NPPGGPS214312PP", // Codice fiscale
-                "Via Scaloto 12, Scala", // Residenza
-                "nappopippo@gmail.com", // Email
-                "1234567890", // Telefono
+                "Giuseppe",
+                "Nappo",
+                "M",
+                new Date(),
+                "NPPGGPS214312PP",
+                "Via Scaloto 12, Scala",
+                "nappopippo@gmail.com",
+                "1234567890",
                 Utente.TipoProfilo.Studente,
                 generatore.generaMatricola(),
                 generatore.generaPassword(),
-                "In corso", // Categoria
-                2025 // Anno corso
+                "In corso",
+                2025
         );
 
 
@@ -57,56 +57,56 @@ public class Utility {
         HashMap<String, Docente> prof_list = new HashMap<>();
 
         Docente d1 = new Docente(
-                "Mario", // Nome
-                "Rossi", // Cognome
-                "M", // Genere
-                new Date(), // Data di nascita
-                "RSSMRO70E10F900X", // Codice fiscale
-                "Via Roma 1, Milano", // Residenza
-                "mario.rossi@example.com", // Email
-                "3331234567", // Telefono
+                "Mario",
+                "Rossi",
+                "M",
+                new Date(),
+                "RSSMRO70E10F900X",
+                "Via Roma 1, Milano",
+                "mario.rossi@example.com",
+                "3331234567",
                 Utente.TipoProfilo.Docente,
                 generatore.generaCodiceDocente(),
                 generatore.generaPassword()
         );
 
         Docente d2 = new Docente(
-                "Luigi", // Nome
-                "Verdi", // Cognome
-                "M", // Genere
-                new Date(), // Data di nascita
-                "VRDLUG65K25G800Y", // Codice fiscale
-                "Via Verdi 2, Roma", // Residenza
-                "luigi.verdi@example.com", // Email
-                "3479876543", // Telefono
+                "Luigi",
+                "Verdi",
+                "M",
+                new Date(),
+                "VRDLUG65K25G800Y",
+                "Via Verdi 2, Roma",
+                "luigi.verdi@example.com",
+                "3479876543",
                 Utente.TipoProfilo.Docente,
                 generatore.generaCodiceDocente(),
                 generatore.generaPassword()
         );
 
         Docente d3 = new Docente(
-                "Anna", // Nome
-                "Bianchi", // Cognome
-                "F", // Genere
-                new Date(), // Data di nascita
-                "BNCANN82C08H900Z", // Codice fiscale
-                "Via Bianchi 3, Torino", // Residenza
-                "anna.bianchi@example.com", // Email
-                "3281011122", // Telefono
+                "Anna",
+                "Bianchi",
+                "F",
+                new Date(),
+                "BNCANN82C08H900Z",
+                "Via Bianchi 3, Torino",
+                "anna.bianchi@example.com",
+                "3281011122",
                 Utente.TipoProfilo.Docente,
                 generatore.generaCodiceDocente(),
                 generatore.generaPassword()
         );
 
         Docente d4 = new Docente(
-                "Giovanni", // Nome
-                "Neri", // Cognome
-                "M", // Genere
-                new Date(), // Data di nascita
-                "NRIGVN78I15I000W", // Codice fiscale
-                "Via Neri 4, Napoli", // Residenza
-                "giovanni.neri@example.com", // Email
-                "3394445555", // Telefono
+                "Giovanni",
+                "Neri",
+                "M",
+                new Date(),
+                "NRIGVN78I15I000W",
+                "Via Neri 4, Napoli",
+                "giovanni.neri@example.com",
+                "3394445555",
                 Utente.TipoProfilo.Docente,
                 generatore.generaCodiceDocente(),
                 generatore.generaPassword()
@@ -129,7 +129,7 @@ public class Utility {
             String riga;
             while ((riga = reader.readLine()) != null) {
                 String[] dati = riga.split(",");
-                if (dati.length >= 6) { // Verifica che ci siano almeno 6 elementi (e opzionalmente studenti)
+                if (dati.length >= 6) { // Verifica che ci siano almeno 6 elementi
                     try {
                         String id = dati[0].trim();
                         String nome = dati[1].trim();
@@ -170,7 +170,7 @@ public class Utility {
     private Docente trovaDocente(HashMap<String, Docente> docenti, String nomeDocente) {
         if (docenti != null) {
             for (Docente docente : docenti.values()) {
-                if ((docente.getNome() + " " + docente.getCognome()).equals(nomeDocente)) { // Confronta SOLO nome completo
+                if ((docente.getNome() + " " + docente.getCognome()).equals(nomeDocente)) {
                     return docente;
                 }
             }

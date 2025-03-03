@@ -26,10 +26,10 @@ class Appello_esameTest {
     @Test
     void testAddStudente() throws Exception {
         try {
-            // 1. Setup: Create docente, appello
+            // Setup
             Docente docente = (Docente) utenteFactory.newUser(Utente.TipoProfilo.Docente);
             ems.setUtenteCorrente(docente);
-            // Set docente details
+            // Set docente
             docente.setNome("Luigi");
             docente.setCognome("Verdi");
             docente.setData_nascita(new Date());
@@ -47,13 +47,13 @@ class Appello_esameTest {
             ems.getTeaching_list().put("INF-01", insegnamento);
 
             Appello_esame appello = new Appello_esame("APP-1", LocalDate.now(), LocalTime.now(), "Aula A", 30, "Scritto", insegnamento);
-            // Usa insegnamento.aggiungiAppello() per aggiungere l'appello all'insegnamento
+            // insegnamento.aggiungiAppello() per aggiungere l'appello all'insegnamento
             insegnamento.aggiungiAppello(appello);
 
-            // 2. Setup: Create studente
+            // Setup
             Studente studente = (Studente) utenteFactory.newUser(Utente.TipoProfilo.Studente);
             ems.setUtenteCorrente(studente);
-            // Set studente details
+            // Set studente
             studente.setNome("Mario");
             studente.setCognome("Rossi");
             studente.setData_nascita(new Date());
@@ -68,10 +68,10 @@ class Appello_esameTest {
             studente.setAnnoCorso(2023);
             ems.confermaUtente();
 
-            // 3. Execution: Add studente to appello
+
             appello.addStudente(studente);
 
-            // 4. Assertions: Verify that the studente is added
+
             assertTrue(appello.getStudenti().contains(studente));
         } catch (Exception e) {
             fail("Unexpected exception: " + e.getMessage());
@@ -81,10 +81,10 @@ class Appello_esameTest {
     @Test
     void testAddFeedback() throws Exception {
         try {
-            // 1. Setup: Create docente, insegnamento, appello
+            // Setup
             Docente docente = (Docente) utenteFactory.newUser(Utente.TipoProfilo.Docente);
             ems.setUtenteCorrente(docente);
-            // Set docente details
+            // Set docente
             docente.setNome("Luigi");
             docente.setCognome("Verdi");
             docente.setData_nascita(new Date());
@@ -102,13 +102,13 @@ class Appello_esameTest {
             ems.getTeaching_list().put("INF-01", insegnamento);
 
             Appello_esame appello = new Appello_esame("APP-1", LocalDate.now(), LocalTime.now(), "Aula A", 30, "Scritto", insegnamento);
-            // Usa insegnamento.aggiungiAppello() per aggiungere l'appello all'insegnamento
+            // insegnamento.aggiungiAppello() per aggiungere l'appello all'insegnamento
             insegnamento.aggiungiAppello(appello);
 
-            // 2. Execution: Add feedback
+
             appello.addFeedback("Ottimo esame!");
 
-            // 3. Assertions: Verify that the feedback is added
+
             assertEquals(1, appello.getFeedbacks().size());
             assertEquals("Ottimo esame!", appello.getFeedbacks().get(0));
         } catch (Exception e) {
@@ -119,10 +119,10 @@ class Appello_esameTest {
     @Test
     void testPuòGestireEsiti() throws Exception {
         try {
-            // 1. Setup: Create docente, insegnamento, appello, and confirm them
+            // Setup
             Docente docente1 = (Docente) utenteFactory.newUser(Utente.TipoProfilo.Docente);
             ems.setUtenteCorrente(docente1);
-            // Set docente details
+            // Set docente
             docente1.setNome("Luigi");
             docente1.setCognome("Verdi");
             docente1.setData_nascita(new Date());
@@ -140,13 +140,13 @@ class Appello_esameTest {
             ems.getTeaching_list().put("INF-01", insegnamento);
 
             Appello_esame appello = new Appello_esame("APP-1", LocalDate.now(), LocalTime.now(), "Aula A", 30, "Scritto", insegnamento);
-            // Usa insegnamento.aggiungiAppello() per aggiungere l'appello all'insegnamento
+            // insegnamento.aggiungiAppello() per aggiungere l'appello all'insegnamento
             insegnamento.aggiungiAppello(appello);
 
-            // 2. Execution: Check if the docente can manage results
+
             boolean puòGestire = appello.puòGestireEsiti(docente1);
 
-            // 3. Assertions: Verify that the method returns true
+
             assertTrue(puòGestire);
         } catch (Exception e) {
             fail("Unexpected exception: " + e.getMessage());
