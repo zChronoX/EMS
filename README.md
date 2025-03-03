@@ -19,6 +19,11 @@ Exam Management System (EMS) è un software progettato per gestire gli esami di 
 - **Diagrammi UML**: Astah
 - **IDE**: IntelliJ IDEA
 
+- ## Guida all'uso
+- 1: Clonare la repo o scaricare il file zip dell'intero progetto
+- 2: Importare il progetto all'interno di un IDE (preferibilmente IntelliJ IDEA)
+- 3: Compilare il progetto ed eseguire il file Java "UIMain" presente all'interno del percorso "src\main\java\ui"
+
 ## Autori
 - Alessia Provvidenza Tomarchio
 - Roberta Vallelunga
